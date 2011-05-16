@@ -102,7 +102,7 @@ public class ArquillianInterceptor extends AbstractMethodInterceptor
          
          public Method getMethod()
          {
-            return invocation.getMethod().getReflection();
+            return invocation.getFeature().getFeatureMethod().getReflection();
          }
          
          public Object getInstance()
