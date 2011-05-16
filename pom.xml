@@ -17,11 +17,13 @@
 	<properties>
 		<version.spock>0.4-groovy-1.7</version.spock>
 		<version.arquillian>1.0.0.Alpha3</version.arquillian>
+		<version.shrinkwrap>1.0.0-SNAPSHOT</version.shrinkwrap>
 		<version.groovy>1.7.0</version.groovy>
 		<version.gmaven>1.2</version.gmaven>
 		<version.cdi>1.0-SP1</version.cdi>
 		<version.weld>1.0.1-SP1</version.weld>
 		<version.el>2.2</version.el>
+		<version.jboss_60>6.0.0.20100721-M4</version.jboss_60>
 	</properties>
 
 	<!-- Dependencies -->
@@ -32,11 +34,29 @@
 			<groupId>org.jboss.arquillian</groupId>
 			<artifactId>arquillian-impl-base</artifactId>
 			<version>${version.arquillian}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>shrinkwrap-spi</artifactId>
+					<groupId>org.jboss.shrinkwrap</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.jboss.arquillian</groupId>
 			<artifactId>arquillian-spi</artifactId>
 			<version>${version.arquillian}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.jboss.shrinkwrap</groupId>
+			<artifactId>shrinkwrap-api</artifactId>
+			<version>${version.shrinkwrap}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.jboss.shrinkwrap</groupId>
+			<artifactId>shrinkwrap-impl-base</artifactId>
+			<version>${version.shrinkwrap}</version>
 		</dependency>
 
 		<dependency>
@@ -97,6 +117,28 @@
 					</dependency>
 				</dependencies>
 			</dependencyManagement>
+		</profile>
+		<profile>
+			<id>jbossas-remote-6</id>
+			<dependencies>
+				<dependency>
+					<groupId>org.jboss.arquillian.container</groupId>
+					<artifactId>arquillian-jbossas-remote-6</artifactId>
+					<version>1.0.0-SNAPSHOT</version>
+				</dependency>
+				<dependency>
+					<groupId>org.jboss.jbossas</groupId>
+					<artifactId>jboss-as-client</artifactId>
+					<version>${version.jboss_60}</version>
+					<type>pom</type>
+					<exclusions>
+						<exclusion>
+							<groupId>com.sun.istack</groupId>
+							<artifactId>istack-commons-runtime</artifactId>
+						</exclusion>
+					</exclusions>
+				</dependency>
+			</dependencies>
 		</profile>
 	</profiles>
 	<build>

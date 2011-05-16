@@ -16,7 +16,6 @@
  */
 package org.jboss.arquillian.framework.spock;
 
-import java.math.BigDecimal;
 
 /**
  * Account
