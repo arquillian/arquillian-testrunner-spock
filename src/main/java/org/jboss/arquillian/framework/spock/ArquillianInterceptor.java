@@ -19,9 +19,10 @@ package org.jboss.arquillian.framework.spock;
 import java.lang.reflect.Method;
 import java.util.logging.Logger;
 
-import org.jboss.arquillian.spi.TestMethodExecutor;
-import org.jboss.arquillian.spi.TestResult;
-import org.jboss.arquillian.spi.TestRunnerAdaptor;
+import org.jboss.arquillian.test.spi.LifecycleMethodExecutor;
+import org.jboss.arquillian.test.spi.TestMethodExecutor;
+import org.jboss.arquillian.test.spi.TestResult;
+import org.jboss.arquillian.test.spi.TestRunnerAdaptor;
 import org.spockframework.runtime.extension.AbstractMethodInterceptor;
 import org.spockframework.runtime.extension.IMethodInvocation;
 
@@ -48,8 +49,9 @@ public class ArquillianInterceptor extends AbstractMethodInterceptor
    @Override
    public void interceptSetupSpecMethod(IMethodInvocation invocation) throws Throwable
    {
-      log.fine("beforeClass " + invocation.getSpec().getReflection().getName());
-      testRunner.beforeClass(invocation.getSpec().getReflection());
+      Class<?> specClass = invocation.getSpec().getReflection();
+      log.fine("beforeClass " + specClass.getName());
+      testRunner.beforeClass(specClass, LifecycleMethodExecutor.NO_OP);
       invocation.proceed();
    }
    
@@ -59,9 +61,10 @@ public class ArquillianInterceptor extends AbstractMethodInterceptor
    @Override
    public void interceptCleanupSpecMethod(IMethodInvocation invocation) throws Throwable
    {
-      log.fine("afterClass " + invocation.getSpec().getReflection().getName());
+      Class<?> specClass = invocation.getSpec().getReflection();
+      log.fine("afterClass " + specClass.getName());
       invocation.proceed();
-      testRunner.afterClass(invocation.getSpec().getReflection());
+      testRunner.afterClass(specClass, LifecycleMethodExecutor.NO_OP);
    }
    
    /* (non-Javadoc)
@@ -71,7 +74,7 @@ public class ArquillianInterceptor extends AbstractMethodInterceptor
    public void interceptSetupMethod(IMethodInvocation invocation) throws Throwable
    {
       log.fine("before " + invocation.getFeature().getFeatureMethod().getReflection().getName());
-      testRunner.before(invocation.getTarget(), invocation.getFeature().getFeatureMethod().getReflection());
+      testRunner.before(invocation.getTarget(), invocation.getFeature().getFeatureMethod().getReflection(), LifecycleMethodExecutor.NO_OP);
       invocation.proceed();
    }
    
@@ -83,7 +86,7 @@ public class ArquillianInterceptor extends AbstractMethodInterceptor
    {
       log.fine("after " + invocation.getFeature().getFeatureMethod().getReflection().getName());
       invocation.proceed();
-      testRunner.after(invocation.getTarget(), invocation.getFeature().getFeatureMethod().getReflection());
+      testRunner.after(invocation.getTarget(), invocation.getFeature().getFeatureMethod().getReflection(), LifecycleMethodExecutor.NO_OP);
    }
    
    /* (non-Javadoc)
@@ -95,19 +98,23 @@ public class ArquillianInterceptor extends AbstractMethodInterceptor
       log.fine("invoke " + invocation.getFeature().getFeatureMethod().getReflection().getName());
       TestResult result = testRunner.test(new TestMethodExecutor()
       {
-         public void invoke() throws Throwable
-         {
-            invocation.proceed();
-         }
-         
+         @Override
          public Method getMethod()
          {
             return invocation.getFeature().getFeatureMethod().getReflection();
          }
          
+         @Override
          public Object getInstance()
          {
             return invocation.getTarget();
+         }
+
+         @Override
+         public void invoke(Object... parameters) throws Throwable
+         {
+            // TODO Is there something to do with parameters?
+            invocation.proceed();
          }
       });
       if(result.getThrowable() != null)

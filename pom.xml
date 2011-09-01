@@ -15,11 +15,12 @@
 
 	<!-- Properties -->
 	<properties>
-		<version.spock>0.4-groovy-1.7</version.spock>
-		<version.arquillian>1.0.0.Alpha3</version.arquillian>
-		<version.shrinkwrap>1.0.0-SNAPSHOT</version.shrinkwrap>
-		<version.groovy>1.7.0</version.groovy>
-		<version.gmaven>1.2</version.gmaven>
+		<version.spock>0.5-groovy-1.7</version.spock>
+		<version.arquillian>1.0.0.CR4</version.arquillian>
+		<version.arquillian-weld-se-embedded>1.0.0.CR2</version.arquillian-weld-se-embedded>
+		<version.shrinkwrap>1.0.0-beta-5</version.shrinkwrap>
+		<version.groovy>1.7.10</version.groovy>
+		<version.gmaven>1.3</version.gmaven>
 		<version.cdi>1.0-SP1</version.cdi>
 		<version.weld>1.0.1-SP1</version.weld>
 		<version.el>2.2</version.el>
@@ -31,8 +32,8 @@
 
 		<!-- org.jboss.arquillian -->
 		<dependency>
-			<groupId>org.jboss.arquillian</groupId>
-			<artifactId>arquillian-impl-base</artifactId>
+			<groupId>org.jboss.arquillian.core</groupId>
+			<artifactId>arquillian-core-impl-base</artifactId>
 			<version>${version.arquillian}</version>
 			<exclusions>
 				<exclusion>
@@ -41,11 +42,19 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+
 		<dependency>
-			<groupId>org.jboss.arquillian</groupId>
-			<artifactId>arquillian-spi</artifactId>
+			<groupId>org.jboss.arquillian.core</groupId>
+			<artifactId>arquillian-core-spi</artifactId>
 			<version>${version.arquillian}</version>
 		</dependency>
+
+		<dependency>
+			<groupId>org.jboss.arquillian.container</groupId>
+			<artifactId>arquillian-container-test-spi</artifactId>
+			<version>${version.arquillian}</version>
+		</dependency>
+
 
 		<dependency>
 			<groupId>org.jboss.shrinkwrap</groupId>
@@ -85,8 +94,8 @@
 			<dependencies>
 				<dependency>
 					<groupId>org.jboss.arquillian.container</groupId>
-					<artifactId>arquillian-weld-se-embedded-1</artifactId>
-					<version>${version.arquillian}</version>
+					<artifactId>arquillian-weld-se-embedded-1.1</artifactId>
+					<version>${version.arquillian-weld-se-embedded}</version>
 				</dependency>
 				<dependency>
 					<groupId>org.jboss.weld</groupId>
@@ -141,12 +150,13 @@
 			</dependencies>
 		</profile>
 	</profiles>
+
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.codehaus.gmaven</groupId>
 				<artifactId>gmaven-plugin</artifactId>
-				<version>${version.gmaven}</version>
+				<version>1.3</version>
 				<configuration>
 					<providerSelection>1.7</providerSelection>
 				</configuration>
@@ -161,7 +171,7 @@
 					<dependency>
 						<groupId>org.codehaus.gmaven.runtime</groupId>
 						<artifactId>gmaven-runtime-1.7</artifactId>
-						<version>${version.gmaven}</version>
+						<version>1.3</version>
 						<exclusions>
 							<exclusion>
 								<groupId>org.codehaus.groovy</groupId>
@@ -172,21 +182,7 @@
 					<dependency>
 						<groupId>org.codehaus.groovy</groupId>
 						<artifactId>groovy-all</artifactId>
-						<version>${version.groovy}</version>
-						<exclusions>
-							<exclusion>
-								<groupId>junit</groupId>
-								<artifactId>junit</artifactId>
-							</exclusion>
-							<exclusion>
-								<groupId>org.apache.ant</groupId>
-								<artifactId>ant</artifactId>
-							</exclusion>
-							<exclusion>
-								<groupId>org.apache.ant</groupId>
-								<artifactId>ant-launcher</artifactId>
-							</exclusion>
-						</exclusions>
+						<version>1.7.10</version>
 					</dependency>
 				</dependencies>
 			</plugin>
@@ -230,12 +226,68 @@
 				<configuration>
 					<rules>
 						<requireMavenVersion>
-							<version>[2.2.1]</version> <!-- Must be Maven 2.2.1, no tests are found with 3 -->
+							<!-- Must be Maven 2.2.1, no tests are found with 3 -->
+							<version>[2.2.1]</version>
 						</requireMavenVersion>
 					</rules>
 				</configuration>
 			</plugin>
 		</plugins>
+		<pluginManagement>
+			<plugins>
+				<!--This plugin's configuration is used to store Eclipse m2e settings 
+					only. It has no influence on the Maven build itself. -->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											org.codehaus.gmaven
+										</groupId>
+										<artifactId>
+											gmaven-plugin
+										</artifactId>
+										<versionRange>
+											[1.3,)
+										</versionRange>
+										<goals>
+											<goal>testCompile</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											org.spockframework
+										</groupId>
+										<artifactId>
+											spock-maven
+										</artifactId>
+										<versionRange>
+											[0.5-groovy-1.7,)
+										</versionRange>
+										<goals>
+											<goal>find-specs</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 	</build>
 </project>
 

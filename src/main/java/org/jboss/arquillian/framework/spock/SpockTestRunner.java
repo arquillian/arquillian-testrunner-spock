@@ -20,11 +20,10 @@ import java.lang.reflect.Field;
 import java.util.Collections;
 import java.util.List;
 
-import org.jboss.arquillian.impl.DeployableTestBuilder;
-import org.jboss.arquillian.spi.ContainerProfile;
-import org.jboss.arquillian.spi.TestResult;
-import org.jboss.arquillian.spi.TestResult.Status;
-import org.jboss.arquillian.spi.TestRunner;
+import org.jboss.arquillian.container.test.spi.TestRunner;
+import org.jboss.arquillian.test.spi.ContainerProfile;
+import org.jboss.arquillian.test.spi.TestResult;
+import org.jboss.arquillian.test.spi.TestResult.Status;
 import org.junit.runner.Description;
 import org.junit.runner.Result;
 import org.junit.runner.manipulation.Filter;
@@ -49,11 +48,11 @@ public class SpockTestRunner implements TestRunner
    {
       return Collections.emptyList();
    }
-
-   protected ContainerProfile getProfile()
+   // FIXME verify if profile is still relevant
+   /*protected ContainerProfile getProfile()
    {
       return ContainerProfile.CONTAINER;
-   }
+   }*/
 
    /* (non-Javadoc)
     * @see org.jboss.arquillian.spi.TestRunner#execute(java.lang.Class, java.lang.String)
@@ -61,7 +60,6 @@ public class SpockTestRunner implements TestRunner
    @Override
    public TestResult execute(final Class<?> testClass, final String methodName)
    {
-      DeployableTestBuilder.setProfile(getProfile());
       
       final Sputnik runner = new Sputnik(testClass);
       try
@@ -115,7 +113,6 @@ public class SpockTestRunner implements TestRunner
       
       notifier.addFirstListener(testResult.createListener());
       runner.run(notifier);
-      DeployableTestBuilder.clearProfile();
       return convertToTestResult(testResult);
    }
 

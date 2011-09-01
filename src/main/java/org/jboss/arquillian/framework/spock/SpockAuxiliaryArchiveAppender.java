@@ -16,51 +16,16 @@
  */
 package org.jboss.arquillian.framework.spock;
 
-import groovy.beans.Bindable;
-import groovy.grape.Grape;
-import groovy.inspect.Inspector;
-import groovy.io.FileType;
-import groovy.jmx.builder.JmxBeanExportFactory;
-import groovy.lang.GroovyObject;
-import groovy.mock.interceptor.CallSpec;
-import groovy.model.ClosureModel;
-import groovy.security.GroovyCodeSourcePermission;
-import groovy.servlet.AbstractHttpServlet;
-import groovy.sql.DataSet;
-import groovy.swing.SwingBuilder;
-import groovy.text.Template;
-import groovy.time.Duration;
-import groovy.util.AbstractFactory;
-import groovy.xml.DOMBuilder;
-import groovyjarjarantlr.build.ANTLR;
-import groovyjarjarasm.asm.Type;
-import groovyjarjarcommonscli.BasicParser;
-
 import javax.script.ScriptEngineFactory;
 
-import org.codehaus.groovy.GroovyException;
-import org.codehaus.groovy.classgen.GeneratorContext;
 import org.codehaus.groovy.jsr223.GroovyScriptEngineFactory;
-import org.hamcrest.BaseDescription;
-import org.jboss.arquillian.spi.AuxiliaryArchiveAppender;
-import org.jboss.arquillian.spi.TestRunner;
+import org.jboss.arquillian.container.test.spi.TestRunner;
+import org.jboss.arquillian.container.test.spi.client.deployment.AuxiliaryArchiveAppender;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.Filters;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
-import org.junit.After;
-import org.spockframework.builder.BuilderHelper;
-import org.spockframework.compiler.SourceLookup;
-import org.spockframework.experimental.RunStatus2;
-import org.spockframework.gentyref.CaptureType;
-import org.spockframework.mock.IMockFactory;
-import org.spockframework.runtime.Sputnik;
 import org.spockframework.runtime.extension.IGlobalExtension;
-import org.spockframework.util.SpockReleaseInfo;
-
-import spock.config.ConfigurationException;
-import spock.lang.Ignore;
-import spock.util.concurrent.AsyncConditions;
 
 /**
  * SpockAuxiliaryArchiveAppender
@@ -92,12 +57,12 @@ public class SpockAuxiliaryArchiveAppender implements AuxiliaryArchiveAppender
                       Filters.includeAll(),
                       "org.junit",
                       "org.hamcrest")
-               .addServiceProvider(ScriptEngineFactory.class, GroovyScriptEngineFactory.class)
-               .addServiceProvider(TestRunner.class, SpockTestRunner.class)
-               .addServiceProvider(IGlobalExtension.class, ArquillianExtension.class)
                .addClasses(SpockTestRunner.class, ArquillianExtension.class, ArquillianInterceptor.class)
-               .addManifestResource("META-INF/dgminfo", "dgminfo")
-               .addManifestResource("META-INF/groovy-release-info.properties", "groovy-release-info.properties");
+               .addAsServiceProvider(ScriptEngineFactory.class, GroovyScriptEngineFactory.class)
+               .addAsServiceProvider(TestRunner.class, SpockTestRunner.class)
+               .addAsServiceProvider(IGlobalExtension.class, ArquillianExtension.class)
+               .addAsManifestResource("META-INF/dgminfo", "dgminfo")
+               .addAsManifestResource("META-INF/groovy-release-info.properties", "groovy-release-info.properties");
    }
 
 }
