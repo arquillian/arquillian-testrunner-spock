@@ -21,7 +21,6 @@ import java.util.Collections;
 import java.util.List;
 
 import org.jboss.arquillian.container.test.spi.TestRunner;
-import org.jboss.arquillian.test.spi.ContainerProfile;
 import org.jboss.arquillian.test.spi.TestResult;
 import org.jboss.arquillian.test.spi.TestResult.Status;
 import org.junit.runner.Description;
