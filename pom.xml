@@ -55,6 +55,11 @@
 			<version>${version.arquillian}</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.jboss.arquillian.container</groupId>
+			<artifactId>arquillian-container-test-api</artifactId>
+			<version>${version.arquillian}</version>
+		</dependency>
 
 		<dependency>
 			<groupId>org.jboss.shrinkwrap</groupId>
