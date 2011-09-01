@@ -18,15 +18,12 @@ package org.jboss.arquillian.framework.spock;
 
 import java.util.logging.Logger;
 
-import org.jboss.arquillian.impl.DeployableTestBuilder;
-import org.jboss.arquillian.impl.XmlConfigurationBuilder;
-import org.jboss.arquillian.spi.Configuration;
-import org.jboss.arquillian.spi.TestRunnerAdaptor;
+import org.jboss.arquillian.test.spi.TestRunnerAdaptor;
+import org.jboss.arquillian.test.spi.TestRunnerAdaptorBuilder;
 import org.spockframework.runtime.AbstractRunListener;
 import org.spockframework.runtime.extension.IGlobalExtension;
 import org.spockframework.runtime.model.FeatureInfo;
 import org.spockframework.runtime.model.SpecInfo;
-import org.spockframework.util.NotThreadSafe;
 
 /**
  * Arquillian extension to the Spock test framework.
@@ -34,30 +31,31 @@ import org.spockframework.util.NotThreadSafe;
  * @author <a href="mailto:aslak@redhat.com">Aslak Knutsen</a>
  * @version $Revision: $
  */
-@NotThreadSafe
 public class ArquillianExtension implements IGlobalExtension
 {
+   private static ThreadLocal<TestRunnerAdaptor> deployableTest = new ThreadLocal<TestRunnerAdaptor>();
+   
+   private static ThreadLocal<SpecInfo> lastCreatedSpec = new ThreadLocal<SpecInfo>();
+
    private Logger log = Logger.getLogger(ArquillianExtension.class.getName());
-   
-   private TestRunnerAdaptor deployableTest;
-   private SpecInfo lastCreatedSpec = null;
-   
+
    /* (non-Javadoc)
     * @see org.spockframework.runtime.extension.IGlobalExtension#visitSpec(org.spockframework.runtime.model.SpecInfo)
     */
    public void visitSpec(SpecInfo spec)
    {
       // Only create the first time
-      if(deployableTest == null)   
+      if(deployableTest.get() == null)   
       {
-         Configuration configuration = new XmlConfigurationBuilder().build();
-         TestRunnerAdaptor adaptor = DeployableTestBuilder.build(configuration);
+         // FIXME resolve configuration
+         // Configuration configuration = new XmlConfigurationBuilder().build();
+         TestRunnerAdaptor adaptor = TestRunnerAdaptorBuilder.build();
          try 
          {
             log.fine("beforeSuite");
             // don't set it if beforeSuite fails
             adaptor.beforeSuite();
-            deployableTest = adaptor;
+            deployableTest.set(adaptor);
          } 
          catch (Exception e) 
          {
@@ -65,7 +63,7 @@ public class ArquillianExtension implements IGlobalExtension
          }
       }
       
-      ArquillianInterceptor interceptor = new ArquillianInterceptor(deployableTest);
+      ArquillianInterceptor interceptor = new ArquillianInterceptor(deployableTest.get());
       
       final SpecInfo topSpec = spec.getTopSpec();
       topSpec.getSetupSpecMethod().addInterceptor(interceptor);
@@ -81,19 +79,20 @@ public class ArquillianExtension implements IGlobalExtension
       topSpec.getCleanupSpecMethod().addInterceptor(interceptor);
 
       // set the last created Spec, so we can call AfterSuite only when this is done.
-      lastCreatedSpec = topSpec;
+      lastCreatedSpec.set(topSpec);
       topSpec.addListener(new AbstractRunListener() 
       {
          @Override
          public void afterSpec(SpecInfo spec)
          {
-            if(spec == lastCreatedSpec)
+            if(spec == lastCreatedSpec.get())
             {
                try 
                {
                   log.fine("afterSuite");
-                  deployableTest.afterSuite();
-                  deployableTest = null;
+                  deployableTest.get().afterSuite();
+                  deployableTest.set(null);
+                  deployableTest.remove();
                } 
                catch (Exception e) 
                {
