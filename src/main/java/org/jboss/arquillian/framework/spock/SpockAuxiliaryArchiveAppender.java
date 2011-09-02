@@ -38,7 +38,6 @@ public class SpockAuxiliaryArchiveAppender implements AuxiliaryArchiveAppender
    /* (non-Javadoc)
     * @see org.jboss.arquillian.spi.AuxiliaryArchiveAppender#createAuxiliaryArchive()
     */
-   @Override
    public Archive<?> createAuxiliaryArchive()
    {
       return ShrinkWrap.create(JavaArchive.class, "arquillian-spock.jar")
