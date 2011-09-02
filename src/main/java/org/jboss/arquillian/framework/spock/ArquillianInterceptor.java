@@ -98,19 +98,16 @@ public class ArquillianInterceptor extends AbstractMethodInterceptor
       log.fine("invoke " + invocation.getFeature().getFeatureMethod().getReflection().getName());
       TestResult result = testRunner.test(new TestMethodExecutor()
       {
-         @Override
          public Method getMethod()
          {
             return invocation.getFeature().getFeatureMethod().getReflection();
          }
          
-         @Override
          public Object getInstance()
          {
             return invocation.getTarget();
          }
 
-         @Override
          public void invoke(Object... parameters) throws Throwable
          {
             // TODO Is there something to do with parameters?

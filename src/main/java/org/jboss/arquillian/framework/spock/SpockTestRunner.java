@@ -56,7 +56,6 @@ public class SpockTestRunner implements TestRunner
    /* (non-Javadoc)
     * @see org.jboss.arquillian.spi.TestRunner#execute(java.lang.Class, java.lang.String)
     */
-   @Override
    public TestResult execute(final Class<?> testClass, final String methodName)
    {
       
