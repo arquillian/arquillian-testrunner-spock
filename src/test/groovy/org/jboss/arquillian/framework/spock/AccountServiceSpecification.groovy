@@ -14,10 +14,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package spock.arquillian
+package org.jboss.arquillian.framework.spock
 
 import spock.lang.*
-
 import javax.inject.Inject
 import org.jboss.arquillian.container.test.api.Deployment
 import org.jboss.shrinkwrap.api.ShrinkWrap
@@ -27,7 +26,7 @@ import org.jboss.arquillian.framework.spock.SecureAccountService
 import org.jboss.arquillian.framework.spock.AccountService
 import org.jboss.arquillian.framework.spock.Account
 
-class AccountServiceSpecification2 extends Specification {
+class AccountServiceSpecification extends Specification {
 
     @Deployment
     def static JavaArchive "create deployment"() {
@@ -39,36 +38,7 @@ class AccountServiceSpecification2 extends Specification {
     @Inject 
     AccountService service
         
-    def "transfer should be possible between two accounts"() {
-        when:
-        service.transfer(from, to, amount)
-        
-        then:
-        from.balance == fromBalance
-        to.balance == toBalance
-        
-        where:
-        from <<         [new Account(100),  new Account(10)]
-        to <<           [new Account(50),   new Account(90)]
-        amount <<       [50,                10]
-        fromBalance <<  [50,                0]
-        toBalance <<    [100,               100]
-    }
-}
-
-class AccountServiceSpecificationInner extends Specification {
-   
-    @Deployment
-    def static JavaArchive "create deployment"() {
-        return ShrinkWrap.create(JavaArchive.class)
-                .addClasses(AccountService.class, Account.class, SecureAccountService.class)
-                .addManifestResource(EmptyAsset.INSTANCE, "beans.xml");
-    }
-
-    @Inject
-    AccountService service
-        
-    def "transfer should be possible between two accounts"() {
+    def "transferring between accounts should result in account withdrawl and diposit"() {
         when:
         service.transfer(from, to, amount)
         
