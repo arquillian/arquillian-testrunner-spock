@@ -26,7 +26,7 @@
  def static JavaArchive "create deployment"() {
      return ShrinkWrap.create(JavaArchive.class)
              .addClasses(AccountService.class, Account.class, SecureAccountService.class)
-             .addManifestResource(EmptyAsset.INSTANCE, "beans.xml");
+             .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
  }
  
  @Inject 
@@ -51,11 +51,18 @@
  Contents of distribution
  ========================
 
- src/main/java/
-   The Spock Extension
+ core/
+	The Spock Extension.
    
- src/test/groovy
-   Arquillian integration tests using Spock
+ standalone/
+ 	Standalone Arquillian test executor.
+ 
+ container/
+ 	Container extension which bundles all Spock-required dependencies required
+ 	while running spock specifications using Arquillian.
+ 	
+examples/
+	Sample tests written using Spock BDD framework.
 
  Licensing
  =========
