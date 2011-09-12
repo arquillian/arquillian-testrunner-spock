@@ -58,7 +58,7 @@
  	Standalone Arquillian test executor.
  
  container/
- 	Container extension which bundles all Spock-required dependencies required
+ 	Container extension which bundles all Spock-related dependencies required
  	while running spock specifications using Arquillian.
  	
 examples/
