@@ -15,7 +15,7 @@
  Thanks to its JUnit runner, Spock is compatible with most IDEs, build tools, and continuous integration servers. 
  Spock is inspired from JUnit, jMock, RSpec, Groovy, Scala, Vulcans, and other fascinating life forms.
  
- The Spock Arquillian Extension opens up for the beauty of Spock tests running in-contianer using Arquillian with 
+ The Spock Arquillian Extension opens up for the beauty of Spock tests running in-container using Arquillian with 
  full EJB, Resource and CDI injection.
 
 
@@ -32,7 +32,7 @@
  @Inject 
  AccountService service
         
- def "transferring between accounts should result in account withdrawl and diposit"() {
+ def "transferring between accounts should result in account withdrawal and deposit"() {
       when:
       service.transfer(from, to, amount)
         
@@ -59,7 +59,7 @@
  
  container/
  	Container extension which bundles all Spock-related dependencies required
- 	while running spock specifications using Arquillian.
+ 	while running Spock specifications using Arquillian.
  	
 examples/
 	Sample tests written using Spock BDD framework.
@@ -71,7 +71,7 @@ examples/
  License, Version 2.0 (see license.txt).
  
 
- URLs
+ More info
  ===============
 
  Spock:      http://spockframework.org/
