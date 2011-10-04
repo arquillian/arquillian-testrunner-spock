@@ -39,16 +39,16 @@
 
         <!-- External Projects -->
         <dependency>
-	    <groupId>org.spockframework</groupId>
-	    <artifactId>spock-core</artifactId>
-	    <version>${version.spock}</version>
-	</dependency>
-
-	<dependency>
-	    <groupId>org.codehaus.groovy</groupId>
-	    <artifactId>groovy-all</artifactId>
-	    <version>${version.groovy}</version>
-	</dependency>
+    	    <groupId>org.spockframework</groupId>
+    	    <artifactId>spock-core</artifactId>
+    	    <version>${version.spock}</version>
+    	</dependency>
+    
+    	<dependency>
+    	    <groupId>org.codehaus.groovy</groupId>
+    	    <artifactId>groovy-all</artifactId>
+    	    <version>${version.groovy}</version>
+    	</dependency>
 		
         <dependency>
             <groupId>junit</groupId>
