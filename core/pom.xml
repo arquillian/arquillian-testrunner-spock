@@ -1,189 +1,190 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
-    <!-- Parent -->
-    <parent>
-        <groupId>org.jboss.arquillian</groupId>
-        <artifactId>arquillian-build</artifactId>
-        <version>1.0.0.Final-SNAPSHOT</version>
-        <relativePath>../../build/pom.xml</relativePath>
-    </parent>
+  <!-- Parent -->
+  <parent>
+    <groupId>org.jboss.arquillian</groupId>
+    <artifactId>arquillian-build</artifactId>
+    <version>1.0.0.Final-SNAPSHOT</version>
+    <relativePath>../../build/pom.xml</relativePath>
+  </parent>
 
-    <!-- Model Version -->
-    <modelVersion>4.0.0</modelVersion>
+  <!-- Model Version -->
+  <modelVersion>4.0.0</modelVersion>
 
-    <!-- Artifact Configuration -->
-    <groupId>org.jboss.arquillian.spock</groupId>
-    <artifactId>arquillian-spock-core</artifactId>
-    <name>Arquillian TestRunner Spock Core</name>
-    <description>Spock Implementation for the Arquillian Project</description>
-
-
-    <!-- Properties -->
-    <properties>
-        <version.spock>0.5-groovy-1.8</version.spock>
-        <version.groovy>1.8.0</version.groovy>
-        <version.groovy-eclipse-compiler>2.5.1-1</version.groovy-eclipse-compiler>
-        <groovy-eclipse-compiler.verbosity>false</groovy-eclipse-compiler.verbosity>
-    </properties>
-
-    <!-- Dependencies -->
-    <dependencies>
-
-        <!-- org.jboss.arquillian -->
-        <dependency>
-            <groupId>org.jboss.arquillian.test</groupId>
-            <artifactId>arquillian-test-spi</artifactId>
-            <version>${project.version}</version>
-        </dependency>
+  <!-- Artifact Configuration -->
+  <groupId>org.jboss.arquillian.spock</groupId>
+  <artifactId>arquillian-spock-core</artifactId>
+  <name>Arquillian TestRunner Spock Core</name>
+  <description>Spock Implementation for the Arquillian Project</description>
 
 
-        <!-- External Projects -->
-        <dependency>
-    	    <groupId>org.spockframework</groupId>
-    	    <artifactId>spock-core</artifactId>
-    	    <version>${version.spock}</version>
-    	</dependency>
-    
-    	<dependency>
-    	    <groupId>org.codehaus.groovy</groupId>
-    	    <artifactId>groovy-all</artifactId>
-    	    <version>${version.groovy}</version>
-    	</dependency>
-		
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>provided</scope>
-        </dependency>
+  <!-- Properties -->
+  <properties>
+    <version.spock>0.5-groovy-1.8</version.spock>
+    <version.groovy>1.8.0</version.groovy>
+    <version.groovy-eclipse-compiler>2.5.1-1</version.groovy-eclipse-compiler>
+    <groovy-eclipse-compiler.verbosity>false</groovy-eclipse-compiler.verbosity>
+  </properties>
 
-        <!-- Test -->
-        <dependency>
-            <groupId>org.jboss.arquillian.core</groupId>
-            <artifactId>arquillian-core-impl-base</artifactId>
-            <version>${project.version}</version>
-            <scope>test</scope>
-        </dependency>
-        
-        <dependency>
-            <groupId>org.jboss.arquillian.test</groupId>
-            <artifactId>arquillian-test-impl-base</artifactId>
-            <version>${project.version}</version>
-            <scope>test</scope>
-        </dependency>
+  <!-- Dependencies -->
+  <dependencies>
 
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-all</artifactId>
-            <scope>test</scope>
-        </dependency>
+    <!-- org.jboss.arquillian -->
+    <dependency>
+      <groupId>org.jboss.arquillian.test</groupId>
+      <artifactId>arquillian-test-spi</artifactId>
+      <version>${project.version}</version>
+    </dependency>
 
-    </dependencies>
 
-    <build>
-	    <plugins>
-		    <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>test-jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>       		
-            <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <compilerId>groovy-eclipse-compiler</compilerId>
-                    <verbose>${groovy-eclipse-compiler.verbosity}</verbose>
-                </configuration>
-            	<dependencies>
-            		<dependency>
-            			<groupId>org.codehaus.groovy</groupId>
-            			<artifactId>groovy-eclipse-compiler</artifactId>
-            			<version>${version.groovy-eclipse-compiler}</version>
-            		</dependency>
-            	</dependencies>
-            </plugin>
-    		<plugin>
-    			<groupId>org.codehaus.mojo</groupId>
-    			<artifactId>build-helper-maven-plugin</artifactId>
-    			<version>1.5</version>
-    			<executions>
-    				<execution>
-    					<id>add-source</id>
-    					<phase>generate-sources</phase>
-    					<goals>
-    						<goal>add-source</goal>
-    					</goals>
-    					<configuration>
-    						<sources>
-    							<source>src/main/groovy</source>
-    						</sources>
-    					</configuration>
-    				</execution>
-    				<execution>
-    					<id>add-test-source</id>
-    					<phase>generate-test-sources</phase>
-    					<goals>
-    						<goal>add-test-source</goal>
-    					</goals>
-    					<configuration>
-    						<sources>
-    							<source>src/test/groovy</source>
-    						</sources>
-    					</configuration>
-    				</execution>
-    			</executions>
-    		</plugin>
-    		<plugin>
-    			<groupId>org.apache.maven.plugins</groupId>
-    			<artifactId>maven-surefire-plugin</artifactId>
-    			<version>2.8.1</version>
-    			<configuration>
-    				<includes>
-    					<include>**/*Specification.java</include>
-    				</includes>
-    			</configuration>
-    		</plugin>
-    	</plugins>
-    	<pluginManagement>
-    		<plugins>
-    			<plugin>
-    				<groupId>org.eclipse.m2e</groupId>
-    				<artifactId>lifecycle-mapping</artifactId>
-    				<version>1.0.0</version>
-    				<configuration>
-    					<lifecycleMappingMetadata>
-    						<pluginExecutions>
-    							<pluginExecution>
-    								<pluginExecutionFilter>
-    									<groupId>
-    										org.apache.maven.plugins
-    									</groupId>
-    									<artifactId>
-    										maven-compiler-plugin
-    									</artifactId>
-    									<versionRange>
-    										[2.3.1,)
-    									</versionRange>
-    									<goals>
-    										<goal>compile</goal>
-    										<goal>testCompile</goal>
-    									</goals>
-    								</pluginExecutionFilter>
-    								<action>
-    									<ignore></ignore>
-    								</action>
-    							</pluginExecution>
-    						</pluginExecutions>
-    					</lifecycleMappingMetadata>
-    				</configuration>
-    			</plugin>
-    		</plugins>
-    	</pluginManagement>
-    </build>
+    <!-- External Projects -->
+    <dependency>
+      <groupId>org.spockframework</groupId>
+      <artifactId>spock-core</artifactId>
+      <version>${version.spock}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.codehaus.groovy</groupId>
+      <artifactId>groovy-all</artifactId>
+      <version>${version.groovy}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>provided</scope>
+    </dependency>
+
+    <!-- Test -->
+    <dependency>
+      <groupId>org.jboss.arquillian.core</groupId>
+      <artifactId>arquillian-core-impl-base</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.jboss.arquillian.test</groupId>
+      <artifactId>arquillian-test-impl-base</artifactId>
+      <version>${project.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-all</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>test-jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <compilerId>groovy-eclipse-compiler</compilerId>
+          <verbose>${groovy-eclipse-compiler.verbosity}</verbose>
+        </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-eclipse-compiler</artifactId>
+            <version>${version.groovy-eclipse-compiler}</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>1.5</version>
+        <executions>
+          <execution>
+            <id>add-source</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>add-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+                <source>src/main/groovy</source>
+              </sources>
+            </configuration>
+          </execution>
+          <execution>
+            <id>add-test-source</id>
+            <phase>generate-test-sources</phase>
+            <goals>
+              <goal>add-test-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+                <source>src/test/groovy</source>
+              </sources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.8.1</version>
+        <configuration>
+          <includes>
+            <include>**/*Specification.java</include>
+          </includes>
+        </configuration>
+      </plugin>
+    </plugins>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.eclipse.m2e</groupId>
+          <artifactId>lifecycle-mapping</artifactId>
+          <version>1.0.0</version>
+          <configuration>
+            <lifecycleMappingMetadata>
+              <pluginExecutions>
+                <pluginExecution>
+                  <pluginExecutionFilter>
+                    <groupId>
+                      org.apache.maven.plugins
+                    </groupId>
+                    <artifactId>
+                      maven-compiler-plugin
+                    </artifactId>
+                    <versionRange>
+                      [2.3.1,)
+                    </versionRange>
+                    <goals>
+                      <goal>compile</goal>
+                      <goal>testCompile</goal>
+                    </goals>
+                  </pluginExecutionFilter>
+                  <action>
+                    <ignore></ignore>
+                  </action>
+                </pluginExecution>
+              </pluginExecutions>
+            </lifecycleMappingMetadata>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
 
 </project>
