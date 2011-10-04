@@ -24,6 +24,7 @@
         <version.spock>0.5-groovy-1.8</version.spock>
         <version.groovy>1.8.0</version.groovy>
         <version.groovy-eclipse-compiler>2.5.1-1</version.groovy-eclipse-compiler>
+        <groovy-eclipse-compiler.verbosity>false</groovy-eclipse-compiler.verbosity>
     </properties>
 
     <!-- Dependencies -->
@@ -93,11 +94,11 @@
                 </executions>
             </plugin>       		
             <plugin>
-            	<artifactId>maven-compiler-plugin</artifactId>
-            	<configuration>
-            		<compilerId>groovy-eclipse-compiler</compilerId>
-            		<verbose>true</verbose>
-            	</configuration>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <compilerId>groovy-eclipse-compiler</compilerId>
+                    <verbose>${groovy-eclipse-compiler.verbosity}</verbose>
+                </configuration>
             	<dependencies>
             		<dependency>
             			<groupId>org.codehaus.groovy</groupId>
