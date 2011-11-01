@@ -16,7 +16,7 @@
  */
 package org.jboss.arquillian.spock.container;
 
-import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.List;
 
@@ -30,6 +30,7 @@ import org.junit.runner.notification.RunListener;
 import org.junit.runner.notification.RunNotifier;
 import org.spockframework.runtime.Sputnik;
 import org.spockframework.runtime.model.FeatureInfo;
+import org.spockframework.runtime.model.MethodInfo;
 import org.spockframework.runtime.model.SpecInfo;
 
 /**
@@ -63,9 +64,9 @@ public class SpockTestRunner implements TestRunner
             {
                try
                {
-                  Field specsField = Sputnik.class.getDeclaredField("spec");
-                  specsField.setAccessible(true);
-                  currentSpec = (SpecInfo)specsField.get(runner);
+                  Method method = Sputnik.class.getDeclaredMethod("getSpec");
+                  method.setAccessible(true);
+                  currentSpec = (SpecInfo)method.invoke(runner);
                }
                catch (Exception e)
                {
@@ -76,14 +77,16 @@ public class SpockTestRunner implements TestRunner
             @Override
             public boolean shouldRun(Description description)
             {
-               for(FeatureInfo feature : currentSpec.getAllFeatures())
-               {
-                  if(feature.getFeatureMethod().getReflection().getName().equals(methodName))
-                  {
-                     return true;
+               // First, find the featureMethod corresponding to the description
+               MethodInfo featureMethod = null;
+               for(FeatureInfo feature : currentSpec.getAllFeatures()) {
+                  if (feature.getFeatureMethod().getName().equals(description.getMethodName())) {
+                     featureMethod = feature.getFeatureMethod();
+                     break;
                   }
                }
-               return false;
+               // Is it the one we want to run?
+               return featureMethod.getReflection().getName().equals(methodName);
             }
             
             @Override
