@@ -24,6 +24,7 @@ import org.jboss.shrinkwrap.api.ShrinkWrap
 import org.jboss.shrinkwrap.api.asset.EmptyAsset
 import org.jboss.shrinkwrap.api.spec.JavaArchive
 
+
 class AccountService2Specification extends Specification {
 
     @Deployment
@@ -57,9 +58,10 @@ class AccountServiceSpecificationInner extends Specification {
    
     @Deployment
     def static JavaArchive "create deployment"() {
+        
         return ShrinkWrap.create(JavaArchive.class)
-                .addClasses(AccountService.class, Account.class, SecureAccountService.class)
-                .addManifestResource(EmptyAsset.INSTANCE, "beans.xml");
+                         .addClasses(AccountService.class, Account.class, SecureAccountService.class)
+                         .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
     }
 
     @Inject
