@@ -77,16 +77,8 @@ public class SpockTestRunner implements TestRunner
             @Override
             public boolean shouldRun(Description description)
             {
-               // First, find the featureMethod corresponding to the description
-               MethodInfo featureMethod = null;
-               for(FeatureInfo feature : currentSpec.getAllFeatures()) {
-                  if (feature.getFeatureMethod().getName().equals(description.getMethodName())) {
-                     featureMethod = feature.getFeatureMethod();
-                     break;
-                  }
-               }
-               // Is it the one we want to run?
-               return featureMethod.getReflection().getName().equals(methodName);
+               MethodInfo featureMethod = findCorrespondingFeatureMethod(description.getMethodName());
+               return methodName.equals(featureMethod.getReflection().getName());
             }
             
             @Override
@@ -94,6 +86,20 @@ public class SpockTestRunner implements TestRunner
             {
                return "Filter Feature methods for Spock Framework";
             }
+            
+            private MethodInfo findCorrespondingFeatureMethod(String featureMethodName)
+            {
+               for (FeatureInfo feature : currentSpec.getAllFeatures())
+               {
+                  MethodInfo featureMethod = feature.getFeatureMethod();
+                  if (featureMethodName.equals(featureMethod.getName()))
+                  {
+                     return featureMethod;
+                  }
+               }
+               return null;
+            }
+            
          });
       } 
       catch (Exception e) 
