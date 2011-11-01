@@ -30,6 +30,7 @@ import org.junit.runner.notification.RunListener;
 import org.junit.runner.notification.RunNotifier;
 import org.spockframework.runtime.Sputnik;
 import org.spockframework.runtime.model.FeatureInfo;
+import org.spockframework.runtime.model.MethodInfo;
 import org.spockframework.runtime.model.SpecInfo;
 
 /**
@@ -76,14 +77,16 @@ public class SpockTestRunner implements TestRunner
             @Override
             public boolean shouldRun(Description description)
             {
-               for(FeatureInfo feature : currentSpec.getAllFeatures())
-               {
-                  if(feature.getFeatureMethod().getReflection().getName().equals(methodName))
-                  {
-                     return true;
+               // First, find the featureMethod corresponding to the description
+               MethodInfo featureMethod = null;
+               for(FeatureInfo feature : currentSpec.getAllFeatures()) {
+                  if (feature.getFeatureMethod().getName().equals(description.getMethodName())) {
+                     featureMethod = feature.getFeatureMethod();
+                     break;
                   }
                }
-               return false;
+               // Is it the one we want to run?
+               return featureMethod.getReflection().getName().equals(methodName);
             }
             
             @Override
