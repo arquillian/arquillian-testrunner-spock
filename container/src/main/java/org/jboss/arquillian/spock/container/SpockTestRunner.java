@@ -41,6 +41,9 @@ import org.spockframework.runtime.model.SpecInfo;
  */
 public class SpockTestRunner implements TestRunner
 {
+   
+   private static final MethodInfo NOT_FOUND = new MethodInfo();
+   
    /** 
     * Overwrite to provide additional run listeners. 
     */
@@ -60,7 +63,9 @@ public class SpockTestRunner implements TestRunner
       {
          runner.filter(new Filter()
          {
+            
             private SpecInfo currentSpec;
+            
             {
                try
                {
@@ -78,6 +83,10 @@ public class SpockTestRunner implements TestRunner
             public boolean shouldRun(Description description)
             {
                MethodInfo featureMethod = findCorrespondingFeatureMethod(description.getMethodName());
+               if (NOT_FOUND.equals(featureMethod))
+               {
+                  return false;
+               }
                return methodName.equals(featureMethod.getReflection().getName());
             }
             
@@ -89,15 +98,17 @@ public class SpockTestRunner implements TestRunner
             
             private MethodInfo findCorrespondingFeatureMethod(String featureMethodName)
             {
+               MethodInfo methodInfo = NOT_FOUND;
                for (FeatureInfo feature : currentSpec.getAllFeatures())
                {
                   MethodInfo featureMethod = feature.getFeatureMethod();
                   if (featureMethodName.equals(featureMethod.getName()))
                   {
-                     return featureMethod;
+                     methodInfo = featureMethod;
+                     break;
                   }
                }
-               return null;
+               return methodInfo;
             }
             
          });

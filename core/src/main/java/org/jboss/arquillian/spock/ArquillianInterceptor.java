@@ -95,8 +95,6 @@ public class ArquillianInterceptor extends AbstractMethodInterceptor
    @Override
    public void interceptFeatureMethod(final IMethodInvocation invocation) throws Throwable
    {
-      System.out.println("invoke feature \"" + invocation.getFeature().getFeatureMethod().getName() + "\"");
-      
       TestResult result = testRunner.test(new TestMethodExecutor()
       {
          public Method getMethod()
