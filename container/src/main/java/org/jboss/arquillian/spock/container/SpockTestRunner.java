@@ -16,7 +16,7 @@
  */
 package org.jboss.arquillian.spock.container;
 
-import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.List;
 
@@ -63,9 +63,9 @@ public class SpockTestRunner implements TestRunner
             {
                try
                {
-                  Field specsField = Sputnik.class.getDeclaredField("spec");
-                  specsField.setAccessible(true);
-                  currentSpec = (SpecInfo)specsField.get(runner);
+                  Method method = Sputnik.class.getDeclaredMethod("getSpec");
+                  method.setAccessible(true);
+                  currentSpec = (SpecInfo)method.invoke(runner);
                }
                catch (Exception e)
                {
