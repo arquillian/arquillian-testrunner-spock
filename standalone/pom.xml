@@ -10,7 +10,6 @@
 
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>org.jboss.arquillian.spock</groupId>
   <artifactId>arquillian-spock-standalone</artifactId>
   <name>Arquillian TestRunner Spock Standalone</name>
   <description>Spock Standalone Implementation for the Arquillian Project</description>
@@ -43,19 +42,4 @@
 
   </dependencies>
 
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <executions>
-          <execution>
-            <goals>
-              <goal>test-jar</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
 </project>

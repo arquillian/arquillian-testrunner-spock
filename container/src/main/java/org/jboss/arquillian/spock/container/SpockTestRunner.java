@@ -41,11 +41,11 @@ import org.spockframework.runtime.model.SpecInfo;
  */
 public class SpockTestRunner implements TestRunner
 {
-   
+
    private static final MethodInfo NOT_FOUND = new MethodInfo();
-   
-   /** 
-    * Overwrite to provide additional run listeners. 
+
+   /**
+    * Overwrite to provide additional run listeners.
     */
    protected List<RunListener> getRunListeners()
    {
@@ -57,28 +57,28 @@ public class SpockTestRunner implements TestRunner
     */
    public TestResult execute(final Class<?> testClass, final String methodName)
    {
-      
+
       final Sputnik runner = new Sputnik(testClass);
       try
       {
          runner.filter(new Filter()
          {
-            
+
             private SpecInfo currentSpec;
-            
+
             {
                try
                {
                   Method method = Sputnik.class.getDeclaredMethod("getSpec");
                   method.setAccessible(true);
-                  currentSpec = (SpecInfo)method.invoke(runner);
+                  currentSpec = (SpecInfo) method.invoke(runner);
                }
                catch (Exception e)
                {
                   throw new RuntimeException("Could not get SpecInfo from Sputnik Runner", e);
                }
             }
-            
+
             @Override
             public boolean shouldRun(Description description)
             {
@@ -89,13 +89,13 @@ public class SpockTestRunner implements TestRunner
                }
                return methodName.equals(featureMethod.getReflection().getName());
             }
-            
+
             @Override
             public String describe()
             {
                return "Filter Feature methods for Spock Framework";
             }
-            
+
             private MethodInfo findCorrespondingFeatureMethod(String featureMethodName)
             {
                MethodInfo methodInfo = NOT_FOUND;
@@ -110,32 +110,32 @@ public class SpockTestRunner implements TestRunner
                }
                return methodInfo;
             }
-            
+
          });
-      } 
-      catch (Exception e) 
+      }
+      catch (Exception e)
       {
          return new TestResult(Status.FAILED, e);
       }
-      
+
       Result testResult = new Result();
 
       RunNotifier notifier = new RunNotifier();
       notifier.addFirstListener(testResult.createListener());
-      
+
       for (RunListener listener : getRunListeners())
       {
          notifier.addListener(listener);
       }
-      
+
       runner.run(notifier);
-      
+
       return convertToTestResult(testResult);
    }
 
    /**
     * Convert a JUnit Result object to Arquillian TestResult
-    * 
+    *
     * @param result JUnit Test Run Result
     * @return The TestResult representation of the JUnit Result
     */
@@ -143,15 +143,18 @@ public class SpockTestRunner implements TestRunner
    {
       Status status = Status.PASSED;
       Throwable throwable = null;
+
       if (result.getFailureCount() > 0)
       {
          status = Status.FAILED;
          throwable = result.getFailures().get(0).getException();
       }
+
       if (result.getIgnoreCount() > 0)
       {
          status = Status.SKIPPED;
       }
+
       return new TestResult(status, throwable);
    }
 }

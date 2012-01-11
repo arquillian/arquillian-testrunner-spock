@@ -10,35 +10,19 @@
 
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>org.jboss.arquillian.spock</groupId>
   <artifactId>arquillian-spock-examples</artifactId>
   <name>Arquillian TestRunner Spock Examples</name>
   <description>Examples of using Spock with Arquillian</description>
 
   <properties>
-    <version.arquillian-weld-ee-embedded>1.0.0.CR2</version.arquillian-weld-ee-embedded>
-    <version.weld-core>1.1.1.Final</version.weld-core>
-    <version.el>2.2</version.el>
-    <version.jboss-ejb-api>3.1.0</version.jboss-ejb-api>
-    <version.glassfish-el>2.1.2-b04</version.glassfish-el>
-    <version.jboss-servlet-spec>1.0.0.Final</version.jboss-servlet-spec>
+    <version.arq.container.glassfish>1.0.0.CR2</version.arq.container.glassfish>
+    <version.glassfish>3.1.1</version.glassfish>
+    <version.jbossas_7>7.0.2.Final</version.jbossas_7>
+    <version.jbossas_spec>1.0.0.Final</version.jbossas_spec>
     <version.spock>0.5-groovy-1.8</version.spock>
-    <version.groovy>1.8.0</version.groovy>
-    <version.groovy-eclipse-compiler>2.5.1-1</version.groovy-eclipse-compiler>
+    <version.groovy>1.8.5</version.groovy>
+    <version.groovy-eclipse-compiler>2.6.0-01</version.groovy-eclipse-compiler>
   </properties>
-
-  <dependencyManagement>
-    <dependencies>
-      <!-- org.jboss.weld -->
-      <dependency>
-        <groupId>org.jboss.weld</groupId>
-        <artifactId>weld-core-bom</artifactId>
-        <version>${version.weld-core}</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
 
   <!-- Dependencies -->
   <dependencies>
@@ -47,14 +31,6 @@
       <groupId>org.jboss.arquillian.spock</groupId>
       <artifactId>arquillian-spock-container</artifactId>
       <version>${project.version}</version>
-    </dependency>
-
-    <!-- Test -->
-    <dependency>
-      <groupId>org.jboss.arquillian.container</groupId>
-      <artifactId>arquillian-weld-ee-embedded-1.1</artifactId>
-      <version>${version.arquillian-weld-ee-embedded}</version>
-      <scope>test</scope>
     </dependency>
 
     <!-- External Projects -->
@@ -75,68 +51,110 @@
       <artifactId>junit</artifactId>
     </dependency>
 
-    <dependency>
-      <groupId>org.jboss.weld</groupId>
-      <artifactId>weld-api</artifactId>
-      <scope>provided</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.jboss.weld</groupId>
-      <artifactId>weld-core</artifactId>
-      <scope>provided</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-simple</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>javax.el</groupId>
-      <artifactId>el-api</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>org.glassfish.web</groupId>
-      <artifactId>el-impl</artifactId>
-      <version>${version.glassfish-el}</version>
-      <scope>provided</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.jboss.spec.javax.servlet</groupId>
-      <artifactId>jboss-servlet-api_3.0_spec</artifactId>
-      <version>${version.jboss-servlet-spec}</version>
-      <scope>provided</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>javax.validation</groupId>
-      <artifactId>validation-api</artifactId>
-      <scope>provided</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>javax.transaction</groupId>
-      <artifactId>jta</artifactId>
-      <scope>provided</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>javax.persistence</groupId>
-      <artifactId>persistence-api</artifactId>
-      <scope>provided</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.jboss.ejb3</groupId>
-      <artifactId>jboss-ejb3-api</artifactId>
-      <version>${version.jboss-ejb-api}</version>
-      <scope>provided</scope>
-    </dependency>
-
   </dependencies>
+
+  <profiles>
+    <profile>
+      <id>glassfish-3.1-embedded</id>
+      <dependencies>
+        <dependency>
+          <groupId>org.jboss.arquillian.container</groupId>
+          <artifactId>arquillian-glassfish-embedded-3.1</artifactId>
+          <version>${version.arq.container.glassfish}</version>
+          <scope>test</scope>
+        </dependency>
+        <dependency>
+          <groupId>org.glassfish.extras</groupId>
+          <artifactId>glassfish-embedded-all</artifactId>
+          <version>${version.glassfish}</version>
+          <scope>compile</scope>
+        </dependency>
+      </dependencies>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <configuration>
+              <!-- required - otherwise tests will fail -->
+              <forkMode>always</forkMode>
+            </configuration>
+          </plugin>
+        </plugins>
+        <testResources>
+          <testResource>
+            <directory>src/test/resources</directory>
+          </testResource>
+          <testResource>
+            <directory>src/test/resources-glassfish-3.1</directory>
+          </testResource>
+        </testResources>
+      </build>
+    </profile>
+    <profile>
+      <id>jbossas-7-managed</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <dependencies>
+        <dependency>
+          <groupId>org.jboss.arquillian.protocol</groupId>
+          <artifactId>arquillian-protocol-servlet</artifactId>
+          <scope>test</scope>
+        </dependency>
+        <dependency>
+          <groupId>org.jboss.spec</groupId>
+          <artifactId>jboss-javaee-6.0</artifactId>
+          <version>${version.jbossas_spec}</version>
+          <type>pom</type>
+          <scope>provided</scope>
+        </dependency>
+        <dependency>
+          <groupId>org.jboss.as</groupId>
+          <artifactId>jboss-as-arquillian-container-managed</artifactId>
+          <version>${version.jbossas_7}</version>
+        </dependency>
+      </dependencies>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-dependency-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>unpack</id>
+                <phase>process-test-classes</phase>
+                <goals>
+                  <goal>unpack</goal>
+                </goals>
+                <configuration>
+                  <artifactItems>
+                    <artifactItem>
+                      <groupId>org.jboss.as</groupId>
+                      <artifactId>jboss-as-dist</artifactId>
+                      <version>${version.jbossas_7}</version>
+                      <type>zip</type>
+                      <overWrite>false</overWrite>
+                      <outputDirectory>${project.build.directory}</outputDirectory>
+                    </artifactItem>
+                  </artifactItems>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+        <testResources>
+          <testResource>
+            <directory>src/test/resources</directory>
+          </testResource>
+          <testResource>
+            <directory>src/test/resources-jboss-7.0.2</directory>
+          </testResource>
+        </testResources>
+      </build>
+    </profile>
+  </profiles>
+
 
   <build>
     <plugins>
@@ -157,7 +175,6 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
-        <version>1.5</version>
         <executions>
           <execution>
             <id>add-source</id>
@@ -206,42 +223,6 @@
         </executions>
       </plugin>
     </plugins>
-    <pluginManagement>
-      <plugins>
-        <!--This plugin's configuration is used to store Eclipse m2e settings
-          only. It has no influence on the Maven build itself. -->
-        <plugin>
-          <groupId>org.eclipse.m2e</groupId>
-          <artifactId>lifecycle-mapping</artifactId>
-          <version>1.0.0</version>
-          <configuration>
-            <lifecycleMappingMetadata>
-              <pluginExecutions>
-                <pluginExecution>
-                  <pluginExecutionFilter>
-                    <groupId>
-                      org.apache.maven.plugins
-                    </groupId>
-                    <artifactId>
-                      maven-compiler-plugin
-                    </artifactId>
-                    <versionRange>
-                      [2.3.1,)
-                    </versionRange>
-                    <goals>
-                      <goal>compile</goal>
-                      <goal>testCompile</goal>
-                    </goals>
-                  </pluginExecutionFilter>
-                  <action>
-                    <ignore></ignore>
-                  </action>
-                </pluginExecution>
-              </pluginExecutions>
-            </lifecycleMappingMetadata>
-          </configuration>
-        </plugin>
-      </plugins>
-    </pluginManagement>
   </build>
+
 </project>

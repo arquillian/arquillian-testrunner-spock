@@ -29,57 +29,52 @@ import org.junit.Test;
 /**
  *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- * 
+ *
  * @version $Revision: $
  */
 public class SpockDeploymentAppenderTestCase
 {
 
    @Test
-   public void shouldAddSpockExtensionAsServiceProvider() throws Exception 
+   public void shouldAddSpockExtensionAsServiceProvider() throws Exception
    {
       // given
       SpockDeploymentAppender spockDeploymentAppender = new SpockDeploymentAppender();
       ArchivePath spockExtensionSPI = ArchivePaths.create("/META-INF/services/org.spockframework.runtime.extension.IGlobalExtension");
-      
+
       // when
       Archive<?> archive = spockDeploymentAppender.createAuxiliaryArchive();
-      
+
       // then
       Assert.assertTrue("Should have added Spock Extension",
             archive.contains(spockExtensionSPI));
-      
-      Assert.assertEquals("Should register Arquillian extension as Spock Extension", 
-            "org.jboss.arquillian.spock.ArquillianSpockExtension", 
+
+      Assert.assertEquals("Should register Arquillian extension as Spock Extension",
+            "org.jboss.arquillian.spock.ArquillianSpockExtension",
             getResourceContent(archive, spockExtensionSPI));
    }
 
    @Test
-   public void shouldAddSpockTestRunnerAsServiceProvider() throws Exception 
+   public void shouldAddSpockTestRunnerAsServiceProvider() throws Exception
    {
       // given
       SpockDeploymentAppender spockDeploymentAppender = new SpockDeploymentAppender();
       ArchivePath testRunnerSPI = ArchivePaths.create("/META-INF/services/org.jboss.arquillian.container.test.spi.TestRunner");
-      
+
       // when
       Archive<?> archive = spockDeploymentAppender.createAuxiliaryArchive();
-      
+
       // then
       Assert.assertTrue("Should have added Test Runner",
             archive.contains(testRunnerSPI));
-      
-      Assert.assertEquals("Should have registered Spock Test Runner as Arquillian Test Runner", 
-            "org.jboss.arquillian.spock.container.SpockTestRunner", 
+
+      Assert.assertEquals("Should have registered Spock Test Runner as Arquillian Test Runner",
+            "org.jboss.arquillian.spock.container.SpockTestRunner",
             getResourceContent(archive, testRunnerSPI));
    }
 
-   /**
-   .addAsServiceProvider(ScriptEngineFactory.class, GroovyScriptEngineFactory.class)
-* @throws Exception
-*/
-   
    // Private utility classes
-   
+
    private String getResourceContent(Archive<?> archive, ArchivePath path)
    {
       final InputStream openStream = archive.get(path).getAsset().openStream();
