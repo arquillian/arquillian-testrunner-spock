@@ -16,9 +16,9 @@
 
   <properties>
     <version.arq.container.glassfish>1.0.0.CR3</version.arq.container.glassfish>
-    <version.glassfish>3.1.1</version.glassfish>
-    <version.jbossas_7>7.0.2.Final</version.jbossas_7>
-    <version.jbossas_spec>1.0.0.Final</version.jbossas_spec>
+    <version.glassfish>3.1.2</version.glassfish>
+    <version.jbossas_7>7.1.1.Final</version.jbossas_7>
+    <version.jbossas_spec>3.0.1.Final</version.jbossas_spec>
     <version.spock>0.6-groovy-1.8</version.spock>
     <version.groovy>1.8.5</version.groovy>
     <version.groovy-eclipse-compiler>2.7.0-01</version.groovy-eclipse-compiler>
@@ -64,7 +64,7 @@
           <scope>test</scope>
         </dependency>
         <dependency>
-          <groupId>org.glassfish.extras</groupId>
+          <groupId>org.glassfish.main.extras</groupId>
           <artifactId>glassfish-embedded-all</artifactId>
           <version>${version.glassfish}</version>
           <scope>compile</scope>
@@ -108,6 +108,12 @@
           <version>${version.jbossas_spec}</version>
           <type>pom</type>
           <scope>provided</scope>
+          <exclusions>
+            <exclusion>
+              <groupId>xalan</groupId>
+              <artifactId>xalan</artifactId>
+            </exclusion>
+          </exclusions>
         </dependency>
         <dependency>
           <groupId>org.jboss.as</groupId>
@@ -148,7 +154,7 @@
             <directory>src/test/resources</directory>
           </testResource>
           <testResource>
-            <directory>src/test/resources-jboss-7.0.2</directory>
+            <directory>src/test/resources-jbossas-7.1</directory>
           </testResource>
         </testResources>
       </build>
