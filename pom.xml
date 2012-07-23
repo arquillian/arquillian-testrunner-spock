@@ -22,12 +22,12 @@
 
   <properties>
     <!-- Versioning -->
-    <version.arquillian_core>1.0.0.CR7</version.arquillian_core>
+    <version.arquillian_core>1.0.1.Final</version.arquillian_core>
 
     <!-- override from parent -->
     <version.release.plugin>2.1</version.release.plugin>
-    <version.maven_surefire>2.10</version.maven_surefire>
-    <version.maven_compiler>2.3.2</version.maven_compiler>
+    <version.maven_surefire>2.12</version.maven_surefire>
+    <version.maven_compiler>2.5.1</version.maven_compiler>
   </properties>
 
   <dependencyManagement>

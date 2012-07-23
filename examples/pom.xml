@@ -14,7 +14,7 @@
   <description>Examples of using Spock with Arquillian</description>
 
   <properties>
-    <version.arq.container.glassfish>1.0.0.CR2</version.arq.container.glassfish>
+    <version.arq.container.glassfish>1.0.0.CR3</version.arq.container.glassfish>
     <version.glassfish>3.1.1</version.glassfish>
     <version.jbossas_7>7.0.2.Final</version.jbossas_7>
     <version.jbossas_spec>1.0.0.Final</version.jbossas_spec>
@@ -159,9 +159,12 @@
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
+        <version>2.5.1</version>
         <configuration>
           <compilerId>groovy-eclipse-compiler</compilerId>
           <verbose>true</verbose>
+          <source>1.6</source>
+          <target>1.6</target>
         </configuration>
         <dependencies>
           <dependency>

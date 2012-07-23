@@ -34,17 +34,17 @@ class AccountService2Specification extends Specification {
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
     }
 
-    @Inject 
+    @Inject
     AccountService service
-        
+
     def "transfer should be possible between two accounts"() {
         when:
         service.transfer(from, to, amount)
-        
+
         then:
         from.balance == fromBalance
         to.balance == toBalance
-        
+
         where:
         from <<         [new Account(100),  new Account(10)]
         to <<           [new Account(50),   new Account(90)]
@@ -55,10 +55,10 @@ class AccountService2Specification extends Specification {
 }
 
 class AccountServiceSpecificationInner extends Specification {
-   
+
     @Deployment
     def static JavaArchive "create deployment"() {
-        
+
         return ShrinkWrap.create(JavaArchive.class)
                          .addClasses(AccountService.class, Account.class, SecureAccountService.class)
                          .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
@@ -66,15 +66,15 @@ class AccountServiceSpecificationInner extends Specification {
 
     @Inject
     AccountService service
-        
+
     def "transfer should be possible between two accounts"() {
         when:
         service.transfer(from, to, amount)
-        
+
         then:
         from.balance == fromBalance
         to.balance == toBalance
-        
+
         where:
         from <<         [new Account(100),  new Account(10)]
         to <<           [new Account(50),   new Account(90)]

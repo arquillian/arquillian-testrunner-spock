@@ -28,21 +28,21 @@ class AccountServiceSpecification extends Specification {
     @Deployment
     def static JavaArchive "create deployment"() {
         return ShrinkWrap.create(JavaArchive.class)
-                .addClasses(AccountService.class, Account.class, SecureAccountService.class)
-                .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
+                         .addClasses(AccountService.class, Account.class, SecureAccountService.class)
+                         .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
     }
 
-    @Inject 
+    @Inject
     AccountService service
-        
+
     def "transferring between accounts should result in account withdrawl and diposit"() {
         when:
         service.transfer(from, to, amount)
-        
+
         then:
         from.balance == fromBalance
         to.balance == toBalance
-        
+
         where:
         from <<         [new Account(100),  new Account(10)]
         to <<           [new Account(50),   new Account(90)]
