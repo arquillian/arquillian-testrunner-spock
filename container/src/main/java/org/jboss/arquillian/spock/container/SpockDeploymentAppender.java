@@ -34,7 +34,7 @@ import org.spockframework.runtime.extension.IGlobalExtension;
  *
  * @author <a href="mailto:aslak@redhat.com">Aslak Knutsen</a>
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- * 
+ *
  * @version $Revision: $
  */
 public class SpockDeploymentAppender implements AuxiliaryArchiveAppender
@@ -45,27 +45,28 @@ public class SpockDeploymentAppender implements AuxiliaryArchiveAppender
    public Archive<?> createAuxiliaryArchive()
    {
       return ShrinkWrap.create(JavaArchive.class, "arquillian-spock.jar")
-                .addPackages(
-                     true,
-                     Filters.exclude(".*/package-info.*"),
-                     "groovy",
-                     "groovyjarjarantlr",
-                     "groovyjarjarasm.asm",
-                     "groovyjarjarcommonscli",
-                     "org.codehaus.groovy",
-                     "spock",
-                     "org.spockframework",
-                     ArquillianSpockExtension.class.getPackage().getName())
-                .addPackages( // junit
-                      true,
-                      Filters.includeAll(),
-                      "org.junit",
-                      "org.hamcrest")
-               .addAsServiceProvider(IGlobalExtension.class, ArquillianSpockExtension.class)
-               .addAsServiceProvider(TestRunner.class, SpockTestRunner.class)
-               .addAsServiceProvider(ScriptEngineFactory.class, GroovyScriptEngineFactory.class)
-               .addAsManifestResource("META-INF/dgminfo", "dgminfo")
-               .addAsManifestResource("META-INF/groovy-release-info.properties", "groovy-release-info.properties");
+                       .addPackages(
+                            true,
+                            Filters.exclude(".*/package-info.*"),
+                            "groovy",
+                            "groovyjarjarantlr",
+                            "groovyjarjarasm.asm",
+                            "groovyjarjarcommonscli",
+                            "org.codehaus.groovy",
+                            "spock",
+                            "org.spockframework",
+                            ArquillianSpockExtension.class.getPackage().getName())
+                       .addPackages( // junit
+                             true,
+                             Filters.includeAll(),
+                             "org.junit",
+                             "org.hamcrest")
+                       .addAsServiceProvider(IGlobalExtension.class, ArquillianSpockExtension.class)
+                       .addAsServiceProvider(TestRunner.class, SpockTestRunner.class)
+                       .addClass(SpockSpecificationFilter.class)
+                       .addAsServiceProvider(ScriptEngineFactory.class, GroovyScriptEngineFactory.class)
+                       .addAsManifestResource("META-INF/dgminfo", "dgminfo")
+                       .addAsManifestResource("META-INF/groovy-release-info.properties", "groovy-release-info.properties");
    }
 
 }

@@ -16,33 +16,27 @@
  */
 package org.jboss.arquillian.spock.container;
 
-import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.List;
 
 import org.jboss.arquillian.container.test.spi.TestRunner;
 import org.jboss.arquillian.test.spi.TestResult;
 import org.jboss.arquillian.test.spi.TestResult.Status;
-import org.junit.runner.Description;
 import org.junit.runner.Result;
-import org.junit.runner.manipulation.Filter;
 import org.junit.runner.notification.RunListener;
 import org.junit.runner.notification.RunNotifier;
 import org.spockframework.runtime.Sputnik;
-import org.spockframework.runtime.model.FeatureInfo;
-import org.spockframework.runtime.model.MethodInfo;
-import org.spockframework.runtime.model.SpecInfo;
 
 /**
- * SpockTestRunner
+ * Spock TestRunner
  *
  * @author <a href="mailto:aslak@redhat.com">Aslak Knutsen</a>
+ * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
+ *
  * @version $Revision: $
  */
 public class SpockTestRunner implements TestRunner
 {
-
-   private static final MethodInfo NOT_FOUND = new MethodInfo();
 
    /**
     * Overwrite to provide additional run listeners.
@@ -58,69 +52,25 @@ public class SpockTestRunner implements TestRunner
    public TestResult execute(final Class<?> testClass, final String methodName)
    {
 
-      final Sputnik runner = new Sputnik(testClass);
+      final Result testResult = new Result();
+
       try
       {
-         runner.filter(new Filter()
-         {
-
-            private SpecInfo currentSpec;
-
-            {
-               try
-               {
-                  Method method = Sputnik.class.getDeclaredMethod("getSpec");
-                  method.setAccessible(true);
-                  currentSpec = (SpecInfo) method.invoke(runner);
-               }
-               catch (Exception e)
-               {
-                  throw new RuntimeException("Could not get SpecInfo from Sputnik Runner", e);
-               }
-            }
-
-            @Override
-            public boolean shouldRun(Description description)
-            {
-               MethodInfo featureMethod = findCorrespondingFeatureMethod(description.getMethodName());
-               if (NOT_FOUND.equals(featureMethod))
-               {
-                  return false;
-               }
-               return methodName.equals(featureMethod.getReflection().getName());
-            }
-
-            @Override
-            public String describe()
-            {
-               return "Filter Feature methods for Spock Framework";
-            }
-
-            private MethodInfo findCorrespondingFeatureMethod(String featureMethodName)
-            {
-               MethodInfo methodInfo = NOT_FOUND;
-               for (FeatureInfo feature : currentSpec.getAllFeatures())
-               {
-                  MethodInfo featureMethod = feature.getFeatureMethod();
-                  if (featureMethodName.equals(featureMethod.getName()))
-                  {
-                     methodInfo = featureMethod;
-                     break;
-                  }
-               }
-               return methodInfo;
-            }
-
-         });
+         final Sputnik spockRunner = new Sputnik(testClass);
+         spockRunner.filter(new SpockSpecificationFilter(spockRunner, methodName));
+         runTest(spockRunner, testResult);
       }
       catch (Exception e)
       {
          return new TestResult(Status.FAILED, e);
       }
 
-      Result testResult = new Result();
+      return convertToTestResult(testResult);
+   }
 
-      RunNotifier notifier = new RunNotifier();
+   public void runTest(final Sputnik spockRunner, final Result testResult)
+   {
+      final RunNotifier notifier = new RunNotifier();
       notifier.addFirstListener(testResult.createListener());
 
       for (RunListener listener : getRunListeners())
@@ -128,9 +78,7 @@ public class SpockTestRunner implements TestRunner
          notifier.addListener(listener);
       }
 
-      runner.run(notifier);
-
-      return convertToTestResult(testResult);
+      spockRunner.run(notifier);
    }
 
    /**
@@ -157,4 +105,5 @@ public class SpockTestRunner implements TestRunner
 
       return new TestResult(status, throwable);
    }
+
 }

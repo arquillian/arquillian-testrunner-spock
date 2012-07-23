@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
   <parent>
     <groupId>org.jboss.arquillian.spock</groupId>
@@ -18,9 +19,9 @@
     <version.glassfish>3.1.1</version.glassfish>
     <version.jbossas_7>7.0.2.Final</version.jbossas_7>
     <version.jbossas_spec>1.0.0.Final</version.jbossas_spec>
-    <version.spock>0.5-groovy-1.8</version.spock>
+    <version.spock>0.6-groovy-1.8</version.spock>
     <version.groovy>1.8.5</version.groovy>
-    <version.groovy-eclipse-compiler>2.6.0-01</version.groovy-eclipse-compiler>
+    <version.groovy-eclipse-compiler>2.7.0-01</version.groovy-eclipse-compiler>
   </properties>
 
   <!-- Dependencies -->
@@ -171,6 +172,12 @@
             <groupId>org.codehaus.groovy</groupId>
             <artifactId>groovy-eclipse-compiler</artifactId>
             <version>${version.groovy-eclipse-compiler}</version>
+          </dependency>
+          <!-- Compile using Groovy 1.8 instead of 2.0.0 -->
+          <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-eclipse-batch</artifactId>
+            <version>1.8.6-01</version>
           </dependency>
         </dependencies>
       </plugin>
