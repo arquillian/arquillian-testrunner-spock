@@ -17,6 +17,12 @@
 
     <!-- org.jboss.arquillian -->
     <dependency>
+      <groupId>org.jboss.arquillian.spock</groupId>
+      <artifactId>arquillian-spock-core</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
       <groupId>org.jboss.arquillian.junit</groupId>
       <artifactId>arquillian-junit-core</artifactId>
     </dependency>
