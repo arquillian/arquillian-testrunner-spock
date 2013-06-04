@@ -14,8 +14,8 @@
   <description>Spock Implementation for the Arquillian Project</description>
 
   <properties>
-    <version.spock>0.6-groovy-1.8</version.spock>
-    <version.groovy>1.8.5</version.groovy>
+    <version.spock>0.7-groovy-2.0</version.spock>
+    <version.groovy>2.1.4</version.groovy>
   </properties>
 
   <dependencies>
