@@ -73,6 +73,21 @@ public class SpockDeploymentAppenderTestCase
             getResourceContent(archive, testRunnerSPI));
    }
 
+   @Test
+   public void shouldAddGroovyObjectClass() throws Exception
+   {
+      // given
+      SpockDeploymentAppender spockDeploymentAppender = new SpockDeploymentAppender();
+      ArchivePath groovyObject = ArchivePaths.create("/groovy/lang/GroovyObject.class");
+
+      // when
+      Archive<?> archive = spockDeploymentAppender.createAuxiliaryArchive();
+
+      // then
+      Assert.assertTrue("Should have added GroovyObject",
+            archive.contains(groovyObject));
+   }
+
    // Private utility classes
 
    private String getResourceContent(Archive<?> archive, ArchivePath path)
@@ -83,17 +98,18 @@ public class SpockDeploymentAppenderTestCase
       {
          content = new Scanner(openStream).useDelimiter("\\A").next();
          return content.trim();
-      }
+      } 
       finally
       {
          try
          {
             openStream.close();
-         }
+         } 
          catch (IOException ignore)
          {
             // NOOP
          }
       }
    }
+
 }

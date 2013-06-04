@@ -13,11 +13,6 @@
   <name>Arquillian TestRunner Spock Core</name>
   <description>Spock Implementation for the Arquillian Project</description>
 
-  <properties>
-    <version.spock>0.6-groovy-1.8</version.spock>
-    <version.groovy>1.8.5</version.groovy>
-  </properties>
-
   <dependencies>
 
     <!-- org.jboss.arquillian -->
@@ -30,13 +25,13 @@
     <dependency>
       <groupId>org.spockframework</groupId>
       <artifactId>spock-core</artifactId>
-      <version>${version.spock}</version>
+      <scope>provided</scope>
     </dependency>
 
     <dependency>
       <groupId>org.codehaus.groovy</groupId>
       <artifactId>groovy-all</artifactId>
-      <version>${version.groovy}</version>
+      <scope>provided</scope>
     </dependency>
 
     <!-- Test -->
@@ -49,6 +44,7 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
+      <scope>test</scope>
     </dependency>
 
     <dependency>
