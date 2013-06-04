@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- vi:ts=2:sw=2:expandtab: -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
   <!-- Parent -->
   <parent>
@@ -17,15 +18,6 @@
   <name>Arquillian TestRunner Spock Container</name>
   <description>Spock Container Implementation for the Arquillian Project</description>
 
-  <!-- Properties -->
-  <properties>
-    <version.spock>0.5-groovy-1.8</version.spock>
-    <version.groovy>1.8.0</version.groovy>
-    <version.groovy-eclipse-compiler>2.5.1-1</version.groovy-eclipse-compiler>
-  </properties>
-
-
-  <!-- Dependencies -->
   <dependencies>
 
     <!-- org.jboss.arquillian -->
@@ -78,6 +70,25 @@
     <dependency>
       <groupId>org.jboss.shrinkwrap</groupId>
       <artifactId>shrinkwrap-impl-base</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- External Projects -->
+    <dependency>
+      <groupId>org.spockframework</groupId>
+      <artifactId>spock-core</artifactId>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.codehaus.groovy</groupId>
+      <artifactId>groovy-all</artifactId>
+      <scope>provided</scope>
     </dependency>
 
   </dependencies>
