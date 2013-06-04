@@ -1,85 +1,93 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
-  <parent>
-    <groupId>org.jboss</groupId>
-    <artifactId>jboss-parent</artifactId>
-    <relativePath />
-    <version>7</version>
-  </parent>
+    <parent>
+        <groupId>org.jboss</groupId>
+        <artifactId>jboss-parent</artifactId>
+        <relativePath />
+        <version>7</version>
+    </parent>
 
-  <!-- Model Information -->
-  <modelVersion>4.0.0</modelVersion>
+    <!-- Model Information -->
+    <modelVersion>4.0.0</modelVersion>
 
-  <!-- Artifact Information -->
-  <groupId>org.jboss.arquillian.spock</groupId>
-  <artifactId>arquillian-spock-parent</artifactId>
-  <version>1.0.0.Final-SNAPSHOT</version>
-  <packaging>pom</packaging>
+    <!-- Artifact Information -->
+    <groupId>org.jboss.arquillian.spock</groupId>
+    <artifactId>arquillian-spock-parent</artifactId>
+    <version>1.0.0.Final-SNAPSHOT</version>
+    <packaging>pom</packaging>
 
-  <name>Arquillian TestRunner Parent Spock</name>
-  <description>Arquillian integration for the Spock BDD Test Framework</description>
+    <name>Arquillian TestRunner Parent Spock</name>
+    <description>Arquillian integration for the Spock BDD Test Framework</description>
 
-  <properties>
-    <!-- Versioning -->
-    <version.arquillian_core>1.0.1.Final</version.arquillian_core>
+    <properties>
+        <!-- Versioning -->
+        <version.arquillian_core>1.0.3.Final</version.arquillian_core>
 
-    <!-- override from parent -->
-    <version.release.plugin>2.1</version.release.plugin>
-    <version.maven_surefire>2.12</version.maven_surefire>
-    <version.maven_compiler>2.5.1</version.maven_compiler>
-  </properties>
+        <!-- override from parent -->
+        <version.release.plugin>2.1</version.release.plugin>
+        <version.maven_surefire>2.12</version.maven_surefire>
+        <version.maven_compiler>2.5.1</version.maven_compiler>
+    </properties>
 
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>org.jboss.arquillian</groupId>
-        <artifactId>arquillian-bom</artifactId>
-        <version>${version.arquillian_core}</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.jboss.arquillian</groupId>
-        <artifactId>arquillian-build</artifactId>
-        <version>${version.arquillian_core}</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.jboss.arquillian.core</groupId>
-        <artifactId>arquillian-core-impl-base</artifactId>
-        <classifier>tests</classifier>
-        <version>${version.arquillian_core}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.jboss.arquillian.test</groupId>
-        <artifactId>arquillian-test-impl-base</artifactId>
-        <classifier>tests</classifier>
-        <version>${version.arquillian_core}</version>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.jboss.shrinkwrap</groupId>
+                <artifactId>shrinkwrap-bom</artifactId>
+                <version>1.1.2</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.arquillian</groupId>
+                <artifactId>arquillian-bom</artifactId>
+                <version>${version.arquillian_core}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.arquillian</groupId>
+                <artifactId>arquillian-build</artifactId>
+                <version>${version.arquillian_core}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.arquillian.core</groupId>
+                <artifactId>arquillian-core-impl-base</artifactId>
+                <classifier>tests</classifier>
+                <version>${version.arquillian_core}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.arquillian.test</groupId>
+                <artifactId>arquillian-test-impl-base</artifactId>
+                <classifier>tests</classifier>
+                <version>${version.arquillian_core}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
-  <modules>
-    <module>core</module>
-    <module>standalone</module>
-    <module>container</module>
-    <module>examples</module>
-  </modules>
+    <modules>
+        <module>core</module>
+        <module>standalone</module>
+        <module>container</module>
+        <module>examples</module>
+    </modules>
 
-  <build>
-    <plugins>
-      <plugin>
-        <artifactId>maven-release-plugin</artifactId>
-        <configuration>
-          <autoVersionSubmodules>true</autoVersionSubmodules>
-          <pushChanges>false</pushChanges>
-          <localCheckout>true</localCheckout>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-release-plugin</artifactId>
+                <configuration>
+                    <autoVersionSubmodules>true</autoVersionSubmodules>
+                    <pushChanges>false</pushChanges>
+                    <localCheckout>true</localCheckout>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
 

@@ -1,101 +1,102 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- vi:ts=2:sw=2:expandtab: -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
-  <!-- Parent -->
-  <parent>
-    <groupId>org.jboss.arquillian.spock</groupId>
-    <artifactId>arquillian-spock-parent</artifactId>
-    <version>1.0.0.Final-SNAPSHOT</version>
-  </parent>
+    <!-- Parent -->
+    <parent>
+        <groupId>org.jboss.arquillian.spock</groupId>
+        <artifactId>arquillian-spock-parent</artifactId>
+        <version>1.0.0.Final-SNAPSHOT</version>
+    </parent>
 
-  <!-- Model Version -->
-  <modelVersion>4.0.0</modelVersion>
+    <!-- Model Version -->
+    <modelVersion>4.0.0</modelVersion>
 
-  <!-- Artifact Configuration -->
-  <artifactId>arquillian-spock-container</artifactId>
-  <name>Arquillian TestRunner Spock Container</name>
-  <description>Spock Container Implementation for the Arquillian Project</description>
+    <!-- Artifact Configuration -->
+    <artifactId>arquillian-spock-container</artifactId>
+    <name>Arquillian TestRunner Spock Container</name>
+    <description>Spock Container Implementation for the Arquillian Project</description>
 
-  <!-- Properties -->
-  <properties>
-    <version.spock>0.5-groovy-1.8</version.spock>
-    <version.groovy>1.8.0</version.groovy>
-    <version.groovy-eclipse-compiler>2.5.1-1</version.groovy-eclipse-compiler>
-  </properties>
+    <!-- Properties -->
+    <properties>
+        <version.spock>0.7-groovy-2.0</version.spock>
+        <version.groovy>2.1.4</version.groovy>
+        <version.groovy-eclipse-compiler>2.7.0-01</version.groovy-eclipse-compiler>
+    </properties>
 
 
-  <!-- Dependencies -->
-  <dependencies>
+    <!-- Dependencies -->
+    <dependencies>
 
-    <!-- org.jboss.arquillian -->
-    <dependency>
-      <groupId>org.jboss.arquillian.spock</groupId>
-      <artifactId>arquillian-spock-core</artifactId>
-      <version>${project.version}</version>
-    </dependency>
+        <!-- org.jboss.arquillian -->
+        <dependency>
+            <groupId>org.jboss.arquillian.spock</groupId>
+            <artifactId>arquillian-spock-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
-    <dependency>
-      <groupId>org.jboss.arquillian.test</groupId>
-      <artifactId>arquillian-test-api</artifactId>
-    </dependency>
+        <dependency>
+            <groupId>org.jboss.arquillian.test</groupId>
+            <artifactId>arquillian-test-api</artifactId>
+        </dependency>
 
-    <dependency>
-      <groupId>org.jboss.arquillian.test</groupId>
-      <artifactId>arquillian-test-spi</artifactId>
-    </dependency>
+        <dependency>
+            <groupId>org.jboss.arquillian.test</groupId>
+            <artifactId>arquillian-test-spi</artifactId>
+        </dependency>
 
-    <dependency>
-      <groupId>org.jboss.arquillian.container</groupId>
-      <artifactId>arquillian-container-test-api</artifactId>
-    </dependency>
+        <dependency>
+            <groupId>org.jboss.arquillian.container</groupId>
+            <artifactId>arquillian-container-test-api</artifactId>
+        </dependency>
 
-    <dependency>
-      <groupId>org.jboss.arquillian.container</groupId>
-      <artifactId>arquillian-container-test-spi</artifactId>
-    </dependency>
+        <dependency>
+            <groupId>org.jboss.arquillian.container</groupId>
+            <artifactId>arquillian-container-test-spi</artifactId>
+        </dependency>
 
-    <dependency>
-      <groupId>org.jboss.arquillian.core</groupId>
-      <artifactId>arquillian-core-impl-base</artifactId>
-    </dependency>
+        <dependency>
+            <groupId>org.jboss.arquillian.core</groupId>
+            <artifactId>arquillian-core-impl-base</artifactId>
+        </dependency>
 
-    <dependency>
-      <groupId>org.jboss.arquillian.test</groupId>
-      <artifactId>arquillian-test-impl-base</artifactId>
-    </dependency>
+        <dependency>
+            <groupId>org.jboss.arquillian.test</groupId>
+            <artifactId>arquillian-test-impl-base</artifactId>
+        </dependency>
 
-    <dependency>
-      <groupId>org.jboss.arquillian.container</groupId>
-      <artifactId>arquillian-container-impl-base</artifactId>
-    </dependency>
+        <dependency>
+            <groupId>org.jboss.arquillian.container</groupId>
+            <artifactId>arquillian-container-impl-base</artifactId>
+        </dependency>
 
-    <dependency>
-      <groupId>org.jboss.arquillian.container</groupId>
-      <artifactId>arquillian-container-test-impl-base</artifactId>
-    </dependency>
+        <dependency>
+            <groupId>org.jboss.arquillian.container</groupId>
+            <artifactId>arquillian-container-test-impl-base</artifactId>
+        </dependency>
 
-    <dependency>
-      <groupId>org.jboss.shrinkwrap</groupId>
-      <artifactId>shrinkwrap-impl-base</artifactId>
-    </dependency>
+        <dependency>
+            <groupId>org.jboss.shrinkwrap</groupId>
+            <artifactId>shrinkwrap-impl-base</artifactId>
+        </dependency>
 
-  </dependencies>
+    </dependencies>
 
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <executions>
-          <execution>
-            <goals>
-              <goal>test-jar</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>test-jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

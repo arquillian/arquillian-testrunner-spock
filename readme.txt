@@ -61,7 +61,7 @@
  	Container extension which bundles all Spock-related dependencies required
  	while running Spock specifications using Arquillian.
  	
-examples/
+ examples/
 	Sample tests written using Spock BDD framework.
 
  Licensing
