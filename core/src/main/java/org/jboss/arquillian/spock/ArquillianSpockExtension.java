@@ -21,7 +21,8 @@ import java.util.logging.Logger;
 import org.jboss.arquillian.test.spi.TestRunnerAdaptor;
 import org.jboss.arquillian.test.spi.TestRunnerAdaptorBuilder;
 import org.spockframework.runtime.AbstractRunListener;
-import org.spockframework.runtime.extension.IGlobalExtension;
+import org.spockframework.runtime.SpockExecutionException;
+import org.spockframework.runtime.extension.AbstractAnnotationDrivenExtension;
 import org.spockframework.runtime.model.FeatureInfo;
 import org.spockframework.runtime.model.SpecInfo;
 import org.spockframework.util.NotThreadSafe;
@@ -30,43 +31,30 @@ import org.spockframework.util.NotThreadSafe;
  * Arquillian extension to the Spock test framework.
  *
  * @author <a href="mailto:aslak@redhat.com">Aslak Knutsen</a>
+ * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  * @version $Revision: $
  */
 @NotThreadSafe
-public class ArquillianSpockExtension implements IGlobalExtension
+public class ArquillianSpockExtension extends AbstractAnnotationDrivenExtension<ArquillianSpecification>
 {
    private TestRunnerAdaptor deployableTest;
-   
+
    private SpecInfo lastCreatedSpec;
 
    private Logger log = Logger.getLogger(ArquillianSpockExtension.class.getName());
 
-   /* (non-Javadoc)
-    * @see org.spockframework.runtime.extension.IGlobalExtension#visitSpec(org.spockframework.runtime.model.SpecInfo)
-    */
+   @Override
+   public void visitSpecAnnotation(ArquillianSpecification annotation, SpecInfo spec)
+   {
+      initalizeTestAdaptor();
+   }
+
+   @Override
    public void visitSpec(SpecInfo spec)
    {
-      // Only create the first time
-      if(deployableTest == null)   
-      {
-         // FIXME resolve configuration
-         // Configuration configuration = new XmlConfigurationBuilder().build();
-         TestRunnerAdaptor adaptor = TestRunnerAdaptorBuilder.build();
-         try 
-         {
-            log.fine("beforeSuite");
-            // don't set it if beforeSuite fails
-            adaptor.beforeSuite();
-            deployableTest = adaptor;
-         } 
-         catch (Exception e) 
-         {
-            throw new RuntimeException(e);
-         }
-      }
-      
+
       ArquillianInterceptor interceptor = new ArquillianInterceptor(deployableTest);
-      
+
       final SpecInfo topSpec = spec.getTopSpec();
       topSpec.getSetupSpecMethod().addInterceptor(interceptor);
       topSpec.getSetupMethod().addInterceptor(interceptor);
@@ -74,34 +62,53 @@ public class ArquillianSpockExtension implements IGlobalExtension
       // add Interceptors to all feature methods
       for(FeatureInfo feature : topSpec.getAllFeatures())
       {
-         feature.getFeatureMethod().addInterceptor(interceptor);         
+         feature.getFeatureMethod().addInterceptor(interceptor);
       }
-      
+
       topSpec.getCleanupMethod().addInterceptor(interceptor);
       topSpec.getCleanupSpecMethod().addInterceptor(interceptor);
 
       // set the last created Spec, so we can call AfterSuite only when this is done.
       lastCreatedSpec = topSpec;
-      topSpec.addListener(new AbstractRunListener() 
+      topSpec.addListener(new AbstractRunListener()
       {
          @Override
          public void afterSpec(SpecInfo spec)
          {
             if(spec == lastCreatedSpec)
             {
-               try 
+               try
                {
                   log.fine("afterSuite");
                   deployableTest.afterSuite();
                   deployableTest = null;
-               } 
-               catch (Exception e) 
+               }
+               catch (Exception e)
                {
-                  throw new RuntimeException(e);
+                  throw new SpockExecutionException("Unable to add ArquillianSpecification listener", e);
                }
             }
          }
       });
+   }
+
+   private void initalizeTestAdaptor()
+   {
+      if (deployableTest == null)
+      {
+         final TestRunnerAdaptor adaptor = TestRunnerAdaptorBuilder.build();
+         try
+         {
+            log.fine("beforeSuite");
+            // don't set it if beforeSuite fails
+            adaptor.beforeSuite();
+            deployableTest = adaptor;
+         }
+         catch (Exception e)
+         {
+            throw new SpockExecutionException("Unable to hook Arquillian Spock test adaptor", e);
+         }
+      }
    }
 
 }

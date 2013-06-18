@@ -24,6 +24,7 @@ import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ArchivePath;
 import org.jboss.shrinkwrap.api.ArchivePaths;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -34,25 +35,6 @@ import org.junit.Test;
  */
 public class SpockDeploymentAppenderTestCase
 {
-
-   @Test
-   public void shouldAddSpockExtensionAsServiceProvider() throws Exception
-   {
-      // given
-      SpockDeploymentAppender spockDeploymentAppender = new SpockDeploymentAppender();
-      ArchivePath spockExtensionSPI = ArchivePaths.create("/META-INF/services/org.spockframework.runtime.extension.IGlobalExtension");
-
-      // when
-      Archive<?> archive = spockDeploymentAppender.createAuxiliaryArchive();
-
-      // then
-      Assert.assertTrue("Should have added Spock Extension",
-            archive.contains(spockExtensionSPI));
-
-      Assert.assertEquals("Should register Arquillian extension as Spock Extension",
-            "org.jboss.arquillian.spock.ArquillianSpockExtension",
-            getResourceContent(archive, spockExtensionSPI));
-   }
 
    @Test
    public void shouldAddSpockTestRunnerAsServiceProvider() throws Exception

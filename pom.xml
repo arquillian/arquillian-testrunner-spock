@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
   <parent>
     <groupId>org.jboss</groupId>
     <artifactId>jboss-parent</artifactId>
-    <relativePath />
+    <relativePath/>
     <version>10</version>
   </parent>
 
@@ -23,13 +24,13 @@
   <properties>
     <!-- Versioning -->
     <version.arquillian_core>1.0.4.Final</version.arquillian_core>
-
-    <!-- override from parent -->
-    <version.release.plugin>2.1</version.release.plugin>
-    <version.maven_surefire>2.14.1</version.maven_surefire>
-    <version.maven_compiler>2.5.1</version.maven_compiler>
     <version.spock>0.7-groovy-2.0</version.spock>
     <version.groovy>2.1.5</version.groovy>
+
+    <!-- override from parent -->
+    <version.maven_compiler>3.1</version.maven_compiler>
+    <version.release.plugin>2.1</version.release.plugin>
+    <version.maven_surefire>2.14.1</version.maven_surefire>
   </properties>
 
   <dependencyManagement>

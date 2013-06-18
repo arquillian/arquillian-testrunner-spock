@@ -16,8 +16,6 @@
  */
 package org.jboss.arquillian.spock.container;
 
-import javax.script.ScriptEngineFactory;
-
 import org.codehaus.groovy.jsr223.GroovyScriptEngineFactory;
 import org.jboss.arquillian.container.test.spi.TestRunner;
 import org.jboss.arquillian.container.test.spi.client.deployment.AuxiliaryArchiveAppender;
@@ -26,7 +24,8 @@ import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.Filters;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
-import org.spockframework.runtime.extension.IGlobalExtension;
+
+import javax.script.ScriptEngineFactory;
 
 /**
  * Creates testing archive with dependencies required
@@ -46,25 +45,25 @@ public class SpockDeploymentAppender implements AuxiliaryArchiveAppender
    {
       return ShrinkWrap.create(JavaArchive.class, "arquillian-spock.jar")
                        .addPackages(
-                            true,
-                            Filters.exclude(".*/package-info.*"),
-                            "groovy",
-                            "groovyjarjarantlr",
-                            "groovyjarjarasm.asm",
-                            "groovyjarjarcommonscli",
-                            "org.codehaus.groovy",
-                            "spock",
-                            "org.spockframework",
-                            ArquillianSpockExtension.class.getPackage().getName())
+                               true,
+                               Filters.exclude(".*/package-info.*"),
+                               "groovy",
+                               "groovyjarjarantlr",
+                               "groovyjarjarasm.asm",
+                               "groovyjarjarcommonscli",
+                               "org.codehaus.groovy",
+                               "spock",
+                               "org.spockframework",
+                               ArquillianSpockExtension.class.getPackage().getName())
                        .addPackages( // junit
-                             true,
-                             Filters.includeAll(),
-                             "org.junit",
-                             "org.hamcrest")
-                       .addAsServiceProvider(IGlobalExtension.class, ArquillianSpockExtension.class)
+                               true,
+                               Filters.includeAll(),
+                               "org.junit",
+                               "org.hamcrest")
+                       .addPackages(true, ArquillianSpockExtension.class.getPackage())
                        .addAsServiceProvider(TestRunner.class, SpockTestRunner.class)
-                       .addClass(SpockSpecificationFilter.class)
                        .addAsServiceProvider(ScriptEngineFactory.class, GroovyScriptEngineFactory.class)
+                       .addClass(SpockSpecificationFilter.class)
                        .addAsManifestResource("META-INF/dgminfo", "dgminfo")
                        .addAsManifestResource("META-INF/groovy-release-info.properties", "groovy-release-info.properties");
    }

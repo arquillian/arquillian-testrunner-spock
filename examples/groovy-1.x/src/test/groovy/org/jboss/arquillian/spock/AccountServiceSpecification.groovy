@@ -16,38 +16,57 @@
  */
 package org.jboss.arquillian.spock
 
-import spock.lang.*
-import javax.inject.Inject
 import org.jboss.arquillian.container.test.api.Deployment
 import org.jboss.shrinkwrap.api.ShrinkWrap
 import org.jboss.shrinkwrap.api.asset.EmptyAsset
 import org.jboss.shrinkwrap.api.spec.JavaArchive
+import spock.lang.Specification
 
+import javax.inject.Inject
+
+@ArquillianSpecification
 class AccountServiceSpecification extends Specification {
 
     @Deployment
     def static JavaArchive "create deployment"() {
         return ShrinkWrap.create(JavaArchive.class)
-                         .addClasses(AccountService.class, Account.class, SecureAccountService.class)
-                         .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
+                .addClasses(AccountService.class, Account.class, SecureAccountService.class)
+                .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
     }
 
     @Inject
     AccountService service
 
-    def "transferring between accounts should result in account withdrawl and diposit"() {
+    def "transfer should be possible between two accounts"() {
         when:
-        service.transfer(from, to, amount)
+            service.transfer(from, to, amount)
 
         then:
-        from.balance == fromBalance
-        to.balance == toBalance
+            from.balance == fromBalance
+            to.balance == toBalance
 
         where:
-        from <<         [new Account(100),  new Account(10)]
-        to <<           [new Account(50),   new Account(90)]
-        amount <<       [50,                10]
-        fromBalance <<  [50,                0]
-        toBalance <<    [100,               100]
+            from           << [new Account(100), new Account(10)]
+            to             << [new Account(50),  new Account(90)]
+            amount         << [50,               10]
+            fromBalance    << [50,               0]
+            toBalance      << [100,              100]
     }
+
+    def "transferring between accounts should result in account withdrawal and deposit"() {
+       when:
+            service.transfer(from, to, amount)
+
+       then:
+            from.balance == fromBalance
+            to.balance == toBalance
+
+       where:
+            from           << [new Account(100), new Account(10)]
+            to             << [new Account(50),  new Account(90)]
+            amount         << [50,               10]
+            fromBalance    << [50,               0]
+            toBalance      << [100,              100]
+   }
+
 }
