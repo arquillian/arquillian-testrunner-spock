@@ -48,6 +48,39 @@
       toBalance <<    [100,               100]
  }
 
+ Usage
+ =====
+
+ The Spock Arquillian Extension supports both Groovy major versions supported
+ by Spock Framework. In order to select proper versions, you need to put
+ following dependencies into your <dependencies> section:
+
+ <dependency>
+     <groupId>org.jboss.arquillian.spock</groupId>
+     <!-- replace * with standalone or container, according to your needs -->
+     <artifactId>arquillian-spock-*</artifactId>
+     <version>${project.version}</version>
+     <scope>test</scope>
+ </dependency>
+
+ <!-- External Projects -->
+ <dependency>
+     <groupId>org.spockframework</groupId>
+     <artifactId>spock-core</artifactId>
+     <version>${version.spock}</version>
+     <scope>test</scope>
+ </dependency>
+
+ <dependency>
+     <groupId>org.codehaus.groovy</groupId>
+     <artifactId>groovy-all</artifactId>
+     <version>${version.groovy}</version>
+     <scope>test</scope>
+ </dependency>
+
+ For Groovy 2.x, use spock 0.7-groovy-2.0 or later and Groovy 2.1.4 or later
+ For Groovy 1.x, use spock 0.7-groovy-1.8 or later and Groovy 1.8.9 or later
+
  Contents of distribution
  ========================
 
@@ -61,7 +94,7 @@
  	Container extension which bundles all Spock-related dependencies required
  	while running Spock specifications using Arquillian.
  	
-examples/
+ examples/
 	Sample tests written using Spock BDD framework.
 
  Licensing

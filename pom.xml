@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
   <parent>
     <groupId>org.jboss</groupId>
     <artifactId>jboss-parent</artifactId>
     <relativePath />
-    <version>7</version>
+    <version>10</version>
   </parent>
 
   <!-- Model Information -->
@@ -22,16 +23,25 @@
 
   <properties>
     <!-- Versioning -->
-    <version.arquillian_core>1.0.1.Final</version.arquillian_core>
+    <version.arquillian_core>1.0.3.Final</version.arquillian_core>
 
     <!-- override from parent -->
     <version.release.plugin>2.1</version.release.plugin>
-    <version.maven_surefire>2.12</version.maven_surefire>
+    <version.maven_surefire>2.14.1</version.maven_surefire>
     <version.maven_compiler>2.5.1</version.maven_compiler>
+    <version.spock>0.7-groovy-2.0</version.spock>
+    <version.groovy>2.1.5</version.groovy>
   </properties>
 
   <dependencyManagement>
     <dependencies>
+      <dependency>
+        <groupId>org.jboss.shrinkwrap</groupId>
+        <artifactId>shrinkwrap-bom</artifactId>
+        <version>1.1.2</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
       <dependency>
         <groupId>org.jboss.arquillian</groupId>
         <artifactId>arquillian-bom</artifactId>
@@ -58,6 +68,20 @@
         <classifier>tests</classifier>
         <version>${version.arquillian_core}</version>
       </dependency>
+
+      <!-- External Projects -->
+      <dependency>
+        <groupId>org.spockframework</groupId>
+        <artifactId>spock-core</artifactId>
+        <version>${version.spock}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.codehaus.groovy</groupId>
+        <artifactId>groovy-all</artifactId>
+        <version>${version.groovy}</version>
+      </dependency>
+
     </dependencies>
   </dependencyManagement>
 
@@ -65,7 +89,8 @@
     <module>core</module>
     <module>standalone</module>
     <module>container</module>
-    <module>examples</module>
+    <module>examples/groovy-1.x</module>
+    <module>examples/groovy-2.x</module>
   </modules>
 
   <build>
