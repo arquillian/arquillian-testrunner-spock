@@ -14,7 +14,7 @@
   <!-- Artifact Information -->
   <groupId>org.jboss.arquillian.spock</groupId>
   <artifactId>arquillian-spock-parent</artifactId>
-  <version>1.0.0.Beta1</version>
+  <version>1.0.0.Final-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>Arquillian TestRunner Parent Spock</name>
   <description>Arquillian integration for the Spock BDD Test Framework</description>

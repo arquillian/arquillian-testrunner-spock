@@ -5,7 +5,7 @@
 
   <groupId>org.jboss.arquillian.spock</groupId>
   <artifactId>arquillian-spock-example-groovy-2.x</artifactId>
-  <version>1.0.0.Beta1</version>
+  <version>1.0.0.Final-SNAPSHOT</version>
   <name>Arquillian TestRunner Spock Example: Groovy 2.x</name>
   <description>Examples of using Spock with Arquillian</description>
   <url>http://arquillian.org</url>
