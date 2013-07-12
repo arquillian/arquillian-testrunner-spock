@@ -16,6 +16,7 @@
  */
 package org.jboss.arquillian.spock;
 
+import java.util.Collection;
 import java.util.logging.Logger;
 
 import org.jboss.arquillian.test.spi.TestRunnerAdaptor;
@@ -32,6 +33,7 @@ import org.spockframework.util.NotThreadSafe;
  *
  * @author <a href="mailto:aslak@redhat.com">Aslak Knutsen</a>
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
+ * @author <a href="mailto:kpiwko@redhat.com">Karel Piwko</a>
  * @version $Revision: $
  */
 @NotThreadSafe
@@ -52,44 +54,54 @@ public class ArquillianSpockExtension extends AbstractAnnotationDrivenExtension<
    @Override
    public void visitSpec(SpecInfo spec)
    {
-
-      ArquillianInterceptor interceptor = new ArquillianInterceptor(deployableTest);
-
       final SpecInfo topSpec = spec.getTopSpec();
-      topSpec.getSetupSpecMethod().addInterceptor(interceptor);
-      topSpec.getSetupMethod().addInterceptor(interceptor);
-
-      // add Interceptors to all feature methods
-      for(FeatureInfo feature : topSpec.getAllFeatures())
-      {
-         feature.getFeatureMethod().addInterceptor(interceptor);
-      }
-
-      topSpec.getCleanupMethod().addInterceptor(interceptor);
-      topSpec.getCleanupSpecMethod().addInterceptor(interceptor);
-
       // set the last created Spec, so we can call AfterSuite only when this is done.
       lastCreatedSpec = topSpec;
+
+      final ArquillianInterceptor interceptor = new ArquillianInterceptor(deployableTest);
+
+      for (SpecInfo s : spec.getSpecsBottomToTop())
+      {
+         interceptLifecycleMethods(s, interceptor);
+         interceptAllFeatures(s.getAllFeatures(), interceptor);
+      }
+
       topSpec.addListener(new AbstractRunListener()
       {
          @Override
          public void afterSpec(SpecInfo spec)
          {
-            if(spec == lastCreatedSpec)
-            {
-               try
-               {
-                  log.fine("afterSuite");
-                  deployableTest.afterSuite();
-                  deployableTest = null;
-               }
-               catch (Exception e)
-               {
-                  throw new SpockExecutionException("Unable to add ArquillianSpecification listener", e);
-               }
-            }
+             if (spec == lastCreatedSpec)
+             {
+                 try
+                 {
+                     log.fine("afterSuite");
+                     deployableTest.afterSuite();
+                     deployableTest = null;
+                 }
+                 catch (Exception e)
+                 {
+                     throw new SpockExecutionException("Unable to add ArquillianSpecification listener", e);
+                 }
+             }
          }
       });
+   }
+
+   private void interceptLifecycleMethods(final SpecInfo specInfo, final ArquillianInterceptor interceptor)
+   {
+      specInfo.getSetupSpecMethod().addInterceptor(interceptor);
+      specInfo.getSetupMethod().addInterceptor(interceptor);
+      specInfo.getCleanupMethod().addInterceptor(interceptor);
+      specInfo.getCleanupSpecMethod().addInterceptor(interceptor);
+   }
+
+   private void interceptAllFeatures(final Collection<FeatureInfo> features, final ArquillianInterceptor interceptor)
+   {
+      for (FeatureInfo feature : features)
+      {
+         feature.getFeatureMethod().addInterceptor(interceptor);
+      }
    }
 
    private void initalizeTestAdaptor()
