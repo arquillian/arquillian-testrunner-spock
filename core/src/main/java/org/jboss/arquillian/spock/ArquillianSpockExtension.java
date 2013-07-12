@@ -32,6 +32,7 @@ import org.spockframework.util.NotThreadSafe;
  *
  * @author <a href="mailto:aslak@redhat.com">Aslak Knutsen</a>
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
+ * @author <a href="mailto:kpiwko@redhat.com">Karel Piwko</a>
  * @version $Revision: $
  */
 @NotThreadSafe
@@ -55,18 +56,20 @@ public class ArquillianSpockExtension extends AbstractAnnotationDrivenExtension<
 
       ArquillianInterceptor interceptor = new ArquillianInterceptor(deployableTest);
 
-      final SpecInfo topSpec = spec.getTopSpec();
-      topSpec.getSetupSpecMethod().addInterceptor(interceptor);
-      topSpec.getSetupMethod().addInterceptor(interceptor);
-
-      // add Interceptors to all feature methods
-      for(FeatureInfo feature : topSpec.getAllFeatures())
-      {
-         feature.getFeatureMethod().addInterceptor(interceptor);
+      // adding interceptors to all specs, ARQ-1427
+      for (SpecInfo s : spec.getSpecsBottomToTop()) {
+         // add Interceptors to all feature methods
+         for (FeatureInfo feature : s.getAllFeatures())
+         {
+            feature.getFeatureMethod().addInterceptor(interceptor);
+         }
+         s.getSetupSpecMethod().addInterceptor(interceptor);
+         s.getSetupMethod().addInterceptor(interceptor);
+         s.getCleanupMethod().addInterceptor(interceptor);
+         s.getCleanupSpecMethod().addInterceptor(interceptor);
       }
 
-      topSpec.getCleanupMethod().addInterceptor(interceptor);
-      topSpec.getCleanupSpecMethod().addInterceptor(interceptor);
+      final SpecInfo topSpec = spec.getTopSpec();
 
       // set the last created Spec, so we can call AfterSuite only when this is done.
       lastCreatedSpec = topSpec;
