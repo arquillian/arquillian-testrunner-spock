@@ -54,6 +54,7 @@ public class SpockDeploymentAppender implements AuxiliaryArchiveAppender
                                "org.codehaus.groovy",
                                "spock",
                                "org.spockframework",
+                               "org.objectweb.asm",
                                ArquillianSpockExtension.class.getPackage().getName())
                        .addPackages( // junit
                                true,
