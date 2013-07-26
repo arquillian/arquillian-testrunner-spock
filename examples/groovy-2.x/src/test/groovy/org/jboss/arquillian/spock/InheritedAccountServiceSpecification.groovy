@@ -5,9 +5,12 @@ import javax.inject.Inject
 import org.jboss.arquillian.spock.Account
 import org.jboss.arquillian.spock.AccountService
 import org.jboss.arquillian.spock.common.AbstractCommonSpecification;
+import org.junit.runner.RunWith;
 
+@RunWith(ArquillianSputnik.class)
 @ArquillianSpecification
 class InheritedAccountServiceSpecification extends AbstractCommonSpecification {
+
     @Inject
     AccountService service
 

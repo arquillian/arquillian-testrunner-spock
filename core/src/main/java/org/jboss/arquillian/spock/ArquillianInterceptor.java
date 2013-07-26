@@ -34,15 +34,15 @@ import org.spockframework.runtime.extension.IMethodInvocation;
  */
 public class ArquillianInterceptor extends AbstractMethodInterceptor
 {
-   private Logger log = Logger.getLogger(ArquillianInterceptor.class.getName());
-   
-   private TestRunnerAdaptor testRunner;
-   
+   private final Logger log = Logger.getLogger(ArquillianInterceptor.class.getName());
+
+   private final TestRunnerAdaptor testRunner;
+
    public ArquillianInterceptor(final TestRunnerAdaptor testRunner)
    {
       this.testRunner = testRunner;
    }
-   
+
    /* (non-Javadoc)
     * @see org.spockframework.runtime.extension.AbstractMethodInterceptor#interceptSetupSpecMethod(org.spockframework.runtime.extension.IMethodInvocation)
     */
@@ -54,7 +54,7 @@ public class ArquillianInterceptor extends AbstractMethodInterceptor
       testRunner.beforeClass(specClass, LifecycleMethodExecutor.NO_OP);
       invocation.proceed();
    }
-   
+
    /* (non-Javadoc)
     * @see org.spockframework.runtime.extension.AbstractMethodInterceptor#interceptCleanupSpecMethod(org.spockframework.runtime.extension.IMethodInvocation)
     */
@@ -66,7 +66,7 @@ public class ArquillianInterceptor extends AbstractMethodInterceptor
       invocation.proceed();
       testRunner.afterClass(specClass, LifecycleMethodExecutor.NO_OP);
    }
-   
+
    /* (non-Javadoc)
     * @see org.spockframework.runtime.extension.AbstractMethodInterceptor#interceptSetupMethod(org.spockframework.runtime.extension.IMethodInvocation)
     */
@@ -77,7 +77,7 @@ public class ArquillianInterceptor extends AbstractMethodInterceptor
       testRunner.before(invocation.getTarget(), invocation.getFeature().getFeatureMethod().getReflection(), LifecycleMethodExecutor.NO_OP);
       invocation.proceed();
    }
-   
+
    /* (non-Javadoc)
     * @see org.spockframework.runtime.extension.AbstractMethodInterceptor#interceptCleanupMethod(org.spockframework.runtime.extension.IMethodInvocation)
     */
@@ -88,7 +88,7 @@ public class ArquillianInterceptor extends AbstractMethodInterceptor
       invocation.proceed();
       testRunner.after(invocation.getTarget(), invocation.getFeature().getFeatureMethod().getReflection(), LifecycleMethodExecutor.NO_OP);
    }
-   
+
    /* (non-Javadoc)
     * @see org.spockframework.runtime.extension.AbstractMethodInterceptor#interceptFeatureMethod(org.spockframework.runtime.extension.IMethodInvocation)
     */
@@ -97,22 +97,25 @@ public class ArquillianInterceptor extends AbstractMethodInterceptor
    {
       TestResult result = testRunner.test(new TestMethodExecutor()
       {
+         @Override
          public Method getMethod()
          {
             return invocation.getFeature().getFeatureMethod().getReflection();
          }
-         
+
+         @Override
          public Object getInstance()
          {
             return invocation.getTarget();
          }
 
+         @Override
          public void invoke(Object... parameters) throws Throwable
          {
-              invocation.proceed(); 
+              invocation.proceed();
          }
       });
-      
+
       if(result.getThrowable() != null)
       {
          throw result.getThrowable();

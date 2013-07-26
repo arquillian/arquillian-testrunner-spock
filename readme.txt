@@ -81,6 +81,12 @@
  For Groovy 2.x, use spock 0.7-groovy-2.0 or later and Groovy 2.1.4 or later
  For Groovy 1.x, use spock 0.7-groovy-1.8 or later and Groovy 1.8.9 or later
 
+ You must annotate Specifications with following annotations:
+
+ @ArquillianSpecification
+ @RunWith(ArquillianSputnik.class)
+
+
  Contents of distribution
  ========================
 
