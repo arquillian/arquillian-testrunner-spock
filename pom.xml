@@ -49,7 +49,7 @@
 
   <properties>
     <!-- Versioning -->
-    <version.arquillian_core>1.0.4.Final</version.arquillian_core>
+    <version.arquillian_core>1.1.0.Final</version.arquillian_core>
     <version.spock>0.7-groovy-2.0</version.spock>
     <version.groovy>2.1.5</version.groovy>
 
