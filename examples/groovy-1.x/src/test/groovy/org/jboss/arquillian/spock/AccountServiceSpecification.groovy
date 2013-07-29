@@ -26,7 +26,6 @@ import org.junit.runner.RunWith
 
 import spock.lang.Specification
 
-@ArquillianSpecification
 @RunWith(ArquillianSputnik.class)
 class AccountServiceSpecification extends Specification {
 

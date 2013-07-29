@@ -19,7 +19,7 @@ package org.jboss.arquillian.spock.container;
 import org.codehaus.groovy.jsr223.GroovyScriptEngineFactory;
 import org.jboss.arquillian.container.test.spi.TestRunner;
 import org.jboss.arquillian.container.test.spi.client.deployment.AuxiliaryArchiveAppender;
-import org.jboss.arquillian.spock.ArquillianSpockExtension;
+import org.jboss.arquillian.spock.ArquillianSputnik;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.Filters;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -54,14 +54,13 @@ public class SpockDeploymentAppender implements AuxiliaryArchiveAppender
                                "org.codehaus.groovy",
                                "spock",
                                "org.spockframework",
-                               "org.objectweb.asm",
-                               ArquillianSpockExtension.class.getPackage().getName())
+                               "org.objectweb.asm")
                        .addPackages( // junit
                                true,
                                Filters.includeAll(),
                                "org.junit",
                                "org.hamcrest")
-                       .addPackages(true, ArquillianSpockExtension.class.getPackage())
+                       .addPackages(true, ArquillianSputnik.class.getPackage())
                        .addAsServiceProvider(TestRunner.class, SpockTestRunner.class)
                        .addAsServiceProvider(ScriptEngineFactory.class, GroovyScriptEngineFactory.class)
                        .addClass(SpockSpecificationFilter.class)

@@ -36,11 +36,10 @@ public class ArquillianInterceptor extends AbstractMethodInterceptor
 {
    private final Logger log = Logger.getLogger(ArquillianInterceptor.class.getName());
 
-   private final TestRunnerAdaptor testRunner;
+   private TestRunnerAdaptor testRunner;
 
-   public ArquillianInterceptor(final TestRunnerAdaptor testRunner)
+   public ArquillianInterceptor()
    {
-      this.testRunner = testRunner;
    }
 
    /* (non-Javadoc)
@@ -51,7 +50,7 @@ public class ArquillianInterceptor extends AbstractMethodInterceptor
    {
       Class<?> specClass = invocation.getSpec().getReflection();
       log.fine("beforeClass " + specClass.getName());
-      testRunner.beforeClass(specClass, LifecycleMethodExecutor.NO_OP);
+      getTestRunner().beforeClass(specClass, LifecycleMethodExecutor.NO_OP);
       invocation.proceed();
    }
 
@@ -64,7 +63,7 @@ public class ArquillianInterceptor extends AbstractMethodInterceptor
       Class<?> specClass = invocation.getSpec().getReflection();
       log.fine("afterClass " + specClass.getName());
       invocation.proceed();
-      testRunner.afterClass(specClass, LifecycleMethodExecutor.NO_OP);
+      getTestRunner().afterClass(specClass, LifecycleMethodExecutor.NO_OP);
    }
 
    /* (non-Javadoc)
@@ -84,9 +83,9 @@ public class ArquillianInterceptor extends AbstractMethodInterceptor
    @Override
    public void interceptCleanupMethod(IMethodInvocation invocation) throws Throwable
    {
-      log.fine("after " + invocation.getFeature().getFeatureMethod().getReflection().getName());
-      invocation.proceed();
-      testRunner.after(invocation.getTarget(), invocation.getFeature().getFeatureMethod().getReflection(), LifecycleMethodExecutor.NO_OP);
+     log.fine("after " + invocation.getFeature().getFeatureMethod().getReflection().getName());
+     invocation.proceed();
+     testRunner.after(invocation.getTarget(), invocation.getFeature().getFeatureMethod().getReflection(), LifecycleMethodExecutor.NO_OP);
    }
 
    /* (non-Javadoc)
@@ -95,7 +94,7 @@ public class ArquillianInterceptor extends AbstractMethodInterceptor
    @Override
    public void interceptFeatureMethod(final IMethodInvocation invocation) throws Throwable
    {
-      TestResult result = testRunner.test(new TestMethodExecutor()
+      TestResult result = getTestRunner().test(new TestMethodExecutor()
       {
          @Override
          public Method getMethod()
@@ -120,5 +119,21 @@ public class ArquillianInterceptor extends AbstractMethodInterceptor
       {
          throw result.getThrowable();
       }
+   }
+
+   private TestRunnerAdaptor getTestRunner()
+   {
+      if(this.testRunner==null)
+      {
+          this.testRunner = State.getTestAdaptor();
+      }
+
+      if(this.testRunner==null)
+      {
+         throw new IllegalStateException(
+                 "Unable to run Arquillian Spock test without TestRunnerAdaptor instantiated. Likely you forgot to annotate the specification with @RunWith(ArquillianSputnik.class)");
+      }
+
+      return testRunner;
    }
 }
