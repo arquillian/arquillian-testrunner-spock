@@ -51,8 +51,7 @@ public class ArquillianInterceptor extends AbstractMethodInterceptor
    {
       Class<?> specClass = invocation.getSpec().getReflection();
       log.fine("beforeClass " + specClass.getName());
-      testRunner.beforeClass(specClass, LifecycleMethodExecutor.NO_OP);
-      invocation.proceed();
+      testRunner.beforeClass(specClass, new InvocationExecutor(invocation));
    }
 
    /* (non-Javadoc)
@@ -63,8 +62,7 @@ public class ArquillianInterceptor extends AbstractMethodInterceptor
    {
       Class<?> specClass = invocation.getSpec().getReflection();
       log.fine("afterClass " + specClass.getName());
-      invocation.proceed();
-      testRunner.afterClass(specClass, LifecycleMethodExecutor.NO_OP);
+      testRunner.afterClass(specClass, new InvocationExecutor(invocation));
    }
 
    /* (non-Javadoc)
@@ -74,8 +72,7 @@ public class ArquillianInterceptor extends AbstractMethodInterceptor
    public void interceptSetupMethod(IMethodInvocation invocation) throws Throwable
    {
       log.fine("before " + invocation.getFeature().getFeatureMethod().getReflection().getName());
-      testRunner.before(invocation.getTarget(), invocation.getFeature().getFeatureMethod().getReflection(), LifecycleMethodExecutor.NO_OP);
-      invocation.proceed();
+      testRunner.before(invocation.getTarget(), invocation.getFeature().getFeatureMethod().getReflection(), new InvocationExecutor(invocation));
    }
 
    /* (non-Javadoc)
@@ -85,8 +82,7 @@ public class ArquillianInterceptor extends AbstractMethodInterceptor
    public void interceptCleanupMethod(IMethodInvocation invocation) throws Throwable
    {
       log.fine("after " + invocation.getFeature().getFeatureMethod().getReflection().getName());
-      invocation.proceed();
-      testRunner.after(invocation.getTarget(), invocation.getFeature().getFeatureMethod().getReflection(), LifecycleMethodExecutor.NO_OP);
+      testRunner.after(invocation.getTarget(), invocation.getFeature().getFeatureMethod().getReflection(), new InvocationExecutor(invocation));
    }
 
    /* (non-Javadoc)
@@ -119,6 +115,20 @@ public class ArquillianInterceptor extends AbstractMethodInterceptor
       if(result.getThrowable() != null)
       {
          throw result.getThrowable();
+      }
+   }
+
+   private static class InvocationExecutor implements LifecycleMethodExecutor {
+
+      private IMethodInvocation invocation;
+
+      public InvocationExecutor(IMethodInvocation invocation) {
+         this.invocation = invocation;
+      }
+
+      @Override
+      public void invoke() throws Throwable {
+         invocation.proceed();
       }
    }
 }
