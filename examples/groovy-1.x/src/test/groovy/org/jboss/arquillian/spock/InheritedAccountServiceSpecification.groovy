@@ -14,6 +14,10 @@ class InheritedAccountServiceSpecification extends AbstractCommonSpecification {
     @Inject
     AccountService service
 
+    def setup() {
+        assert service != null
+    }
+
     def "transfer should be possible between two accounts"() {
         when:
         service.transfer(from, to, amount)
