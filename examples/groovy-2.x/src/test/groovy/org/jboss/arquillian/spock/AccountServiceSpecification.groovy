@@ -33,8 +33,8 @@ class AccountServiceSpecification extends Specification {
     @Deployment
     def static JavaArchive "create deployment"() {
         return ShrinkWrap.create(JavaArchive.class)
-                         .addClasses(AccountService.class, Account.class, SecureAccountService.class)
-                         .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
+                .addClasses(AccountService.class, Account.class, SecureAccountService.class)
+                .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
     }
 
     @Inject

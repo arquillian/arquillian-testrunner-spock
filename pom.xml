@@ -49,14 +49,15 @@
 
   <properties>
     <!-- Versioning -->
-    <version.arquillian_core>1.1.0.Final</version.arquillian_core>
+    <version.arquillian_core>1.1.2.Final</version.arquillian_core>
     <version.spock>0.7-groovy-2.0</version.spock>
     <version.groovy>2.1.5</version.groovy>
+    <version.assertj>1.5.0</version.assertj>
 
     <!-- override from parent -->
     <version.maven_compiler>3.1</version.maven_compiler>
     <version.release.plugin>2.1</version.release.plugin>
-    <version.maven_surefire>2.14.1</version.maven_surefire>
+    <version.maven_surefire>2.16</version.maven_surefire>
   </properties>
 
   <dependencyManagement>
@@ -106,6 +107,12 @@
         <groupId>org.codehaus.groovy</groupId>
         <artifactId>groovy-all</artifactId>
         <version>${version.groovy}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.assertj</groupId>
+        <artifactId>assertj-core</artifactId>
+        <version>${version.assertj}</version>
       </dependency>
 
     </dependencies>

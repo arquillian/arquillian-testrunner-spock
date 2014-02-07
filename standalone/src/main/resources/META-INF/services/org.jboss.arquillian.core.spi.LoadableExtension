@@ -1,1 +1,1 @@
-org.jboss.arquillian.junit.standalone.SpockStandaloneExtension
+org.jboss.arquillian.spock.standalone.SpockStandaloneExtension

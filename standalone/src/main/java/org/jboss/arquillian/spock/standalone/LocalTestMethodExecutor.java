@@ -94,11 +94,13 @@ public class LocalTestMethodExecutor
       {
          return;
       }
+
       if(values.length != resolvedValues.length)
       {
          throw new IllegalStateException("TestEnricher resolved wrong argument count, expected " + 
                values.length + " returned " + resolvedValues.length);
       }
+
       for (int i = 0; i < resolvedValues.length; i++)
       {
          Object resvoledValue = resolvedValues[i];

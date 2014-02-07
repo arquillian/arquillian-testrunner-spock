@@ -53,11 +53,14 @@ import org.spockframework.runtime.model.SpecInfo;
  */
 public class ArquillianSputnik extends Sputnik
 {
-   private final Class<?> clazz;
-   private SpecInfo spec;
-   private boolean extensionsRun = false;
-   private boolean descriptionAggregated = false;
 
+   private final Class<?> clazz;
+
+   private SpecInfo spec;
+
+   private boolean extensionsRun = false;
+
+   private boolean descriptionAggregated = false;
 
    public ArquillianSputnik(Class<?> clazz) throws InitializationError
    {
@@ -70,7 +73,6 @@ public class ArquillianSputnik extends Sputnik
    @Override
    public void run(RunNotifier notifier)
    {
-
       // first time we're being initialized
       if (!State.hasTestAdaptor())
       {
@@ -91,7 +93,8 @@ public class ArquillianSputnik extends Sputnik
                // don't set it if beforeSuite fails
                adaptor.beforeSuite();
                State.testAdaptor(adaptor);
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                // caught exception during BeforeSuite, mark this as failed
                State.caughtInitializationException(e);
@@ -99,6 +102,7 @@ public class ArquillianSputnik extends Sputnik
             }
          }
       }
+
       notifier.addListener(new RunListener()
       {
          @Override
@@ -122,17 +126,20 @@ public class ArquillianSputnik extends Sputnik
                         adaptor.afterSuite();
                         adaptor.shutdown();
                      }
-                  } finally
+                  }
+                  finally
                   {
                      State.clean();
                   }
                }
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                throw new RuntimeException("Could not run @AfterSuite", e);
             }
          }
       });
+
       // initialization ok, run children
       if (State.hasTestAdaptor())
       {
@@ -166,8 +173,10 @@ public class ArquillianSputnik extends Sputnik
       getSpec().sortFeatures(new JUnitSorterAdapter(sorter));
    }
 
-   private SpecInfo getSpec() {
-     if (spec == null) {
+   private SpecInfo getSpec()
+   {
+     if (spec == null)
+     {
        spec = new SpecInfoBuilder(clazz).build();
        new JUnitDescriptionGenerator(spec).attach();
        enrichSpecWithArquillian(spec);
@@ -175,7 +184,8 @@ public class ArquillianSputnik extends Sputnik
      return spec;
    }
 
-   private void runExtensionsIfNecessary() {
+   private void runExtensionsIfNecessary()
+   {
      if (extensionsRun) return;
      RunContext.get().createExtensionRunner(getSpec()).run();
      extensionsRun = true;
