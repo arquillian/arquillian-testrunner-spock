@@ -57,7 +57,7 @@
     <version.source.plugin>2.2.1</version.source.plugin>
     <version.jar.plugin>2.4</version.jar.plugin>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <version.surefire>2.14.1</version.surefire>
+    <version.surefire>2.17</version.surefire>
   </properties>
 
   <dependencyManagement>

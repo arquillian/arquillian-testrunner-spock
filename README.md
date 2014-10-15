@@ -1,6 +1,6 @@
 # Spock Arquillian Extension 
 
-## Logical Testing in the container!
+## BDD Testing in the container!
 
 ### What is it?
 
