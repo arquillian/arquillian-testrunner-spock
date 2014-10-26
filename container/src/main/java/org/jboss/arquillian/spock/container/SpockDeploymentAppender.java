@@ -33,8 +33,6 @@ import javax.script.ScriptEngineFactory;
  *
  * @author <a href="mailto:aslak@redhat.com">Aslak Knutsen</a>
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- *
- * @version $Revision: $
  */
 public class SpockDeploymentAppender implements AuxiliaryArchiveAppender
 {
