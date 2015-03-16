@@ -41,6 +41,7 @@ import org.spockframework.runtime.RunContext;
 import org.spockframework.runtime.SpecInfoBuilder;
 import org.spockframework.runtime.Sputnik;
 import org.spockframework.runtime.model.FeatureInfo;
+import org.spockframework.runtime.model.MethodInfo;
 import org.spockframework.runtime.model.SpecInfo;
 
 /**
@@ -178,7 +179,7 @@ public class ArquillianSputnik extends Sputnik
      if (spec == null)
      {
        spec = new SpecInfoBuilder(clazz).build();
-       new JUnitDescriptionGenerator(spec).attach();
+       new JUnitDescriptionGenerator(spec).describeSpecMethods();
        enrichSpecWithArquillian(spec);
      }
      return spec;
@@ -193,7 +194,7 @@ public class ArquillianSputnik extends Sputnik
 
    private void aggregateDescriptionIfNecessary() {
      if (descriptionAggregated) return;
-     new JUnitDescriptionGenerator(getSpec()).aggregate();
+     new JUnitDescriptionGenerator(getSpec()).describeSpec();
      descriptionAggregated = true;
    }
 
@@ -216,10 +217,14 @@ public class ArquillianSputnik extends Sputnik
 
    private void interceptLifecycleMethods(final SpecInfo specInfo, final ArquillianInterceptor interceptor)
    {
-      specInfo.getSetupSpecMethod().addInterceptor(interceptor);
-      specInfo.getSetupMethod().addInterceptor(interceptor);
-      specInfo.getCleanupMethod().addInterceptor(interceptor);
-      specInfo.getCleanupSpecMethod().addInterceptor(interceptor);
+      for (MethodInfo methodInfo : specInfo.getSetupSpecMethods())
+         methodInfo.addInterceptor(interceptor);
+      for (MethodInfo methodInfo : specInfo.getSetupMethods())
+         methodInfo.addInterceptor(interceptor);
+      for (MethodInfo methodInfo : specInfo.getCleanupMethods())
+         methodInfo.addInterceptor(interceptor);
+      for (MethodInfo methodInfo : specInfo.getCleanupSpecMethods())
+         methodInfo.addInterceptor(interceptor);
    }
 
    private void interceptAllFeatures(final Collection<FeatureInfo> features, final ArquillianInterceptor interceptor)
