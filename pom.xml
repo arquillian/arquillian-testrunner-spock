@@ -122,7 +122,6 @@
     <module>core</module>
     <module>standalone</module>
     <module>container</module>
-    <module>examples/groovy-1.x</module>
     <module>examples/groovy-2.x</module>
   </modules>
 
