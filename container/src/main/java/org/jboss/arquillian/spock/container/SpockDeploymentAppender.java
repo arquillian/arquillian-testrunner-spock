@@ -62,6 +62,10 @@ public class SpockDeploymentAppender implements AuxiliaryArchiveAppender
                        .addAsServiceProvider(TestRunner.class, SpockTestRunner.class)
                        .addAsServiceProvider(ScriptEngineFactory.class, GroovyScriptEngineFactory.class)
                        .addClass(SpockSpecificationFilter.class)
+                       .addAsResource("dsld/spk.dsld")
+                       .addAsResource("org/spockframework/util/SpockReleaseInfo.properties")
+                       .addAsResource("META-INF/services/org.codehaus.groovy.transform.ASTTransformation")
+                       .addAsResource("META-INF/services/org.spockframework.runtime.extension.IGlobalExtension")
                        .addAsManifestResource("META-INF/dgminfo", "dgminfo")
                        .addAsManifestResource("META-INF/groovy-release-info.properties", "groovy-release-info.properties");
    }

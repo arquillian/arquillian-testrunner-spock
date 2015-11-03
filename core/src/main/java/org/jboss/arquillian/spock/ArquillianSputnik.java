@@ -21,8 +21,6 @@
 
 package org.jboss.arquillian.spock;
 
-import java.util.Collection;
-
 import org.jboss.arquillian.test.spi.TestRunnerAdaptor;
 import org.jboss.arquillian.test.spi.TestRunnerAdaptorBuilder;
 import org.junit.runner.Description;
@@ -34,19 +32,17 @@ import org.junit.runner.notification.Failure;
 import org.junit.runner.notification.RunListener;
 import org.junit.runner.notification.RunNotifier;
 import org.junit.runners.model.InitializationError;
-import org.spockframework.runtime.JUnitDescriptionGenerator;
-import org.spockframework.runtime.JUnitFilterAdapter;
-import org.spockframework.runtime.JUnitSorterAdapter;
-import org.spockframework.runtime.RunContext;
-import org.spockframework.runtime.SpecInfoBuilder;
-import org.spockframework.runtime.Sputnik;
+import org.spockframework.runtime.*;
 import org.spockframework.runtime.model.FeatureInfo;
 import org.spockframework.runtime.model.MethodInfo;
 import org.spockframework.runtime.model.SpecInfo;
 
+import java.util.Collection;
+
 /**
  * @author <a href="mailto:kpiwko@redhat.com">Karel Piwko</a>
  * @author Peter Niederwieser
+ * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  *
  * Extension to Sputnik class that allows to mimic Before and After Suite events.
  * The original runner is copied as we need access to getSpec() method, which is private in original Sputnik class
@@ -67,7 +63,7 @@ public class ArquillianSputnik extends Sputnik
    {
       super(clazz);
       // clazz is private field, we're actually shading it
-      this.clazz=clazz;
+      this.clazz = clazz;
       State.runnerStarted();
    }
 
@@ -187,20 +183,32 @@ public class ArquillianSputnik extends Sputnik
 
    private void runExtensionsIfNecessary()
    {
-     if (extensionsRun) return;
+     if (extensionsRun)
+     {
+         return;
+     }
      RunContext.get().createExtensionRunner(getSpec()).run();
      extensionsRun = true;
    }
 
    private void aggregateDescriptionIfNecessary() {
-     if (descriptionAggregated) return;
+     if (descriptionAggregated)
+     {
+         return;
+     }
      new JUnitDescriptionGenerator(getSpec()).describeSpec();
      descriptionAggregated = true;
    }
 
    private boolean allFeaturesExcluded() {
      for (FeatureInfo feature: getSpec().getAllFeatures())
-       if (!feature.isExcluded()) return false;
+     {
+        if (!feature.isExcluded())
+        {
+            return false;
+        }
+
+     }
 
      return true;
    }
@@ -208,28 +216,36 @@ public class ArquillianSputnik extends Sputnik
    private void enrichSpecWithArquillian(SpecInfo spec)
    {
       final ArquillianInterceptor interceptor = new ArquillianInterceptor();
-      for (SpecInfo s : spec.getSpecsBottomToTop())
+      for (final SpecInfo specInfo : spec.getSpecsBottomToTop())
       {
-         interceptLifecycleMethods(s, interceptor);
-         interceptAllFeatures(s.getAllFeatures(), interceptor);
+         interceptLifecycleMethods(specInfo, interceptor);
+         interceptAllFeatures(specInfo.getAllFeaturesInExecutionOrder(), interceptor);
       }
    }
 
    private void interceptLifecycleMethods(final SpecInfo specInfo, final ArquillianInterceptor interceptor)
    {
-      for (MethodInfo methodInfo : specInfo.getSetupSpecMethods())
-         methodInfo.addInterceptor(interceptor);
-      for (MethodInfo methodInfo : specInfo.getSetupMethods())
-         methodInfo.addInterceptor(interceptor);
-      for (MethodInfo methodInfo : specInfo.getCleanupMethods())
-         methodInfo.addInterceptor(interceptor);
-      for (MethodInfo methodInfo : specInfo.getCleanupSpecMethods())
-         methodInfo.addInterceptor(interceptor);
+      spec.addSetupSpecInterceptor(interceptor);
+
+      for (final MethodInfo methodInfo : specInfo.getSetupMethods())
+      {
+          methodInfo.addInterceptor(interceptor);
+      }
+
+      for (final MethodInfo methodInfo : specInfo.getCleanupMethods())
+      {
+          methodInfo.addInterceptor(interceptor);
+      }
+
+      for (final MethodInfo methodInfo : specInfo.getCleanupSpecMethods())
+      {
+          methodInfo.addInterceptor(interceptor);
+      }
    }
 
    private void interceptAllFeatures(final Collection<FeatureInfo> features, final ArquillianInterceptor interceptor)
    {
-      for (FeatureInfo feature : features)
+      for (final FeatureInfo feature : features)
       {
          feature.getFeatureMethod().addInterceptor(interceptor);
       }

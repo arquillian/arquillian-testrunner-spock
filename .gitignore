@@ -22,3 +22,5 @@ test-output/
 # JBoss AS
 transaction.log
 
+# Custom docker images - not relevant for distributing
+.docker/

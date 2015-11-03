@@ -16,15 +16,14 @@
  */
 package org.jboss.arquillian.spock;
 
-import java.lang.reflect.Method;
-import java.util.logging.Logger;
-
 import org.jboss.arquillian.test.spi.LifecycleMethodExecutor;
 import org.jboss.arquillian.test.spi.TestMethodExecutor;
 import org.jboss.arquillian.test.spi.TestResult;
 import org.jboss.arquillian.test.spi.TestRunnerAdaptor;
 import org.spockframework.runtime.extension.AbstractMethodInterceptor;
 import org.spockframework.runtime.extension.IMethodInvocation;
+
+import java.lang.reflect.Method;
 
 /**
  * Interceptor to call the Arquillian Core
@@ -34,8 +33,6 @@ import org.spockframework.runtime.extension.IMethodInvocation;
  */
 public class ArquillianInterceptor extends AbstractMethodInterceptor
 {
-   private final Logger log = Logger.getLogger(ArquillianInterceptor.class.getName());
-
    private TestRunnerAdaptor testRunner;
 
    public ArquillianInterceptor()
@@ -49,7 +46,6 @@ public class ArquillianInterceptor extends AbstractMethodInterceptor
    public void interceptSetupSpecMethod(IMethodInvocation invocation) throws Throwable
    {
       Class<?> specClass = invocation.getSpec().getReflection();
-      log.fine("beforeClass " + specClass.getName());
       getTestRunner().beforeClass(specClass, new InvocationExecutor(invocation));
    }
 
@@ -60,7 +56,6 @@ public class ArquillianInterceptor extends AbstractMethodInterceptor
    public void interceptCleanupSpecMethod(IMethodInvocation invocation) throws Throwable
    {
       Class<?> specClass = invocation.getSpec().getReflection();
-      log.fine("afterClass " + specClass.getName());
       getTestRunner().afterClass(specClass, new InvocationExecutor(invocation));
    }
 
@@ -70,8 +65,8 @@ public class ArquillianInterceptor extends AbstractMethodInterceptor
    @Override
    public void interceptSetupMethod(IMethodInvocation invocation) throws Throwable
    {
-      log.fine("before " + invocation.getFeature().getFeatureMethod().getReflection().getName());
-      getTestRunner().before(invocation.getTarget(), invocation.getFeature().getFeatureMethod().getReflection(), new InvocationExecutor(invocation));
+      final Method testMethod = invocation.getFeature().getFeatureMethod().getReflection();
+      getTestRunner().before(invocation.getTarget(), testMethod, new InvocationExecutor(invocation));
    }
 
    /* (non-Javadoc)
@@ -80,7 +75,6 @@ public class ArquillianInterceptor extends AbstractMethodInterceptor
    @Override
    public void interceptCleanupMethod(IMethodInvocation invocation) throws Throwable
    {
-      log.fine("after " + invocation.getFeature().getFeatureMethod().getReflection().getName());
       getTestRunner().after(invocation.getTarget(), invocation.getFeature().getFeatureMethod().getReflection(), new InvocationExecutor(invocation));
    }
 
@@ -111,7 +105,7 @@ public class ArquillianInterceptor extends AbstractMethodInterceptor
          }
       });
 
-      if(result.getThrowable() != null)
+      if (result.getThrowable() != null)
       {
          throw result.getThrowable();
       }
@@ -133,12 +127,12 @@ public class ArquillianInterceptor extends AbstractMethodInterceptor
 
    private TestRunnerAdaptor getTestRunner()
    {
-      if(this.testRunner==null)
+      if (this.testRunner == null)
       {
           this.testRunner = State.getTestAdaptor();
       }
 
-      if(this.testRunner==null)
+      if (this.testRunner == null)
       {
          throw new IllegalStateException(
                  "Unable to run Arquillian Spock test without TestRunnerAdaptor instantiated. Likely you forgot to annotate the specification with @RunWith(ArquillianSputnik)");
