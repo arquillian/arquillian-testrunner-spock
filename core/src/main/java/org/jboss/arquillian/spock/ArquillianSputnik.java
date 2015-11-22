@@ -226,10 +226,11 @@ public class ArquillianSputnik extends Sputnik
    private void interceptLifecycleMethods(final SpecInfo specInfo, final ArquillianInterceptor interceptor)
    {
       spec.addSetupSpecInterceptor(interceptor);
+      spec.addCleanupSpecInterceptor(interceptor);
 
       for (final MethodInfo methodInfo : specInfo.getSetupMethods())
       {
-          methodInfo.addInterceptor(interceptor);
+         methodInfo.addInterceptor(interceptor);
       }
 
       for (final MethodInfo methodInfo : specInfo.getCleanupMethods())
