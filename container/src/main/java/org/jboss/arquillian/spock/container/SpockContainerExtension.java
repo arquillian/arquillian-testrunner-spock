@@ -33,4 +33,5 @@ public class SpockContainerExtension implements LoadableExtension
    {
       builder.service(AuxiliaryArchiveAppender.class, SpockDeploymentAppender.class);
    }
+
 }

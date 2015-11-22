@@ -16,8 +16,6 @@
  */
 package org.jboss.arquillian.spock.container;
 
-import java.lang.reflect.Method;
-
 import org.junit.runner.Description;
 import org.junit.runner.manipulation.Filter;
 import org.spockframework.runtime.Sputnik;
@@ -25,8 +23,10 @@ import org.spockframework.runtime.model.FeatureInfo;
 import org.spockframework.runtime.model.MethodInfo;
 import org.spockframework.runtime.model.SpecInfo;
 
+import java.lang.reflect.Method;
+
 /**
- * JUnit filter for Spock spefications.
+ * JUnit filter for Spock specifications.
  *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  * @version $Revision: $
@@ -39,17 +39,17 @@ final class SpockSpecificationFilter extends Filter
 
    private final String methodName;
 
-   private SpecInfo currentSpec;
+   private final SpecInfo currentSpec;
 
    SpockSpecificationFilter(Sputnik spockRunner, String methodName)
    {
       this.spockRunner = spockRunner;
       this.methodName = methodName;
-      obtainCurrentSpecification();
+      this.currentSpec = obtainCurrentSpecification();
    }
 
    @Override
-   public boolean shouldRun(Description description)
+   public boolean shouldRun(final Description description)
    {
       final MethodInfo featureMethod = findCorrespondingFeatureMethod(description.getMethodName());
       if (NOT_FOUND.equals(featureMethod))
@@ -65,13 +65,13 @@ final class SpockSpecificationFilter extends Filter
       return "Filter Feature methods for Spock Framework";
    }
 
-   private void obtainCurrentSpecification()
+   private SpecInfo obtainCurrentSpecification()
    {
       try
       {
-         Method method = Sputnik.class.getDeclaredMethod("getSpec");
+         final Method method = Sputnik.class.getDeclaredMethod("getSpec");
          method.setAccessible(true);
-         currentSpec = (SpecInfo) method.invoke(spockRunner);
+         return (SpecInfo) method.invoke(spockRunner);
       }
       catch (Exception e)
       {
@@ -79,12 +79,12 @@ final class SpockSpecificationFilter extends Filter
       }
    }
 
-   private MethodInfo findCorrespondingFeatureMethod(String featureMethodName)
+   private MethodInfo findCorrespondingFeatureMethod(final String featureMethodName)
    {
       MethodInfo methodInfo = NOT_FOUND;
       for (FeatureInfo feature : currentSpec.getAllFeatures())
       {
-         MethodInfo featureMethod = feature.getFeatureMethod();
+         final MethodInfo featureMethod = feature.getFeatureMethod();
          if (featureMethodName.equals(featureMethod.getName()))
          {
             methodInfo = featureMethod;

@@ -28,9 +28,6 @@ import org.jboss.arquillian.spock.AccountService;
  */
 public class SecureAccountService implements AccountService
 {
-   /* (non-Javadoc)
-    * @see org.jboss.arquillian.framework.spock.AccountService#transfer(org.jboss.arquillian.framework.spock.Account, org.jboss.arquillian.framework.spock.Account, java.math.BigDecimal)
-    */
    public void transfer(Account from, Account to, int amount)
    {
       from.withdraw(amount);

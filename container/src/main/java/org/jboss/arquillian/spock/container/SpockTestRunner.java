@@ -16,9 +16,6 @@
  */
 package org.jboss.arquillian.spock.container;
 
-import java.util.Collections;
-import java.util.List;
-
 import org.jboss.arquillian.container.test.spi.TestRunner;
 import org.jboss.arquillian.spock.ArquillianSputnik;
 import org.jboss.arquillian.test.spi.TestResult;
@@ -27,6 +24,11 @@ import org.junit.runner.Result;
 import org.junit.runner.notification.RunListener;
 import org.junit.runner.notification.RunNotifier;
 import org.spockframework.runtime.Sputnik;
+
+import java.util.Collections;
+import java.util.List;
+
+import static org.jboss.arquillian.test.spi.TestResult.failed;
 
 /**
  * Spock TestRunner
@@ -63,7 +65,7 @@ public class SpockTestRunner implements TestRunner
       }
       catch (Exception e)
       {
-         return new TestResult(Status.FAILED, e);
+         return failed(e);
       }
 
       return convertToTestResult(testResult);

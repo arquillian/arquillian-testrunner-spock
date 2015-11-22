@@ -29,6 +29,7 @@ import java.lang.reflect.Method;
  * Interceptor to call the Arquillian Core
  *
  * @author <a href="mailto:aslak@redhat.com">Aslak Knutsen</a>
+ * @author <a href="mailto:bartosz.majsak@ggmail.com">Bartosz Majsak</a>
  * @version $Revision: $
  */
 public class ArquillianInterceptor extends AbstractMethodInterceptor
@@ -45,7 +46,7 @@ public class ArquillianInterceptor extends AbstractMethodInterceptor
    @Override
    public void interceptSetupSpecMethod(IMethodInvocation invocation) throws Throwable
    {
-      Class<?> specClass = invocation.getSpec().getReflection();
+      final Class<?> specClass = invocation.getSpec().getReflection();
       getTestRunner().beforeClass(specClass, new InvocationExecutor(invocation));
    }
 
@@ -55,7 +56,7 @@ public class ArquillianInterceptor extends AbstractMethodInterceptor
    @Override
    public void interceptCleanupSpecMethod(IMethodInvocation invocation) throws Throwable
    {
-      Class<?> specClass = invocation.getSpec().getReflection();
+      final Class<?> specClass = invocation.getSpec().getReflection();
       getTestRunner().afterClass(specClass, new InvocationExecutor(invocation));
    }
 
@@ -65,8 +66,7 @@ public class ArquillianInterceptor extends AbstractMethodInterceptor
    @Override
    public void interceptSetupMethod(IMethodInvocation invocation) throws Throwable
    {
-      final Method testMethod = invocation.getFeature().getFeatureMethod().getReflection();
-      getTestRunner().before(invocation.getTarget(), testMethod, new InvocationExecutor(invocation));
+      getTestRunner().before(invocation.getTarget(), invocation.getMethod().getReflection(), new InvocationExecutor(invocation));
    }
 
    /* (non-Javadoc)
@@ -75,7 +75,7 @@ public class ArquillianInterceptor extends AbstractMethodInterceptor
    @Override
    public void interceptCleanupMethod(IMethodInvocation invocation) throws Throwable
    {
-      getTestRunner().after(invocation.getTarget(), invocation.getFeature().getFeatureMethod().getReflection(), new InvocationExecutor(invocation));
+      getTestRunner().after(invocation.getTarget(), invocation.getMethod().getReflection(), new InvocationExecutor(invocation));
    }
 
    /* (non-Javadoc)
@@ -84,7 +84,7 @@ public class ArquillianInterceptor extends AbstractMethodInterceptor
    @Override
    public void interceptFeatureMethod(final IMethodInvocation invocation) throws Throwable
    {
-      TestResult result = getTestRunner().test(new TestMethodExecutor()
+      final TestResult result = getTestRunner().test(new TestMethodExecutor()
       {
          @Override
          public Method getMethod()

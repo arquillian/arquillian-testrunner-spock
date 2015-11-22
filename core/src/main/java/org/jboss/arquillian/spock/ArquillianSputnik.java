@@ -57,7 +57,7 @@ public class ArquillianSputnik extends Sputnik
 
    private boolean extensionsRun = false;
 
-   private boolean descriptionAggregated = false;
+   private boolean descriptionGenerated = false;
 
    public ArquillianSputnik(Class<?> clazz) throws InitializationError
    {
@@ -140,9 +140,9 @@ public class ArquillianSputnik extends Sputnik
       // initialization ok, run children
       if (State.hasTestAdaptor())
       {
-          runExtensionsIfNecessary();
-          aggregateDescriptionIfNecessary();
-          RunContext.get().createSpecRunner(getSpec(), notifier).run();
+         runExtensionsIfNecessary();
+         generateSpecDescriptionIfNecessary();
+         RunContext.get().createSpecRunner(getSpec(), notifier).run();
       }
    }
 
@@ -150,13 +150,14 @@ public class ArquillianSputnik extends Sputnik
    public Description getDescription()
    {
       runExtensionsIfNecessary();
-      aggregateDescriptionIfNecessary();
+      generateSpecDescriptionIfNecessary();
       return getSpec().getDescription();
    }
 
    @Override
    public void filter(Filter filter) throws NoTestsRemainException
    {
+      invalidateSpecDescription();
       getSpec().filterFeatures(new JUnitFilterAdapter(filter));
       if (allFeaturesExcluded())
       {
@@ -167,6 +168,7 @@ public class ArquillianSputnik extends Sputnik
    @Override
    public void sort(Sorter sorter)
    {
+      invalidateSpecDescription();
       getSpec().sortFeatures(new JUnitSorterAdapter(sorter));
    }
 
@@ -174,9 +176,9 @@ public class ArquillianSputnik extends Sputnik
    {
      if (spec == null)
      {
-       spec = new SpecInfoBuilder(clazz).build();
-       new JUnitDescriptionGenerator(spec).describeSpecMethods();
-       enrichSpecWithArquillian(spec);
+         spec = new SpecInfoBuilder(clazz).build();
+         enrichSpecWithArquillian(spec);
+         new JUnitDescriptionGenerator(spec).describeSpecMethods();
      }
      return spec;
    }
@@ -191,13 +193,17 @@ public class ArquillianSputnik extends Sputnik
      extensionsRun = true;
    }
 
-   private void aggregateDescriptionIfNecessary() {
-     if (descriptionAggregated)
+   private void generateSpecDescriptionIfNecessary() {
+     if (descriptionGenerated)
      {
          return;
      }
      new JUnitDescriptionGenerator(getSpec()).describeSpec();
-     descriptionAggregated = true;
+     descriptionGenerated = true;
+   }
+
+   private void invalidateSpecDescription() {
+      descriptionGenerated = false;
    }
 
    private boolean allFeaturesExcluded() {
@@ -213,7 +219,7 @@ public class ArquillianSputnik extends Sputnik
      return true;
    }
 
-   private void enrichSpecWithArquillian(SpecInfo spec)
+   private void enrichSpecWithArquillian(final SpecInfo spec)
    {
       final ArquillianInterceptor interceptor = new ArquillianInterceptor();
       for (final SpecInfo specInfo : spec.getSpecsBottomToTop())
@@ -225,8 +231,8 @@ public class ArquillianSputnik extends Sputnik
 
    private void interceptLifecycleMethods(final SpecInfo specInfo, final ArquillianInterceptor interceptor)
    {
-      spec.addSetupSpecInterceptor(interceptor);
-      spec.addCleanupSpecInterceptor(interceptor);
+      specInfo.addSetupSpecInterceptor(interceptor);
+      specInfo.addCleanupSpecInterceptor(interceptor);
 
       for (final MethodInfo methodInfo : specInfo.getSetupMethods())
       {
@@ -234,11 +240,6 @@ public class ArquillianSputnik extends Sputnik
       }
 
       for (final MethodInfo methodInfo : specInfo.getCleanupMethods())
-      {
-          methodInfo.addInterceptor(interceptor);
-      }
-
-      for (final MethodInfo methodInfo : specInfo.getCleanupSpecMethods())
       {
           methodInfo.addInterceptor(interceptor);
       }
