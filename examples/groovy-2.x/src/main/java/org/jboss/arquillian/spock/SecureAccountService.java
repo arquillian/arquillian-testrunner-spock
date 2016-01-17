@@ -16,10 +16,6 @@
  */
 package org.jboss.arquillian.spock;
 
-import org.jboss.arquillian.spock.Account;
-import org.jboss.arquillian.spock.AccountService;
-
-
 /**
  * SecureAccountService
  *

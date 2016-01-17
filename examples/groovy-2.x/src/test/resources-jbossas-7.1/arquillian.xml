@@ -12,6 +12,7 @@
   <container qualifier="jboss7" default="true">
     <configuration>
       <property name="jbossHome">target/jboss-as-7.1.1.Final</property>
+      <property name="allowConnectingToRunningServer">true</property>
     </configuration>
   </container>
 

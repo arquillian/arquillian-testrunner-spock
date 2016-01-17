@@ -36,10 +36,6 @@ public class ArquillianInterceptor extends AbstractMethodInterceptor
 {
    private TestRunnerAdaptor testRunner;
 
-   public ArquillianInterceptor()
-   {
-   }
-
    /* (non-Javadoc)
     * @see org.spockframework.runtime.extension.AbstractMethodInterceptor#interceptSetupSpecMethod(org.spockframework.runtime.extension.IMethodInvocation)
     */
@@ -84,18 +80,26 @@ public class ArquillianInterceptor extends AbstractMethodInterceptor
    @Override
    public void interceptFeatureMethod(final IMethodInvocation invocation) throws Throwable
    {
+      final Method featureMethod = invocation.getFeature().getFeatureMethod().getReflection();
+      final Object invocationTarget = invocation.getTarget();
+
+      if (invocation.getSpec().getSetupMethods().isEmpty())
+      {
+         getTestRunner().before(invocationTarget, featureMethod, new NoopInvocationExecutor());
+      }
+
       final TestResult result = getTestRunner().test(new TestMethodExecutor()
       {
          @Override
          public Method getMethod()
          {
-            return invocation.getFeature().getFeatureMethod().getReflection();
+            return featureMethod;
          }
 
          @Override
          public Object getInstance()
          {
-            return invocation.getTarget();
+            return invocationTarget;
          }
 
          @Override
@@ -105,9 +109,23 @@ public class ArquillianInterceptor extends AbstractMethodInterceptor
          }
       });
 
+      if (invocation.getSpec().getCleanupMethods().isEmpty())
+      {
+         getTestRunner().after(invocationTarget, featureMethod, new NoopInvocationExecutor());
+      }
+
       if (result.getThrowable() != null)
       {
          throw result.getThrowable();
+      }
+   }
+
+   private static class NoopInvocationExecutor implements LifecycleMethodExecutor
+   {
+
+      @Override
+      public void invoke() throws Throwable
+      {
       }
    }
 

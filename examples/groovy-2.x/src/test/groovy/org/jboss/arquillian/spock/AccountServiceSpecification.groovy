@@ -37,10 +37,6 @@ class AccountServiceSpecification extends Specification {
     @Inject
     private AccountService service
 
-    def setup() {
-        assert service != null // Otherwise @Before event is not fired
-    }
-
     def "transfer should be possible between two accounts"() {
         when:
             service.transfer(from, to, amount)

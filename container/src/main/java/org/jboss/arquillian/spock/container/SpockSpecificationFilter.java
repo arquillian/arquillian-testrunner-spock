@@ -16,6 +16,7 @@
  */
 package org.jboss.arquillian.spock.container;
 
+import org.jboss.arquillian.spock.ArquillianSputnik;
 import org.junit.runner.Description;
 import org.junit.runner.manipulation.Filter;
 import org.spockframework.runtime.Sputnik;
@@ -69,7 +70,7 @@ final class SpockSpecificationFilter extends Filter
    {
       try
       {
-         final Method method = Sputnik.class.getDeclaredMethod("getSpec");
+         final Method method = ArquillianSputnik.class.getDeclaredMethod("getSpec");
          method.setAccessible(true);
          return (SpecInfo) method.invoke(spockRunner);
       }
