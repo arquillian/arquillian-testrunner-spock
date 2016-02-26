@@ -1,143 +1,154 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
-  <parent>
-    <groupId>org.jboss</groupId>
-    <artifactId>jboss-parent</artifactId>
-    <relativePath />
-    <version>10</version>
-  </parent>
+    <parent>
+        <groupId>org.jboss</groupId>
+        <artifactId>jboss-parent</artifactId>
+        <relativePath/>
+        <version>10</version>
+    </parent>
 
-  <!-- Model Information -->
-  <modelVersion>4.0.0</modelVersion>
+    <!-- Model Information -->
+    <modelVersion>4.0.0</modelVersion>
 
-  <!-- Artifact Information -->
-  <groupId>org.jboss.arquillian.spock</groupId>
-  <artifactId>arquillian-spock-parent</artifactId>
-  <version>1.0.0.Final-SNAPSHOT</version>
-  <packaging>pom</packaging>
-  <name>Arquillian TestRunner Parent Spock</name>
-  <description>Arquillian integration for the Spock BDD Test Framework</description>
-  <url>http://arquillian.org</url>
+    <!-- Artifact Information -->
+    <groupId>org.jboss.arquillian.spock</groupId>
+    <artifactId>arquillian-spock-parent</artifactId>
+    <version>1.0.0.Final-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>Arquillian TestRunner Parent Spock</name>
+    <description>Arquillian integration for the Spock BDD Test Framework</description>
+    <url>http://arquillian.org</url>
 
-  <issueManagement>
-    <system>jira</system>
-    <url>http://jira.jboss.com/jira/browse/ARQ</url>
-  </issueManagement>
+    <issueManagement>
+        <system>jira</system>
+        <url>http://jira.jboss.com/jira/browse/ARQ</url>
+    </issueManagement>
 
-  <licenses>
-    <license>
-      <name>Apache License, Version 2.0</name>
-      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-    </license>
-  </licenses>
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
 
-  <scm>
-    <connection>scm:git:git://git@github.com:arquillian/arquillian-testrunner-spock.git</connection>
-    <developerConnection>scm:git:ssh://github.com/arquillian/arquillian-testrunner-spock.git</developerConnection>
-    <url>git://github.com/arquillian/arquillian-testrunner-spock.git</url>
-  </scm>
+    <scm>
+        <connection>scm:git:git://git@github.com:arquillian/arquillian-testrunner-spock.git</connection>
+        <developerConnection>scm:git:ssh://github.com/arquillian/arquillian-testrunner-spock.git</developerConnection>
+        <url>git://github.com/arquillian/arquillian-testrunner-spock.git</url>
+    </scm>
 
-  <developers>
-    <developer>
-      <id>arquillian.org</id>
-      <name>Arquillian Community</name>
-      <organization>arquillian.org</organization>
-      <organizationUrl>http://arquillian.org</organizationUrl>
-    </developer>
-  </developers>
+    <developers>
+        <developer>
+            <id>arquillian.org</id>
+            <name>Arquillian Community</name>
+            <organization>arquillian.org</organization>
+            <organizationUrl>http://arquillian.org</organizationUrl>
+        </developer>
+    </developers>
 
-  <properties>
-    <!-- Versioning -->
-    <version.arquillian_core>1.1.10.Final</version.arquillian_core>
-    <version.shrinkwrap>1.2.3</version.shrinkwrap>
-    <version.spock>1.0-groovy-2.4</version.spock>
-    <version.groovy>2.4.1</version.groovy>
-    <version.assertj>2.2.0</version.assertj>
+    <properties>
+        <!-- Versioning -->
+        <version.arquillian_core>1.1.10.Final</version.arquillian_core>
+        <version.shrinkwrap>1.2.3</version.shrinkwrap>
+        <version.spock>1.0-groovy-2.4</version.spock>
+        <version.groovy>2.4.1</version.groovy>
+        <version.assertj>2.2.0</version.assertj>
 
-    <!-- override from parent -->
-    <version.maven_compiler>3.1</version.maven_compiler>
-    <version.release.plugin>2.1</version.release.plugin>
-    <version.surefire>2.18.1</version.surefire>
-  </properties>
+        <!-- override from parent -->
+        <version.maven_compiler>3.1</version.maven_compiler>
+        <version.release.plugin>2.1</version.release.plugin>
+        <version.surefire>2.18.1</version.surefire>
+    </properties>
 
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>org.jboss.shrinkwrap</groupId>
-        <artifactId>shrinkwrap-bom</artifactId>
-        <version>${version.shrinkwrap}</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.jboss.arquillian</groupId>
-        <artifactId>arquillian-bom</artifactId>
-        <version>${version.arquillian_core}</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.jboss.arquillian</groupId>
-        <artifactId>arquillian-build</artifactId>
-        <version>${version.arquillian_core}</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.jboss.arquillian.core</groupId>
-        <artifactId>arquillian-core-impl-base</artifactId>
-        <classifier>tests</classifier>
-        <version>${version.arquillian_core}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.jboss.arquillian.test</groupId>
-        <artifactId>arquillian-test-impl-base</artifactId>
-        <classifier>tests</classifier>
-        <version>${version.arquillian_core}</version>
-      </dependency>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.jboss.shrinkwrap</groupId>
+                <artifactId>shrinkwrap-bom</artifactId>
+                <version>${version.shrinkwrap}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.arquillian</groupId>
+                <artifactId>arquillian-bom</artifactId>
+                <version>${version.arquillian_core}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.arquillian</groupId>
+                <artifactId>arquillian-build</artifactId>
+                <version>${version.arquillian_core}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.arquillian.core</groupId>
+                <artifactId>arquillian-core-impl-base</artifactId>
+                <classifier>tests</classifier>
+                <version>${version.arquillian_core}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.arquillian.test</groupId>
+                <artifactId>arquillian-test-impl-base</artifactId>
+                <classifier>tests</classifier>
+                <version>${version.arquillian_core}</version>
+            </dependency>
 
-      <!-- External Projects -->
-      <dependency>
-        <groupId>org.spockframework</groupId>
-        <artifactId>spock-core</artifactId>
-        <version>${version.spock}</version>
-      </dependency>
+            <!-- External Projects -->
+            <dependency>
+                <groupId>org.spockframework</groupId>
+                <artifactId>spock-core</artifactId>
+                <version>${version.spock}</version>
+            </dependency>
 
-      <dependency>
-        <groupId>org.codehaus.groovy</groupId>
-        <artifactId>groovy-all</artifactId>
-        <version>${version.groovy}</version>
-      </dependency>
+            <dependency>
+                <groupId>org.codehaus.groovy</groupId>
+                <artifactId>groovy-all</artifactId>
+                <version>${version.groovy}</version>
+            </dependency>
 
-      <dependency>
-        <groupId>org.assertj</groupId>
-        <artifactId>assertj-core</artifactId>
-        <version>${version.assertj}</version>
-      </dependency>
+            <dependency>
+                <groupId>org.assertj</groupId>
+                <artifactId>assertj-core</artifactId>
+                <version>${version.assertj}</version>
+            </dependency>
 
-    </dependencies>
-  </dependencyManagement>
+        </dependencies>
+    </dependencyManagement>
 
-  <modules>
-    <module>core</module>
-    <module>standalone</module>
-    <module>container</module>
-    <module>examples/groovy-2.x</module>
-  </modules>
+    <modules>
+        <module>core</module>
+        <module>standalone</module>
+        <module>container</module>
+    </modules>
 
-  <build>
-    <plugins>
-      <plugin>
-        <artifactId>maven-release-plugin</artifactId>
-        <configuration>
-          <autoVersionSubmodules>true</autoVersionSubmodules>
-          <pushChanges>false</pushChanges>
-          <localCheckout>true</localCheckout>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-release-plugin</artifactId>
+                <configuration>
+                    <autoVersionSubmodules>true</autoVersionSubmodules>
+                    <pushChanges>false</pushChanges>
+                    <localCheckout>true</localCheckout>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.5.1</version>
+                <configuration>
+                    <compilerArguments>
+                        <source>1.8</source>
+                        <target>1.8</target>
+                    </compilerArguments>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
 
