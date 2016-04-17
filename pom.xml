@@ -5,7 +5,7 @@
     <groupId>org.jboss</groupId>
     <artifactId>jboss-parent</artifactId>
     <relativePath />
-    <version>10</version>
+    <version>19</version>
   </parent>
 
   <!-- Model Information -->
@@ -49,15 +49,15 @@
 
   <properties>
     <!-- Versioning -->
-    <version.arquillian_core>1.1.2.Final</version.arquillian_core>
+    <version.arquillian_core>1.1.11.Final</version.arquillian_core>
     <version.spock>0.7-groovy-2.0</version.spock>
     <version.groovy>2.1.5</version.groovy>
-    <version.assertj>1.5.0</version.assertj>
+    <version.assertj>2.2.0</version.assertj>
 
     <!-- override from parent -->
     <version.maven_compiler>3.1</version.maven_compiler>
     <version.release.plugin>2.1</version.release.plugin>
-    <version.maven_surefire>2.16</version.maven_surefire>
+    <version.maven_surefire>2.19.1</version.maven_surefire>
   </properties>
 
   <dependencyManagement>
@@ -65,7 +65,7 @@
       <dependency>
         <groupId>org.jboss.shrinkwrap</groupId>
         <artifactId>shrinkwrap-bom</artifactId>
-        <version>1.1.2</version>
+        <version>1.2.3</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
