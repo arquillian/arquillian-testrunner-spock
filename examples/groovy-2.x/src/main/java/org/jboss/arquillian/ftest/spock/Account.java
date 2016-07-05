@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.spock;
+package org.jboss.arquillian.ftest.spock;
 
 
 /**
@@ -37,7 +37,7 @@ public class Account
       balance = balance - amount;
    }
    
-   public void diposit(int amount)
+   public void deposit(int amount)
    {
       balance = balance + amount;
    }

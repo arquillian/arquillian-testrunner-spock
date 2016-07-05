@@ -14,43 +14,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.spock
+package org.jboss.arquillian.ftest.spock.common
+
 import org.jboss.arquillian.container.test.api.Deployment
+import org.jboss.arquillian.ftest.spock.Account
+import org.jboss.arquillian.ftest.spock.AccountService
+import org.jboss.arquillian.ftest.spock.SecureAccountService
+import org.jboss.arquillian.ftest.spock.TransactionCounter
+import org.jboss.arquillian.ftest.spock.TransferEvent
 import org.jboss.shrinkwrap.api.ShrinkWrap
 import org.jboss.shrinkwrap.api.asset.EmptyAsset
 import org.jboss.shrinkwrap.api.spec.JavaArchive
-import org.junit.runner.RunWith
 import spock.lang.Specification
 
-import javax.inject.Inject
+abstract class ExternalizedDeployment extends Specification {
 
-@RunWith(ArquillianSputnik)
-class AccountServiceSpecification extends Specification {
-
-    @Deployment
+    @Deployment(name = "abstract")
     def static JavaArchive "create deployment"() {
         return ShrinkWrap.create(JavaArchive.class)
-                         .addClasses(AccountService.class, Account.class, SecureAccountService.class)
+                         .addClasses(AccountService.class, Account.class, SecureAccountService.class, TransactionCounter.class, TransferEvent.class)
                          .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
     }
-
-    @Inject
-    private AccountService service
-
-    def "transfer should be possible between two accounts"() {
-        when:
-            service.transfer(from, to, amount)
-
-        then:
-            from.balance == fromBalance
-            to.balance == toBalance
-
-        where:
-            from            << [ new Account(100), new Account(10) ]
-            to              << [ new Account(50), new Account(90)]
-            amount          << [ 50, 10]
-            fromBalance     << [ 50, 0]
-            toBalance       << [ 100, 100]
-    }
-
 }

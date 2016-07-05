@@ -14,18 +14,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.spock;
+package org.jboss.arquillian.ftest.spock;
 
-import org.jboss.arquillian.spock.Account;
-
+import javax.enterprise.event.Event;
+import javax.inject.Inject;
 
 /**
- * AccountService
+ * SecureAccountService
  *
  * @author <a href="mailto:aslak@redhat.com">Aslak Knutsen</a>
  * @version $Revision: $
  */
-public interface AccountService
+public class SecureAccountService implements AccountService
 {
-   void transfer(Account from, Account to, int amount);
+   private final Event<TransferEvent> logTransfer;
+
+   @Inject
+   public SecureAccountService(Event<TransferEvent> logTransfer) {
+      this.logTransfer = logTransfer;
+   }
+
+   public void transfer(Account from, Account to, int amount)
+   {
+      from.withdraw(amount);
+      to.deposit(amount);
+
+      if (logTransfer != null) // TODO rework
+      {
+         logTransfer.fire(new TransferEvent());
+      }
+   }
+
 }

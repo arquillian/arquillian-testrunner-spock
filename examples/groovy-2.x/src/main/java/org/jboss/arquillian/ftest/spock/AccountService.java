@@ -14,20 +14,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.spock;
+package org.jboss.arquillian.ftest.spock;
 
 /**
- * SecureAccountService
+ * AccountService
  *
  * @author <a href="mailto:aslak@redhat.com">Aslak Knutsen</a>
  * @version $Revision: $
  */
-public class SecureAccountService implements AccountService
+public interface AccountService
 {
-   public void transfer(Account from, Account to, int amount)
-   {
-      from.withdraw(amount);
-      to.diposit(amount);
-   }
-
+   void transfer(Account from, Account to, int amount);
 }

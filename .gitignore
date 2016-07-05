@@ -24,3 +24,6 @@ test-output/
 
 # Custom docker images - not relevant for distributing
 .docker/
+
+# Other local settings
+.autoenv.zsh

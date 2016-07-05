@@ -14,13 +14,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.spock
+package org.jboss.arquillian.ftest.spock
 
 import spock.lang.Specification
 
+import javax.enterprise.event.Event
+
 class AccountServiceNonArquillianSpecification extends Specification {
 
-    def AccountService service = new SecureAccountService()
+    def logTransfer = Mock(Event)
+    def AccountService service = new SecureAccountService(logTransfer)
 
     def "transfer should be possible between two accounts"() {
         when:
