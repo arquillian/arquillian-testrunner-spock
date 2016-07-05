@@ -19,8 +19,8 @@ target/
 # TestNG
 test-output/
 
-# JBoss AS
-transaction.log
+# Logs
+*.log
 
 # Custom docker images - not relevant for distributing
 .docker/
