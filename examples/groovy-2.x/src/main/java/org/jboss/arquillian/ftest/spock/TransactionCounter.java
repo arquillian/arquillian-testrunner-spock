@@ -18,6 +18,10 @@ public class TransactionCounter {
         this.limit = limit;
     }
 
+    public int getCounter() {
+        return counter;
+    }
+
     public void belowLimit() {
         if (counter > limit) {
             throw new AssertionError("Expected total of " + limit + " transactions, but already have " + counter);

@@ -131,7 +131,8 @@ public class ArquillianSputnik extends Sputnik {
         if (State.hasTestAdaptor()) {
             runExtensionsIfNecessary();
             generateSpecDescriptionIfNecessary();
-            RunContext.get().createSpecRunner(getSpec(), notifier).run();
+            SpecInfo spec = getSpec();
+            RunContext.get().createSpecRunner(spec, notifier).run();
         }
     }
 
@@ -192,16 +193,13 @@ public class ArquillianSputnik extends Sputnik {
                 return false;
             }
         }
-
         return true;
     }
 
     private void enrichSpecWithArquillian(final SpecInfo spec) {
         final ArquillianInterceptor interceptor = new ArquillianInterceptor();
-        for (final SpecInfo specInfo : spec.getSpecsBottomToTop()) {
-            interceptLifecycleMethods(specInfo, interceptor);
-            interceptAllFeatures(specInfo.getAllFeaturesInExecutionOrder(), interceptor);
-        }
+        interceptLifecycleMethods(spec, interceptor);
+        interceptAllFeatures(spec.getAllFeaturesInExecutionOrder(), interceptor);
     }
 
     private void interceptLifecycleMethods(final SpecInfo specInfo, final ArquillianInterceptor interceptor) {
@@ -226,7 +224,7 @@ public class ArquillianSputnik extends Sputnik {
 
     private void skipParametrizedRunOnClientSide(FeatureInfo feature) {
         if (feature.isParameterized() && !controlledByArquillian()) {
-            feature.setDataProcessorMethod(null);
+            feature.setDataProcessorMethod(null); // FIXME #28 this way we loose @Unroll reporting
         }
     }
 
