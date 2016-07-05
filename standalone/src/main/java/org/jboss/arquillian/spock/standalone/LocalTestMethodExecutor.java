@@ -16,9 +16,6 @@
  */
 package org.jboss.arquillian.spock.standalone;
 
-import java.lang.reflect.Method;
-import java.util.Collection;
-
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.InstanceProducer;
 import org.jboss.arquillian.core.api.annotation.Inject;
@@ -26,9 +23,11 @@ import org.jboss.arquillian.core.api.annotation.Observes;
 import org.jboss.arquillian.core.spi.ServiceLoader;
 import org.jboss.arquillian.test.spi.TestEnricher;
 import org.jboss.arquillian.test.spi.TestResult;
-import org.jboss.arquillian.test.spi.TestResult.Status;
 import org.jboss.arquillian.test.spi.annotation.TestScoped;
 import org.jboss.arquillian.test.spi.event.suite.Test;
+
+import java.lang.reflect.Method;
+import java.util.Collection;
 
 /**
  * SpockTestRunner
@@ -36,78 +35,63 @@ import org.jboss.arquillian.test.spi.event.suite.Test;
  * @author <a href="mailto:aslak@redhat.com">Aslak Knutsen</a>
  * @version $Revision: $
  */
-public class LocalTestMethodExecutor
-{
-   @Inject 
-   private Instance<ServiceLoader> serviceLoader;
-   
-   @Inject @TestScoped
-   private InstanceProducer<TestResult> testResult;
-   
-   public void execute(@Observes Test event) throws Exception 
-   {
-      TestResult result = new TestResult();
-      try 
-      {
-         event.getTestMethodExecutor().invoke(
-               enrichArguments(
-                     event.getTestMethod(), 
-                     serviceLoader.get().all(TestEnricher.class)));
-         result.setStatus(Status.PASSED);
-      } 
-      catch (Throwable e) 
-      {
-         result.setStatus(Status.FAILED);
-         result.setThrowable(e);
-      }
-      finally 
-      {
-         result.setEnd(System.currentTimeMillis());         
-      }
-      testResult.set(result);
-   }
+public class LocalTestMethodExecutor {
 
-   /**
-    * Enrich the method arguments of a method call.<br/>
-    * The Object[] index will match the method parameterType[] index.
-    * 
-    * @param method
-    * @return the argument values
-    */
-   private Object[] enrichArguments(Method method, Collection<TestEnricher> enrichers)
-   {
-      Object[] values = new Object[method.getParameterTypes().length];
-      if(method.getParameterTypes().length == 0)
-      {
-         return values;
-      }
-      for (TestEnricher enricher : enrichers)
-      {
-         mergeValues(values, enricher.resolve(method));
-      }
-      return values;
-   }
+    @Inject
+    private Instance<ServiceLoader> serviceLoader;
 
-   private void mergeValues(Object[] values, Object[] resolvedValues)
-   {
-      if(resolvedValues == null || resolvedValues.length == 0)
-      {
-         return;
-      }
+    @Inject
+    @TestScoped
+    private InstanceProducer<TestResult> testResult;
 
-      if(values.length != resolvedValues.length)
-      {
-         throw new IllegalStateException("TestEnricher resolved wrong argument count, expected " + 
-               values.length + " returned " + resolvedValues.length);
-      }
+    public void execute(@Observes Test event) throws Exception {
+        TestResult result;
+        try {
+            event.getTestMethodExecutor().invoke(
+                    enrichArguments(
+                            event.getTestMethod(),
+                            serviceLoader.get().all(TestEnricher.class)));
+            result = TestResult.passed();
+        } catch (Throwable e) {
+            result = TestResult.failed(e);
+        }
+        result.setEnd(System.currentTimeMillis());
+        testResult.set(result);
+    }
 
-      for (int i = 0; i < resolvedValues.length; i++)
-      {
-         Object resvoledValue = resolvedValues[i];
-         if (resvoledValue != null && values[i] == null)
-         {
-            values[i] = resvoledValue;
-         }
-      }
-   }
+    /**
+     * Enrich the method arguments of a method call.<br/>
+     * The Object[] index will match the method parameterType[] index.
+     *
+     * @param method
+     * @return the argument values
+     */
+    private Object[] enrichArguments(Method method, Collection<TestEnricher> enrichers) {
+        final Object[] values = new Object[method.getParameterTypes().length];
+        if (method.getParameterTypes().length == 0) {
+            return values;
+        }
+        for (TestEnricher enricher : enrichers) {
+            mergeValues(values, enricher.resolve(method));
+        }
+        return values;
+    }
+
+    private void mergeValues(Object[] values, Object[] resolvedValues) {
+        if (resolvedValues == null || resolvedValues.length == 0) {
+            return;
+        }
+
+        if (values.length != resolvedValues.length) {
+            throw new IllegalStateException("TestEnricher resolved wrong argument count, expected " +
+                    values.length + " returned " + resolvedValues.length);
+        }
+
+        for (int i = 0; i < resolvedValues.length; i++) {
+            Object resolvedValue = resolvedValues[i];
+            if (resolvedValue != null && values[i] == null) {
+                values[i] = resolvedValue;
+            }
+        }
+    }
 }
