@@ -76,26 +76,34 @@ following dependencies into your <dependencies> section:
  </dependency>
 ```
 For Groovy 2.x, use spock 0.7-groovy-2.0 or later and Groovy 2.1.4 or later
-For Groovy 1.x, use spock 0.7-groovy-1.8 or later and Groovy 1.8.9 or later
 
 You must annotate the JUnit Runner with the ArquillianSputnik runner.
 ```
  @RunWith(ArquillianSputnik.class)
 ```
 
+### Build
+
+Regular `mvn clean install` will run tests against Wildfly 8.0.0.Final. Others containers can be used by defining `container` variable, for example
+```
+mvn clean install -Dcontainer="JBoss AS:7.1.1.Final:managed"
+```
+
+This flexibility and is provided by [Arquillian Chameleon](https://github.com/arquillian/arquillian-container-chameleon). For more available containers see [default list](https://github.com/arquillian/arquillian-container-chameleon/blob/1.0.0.Alpha6/src/main/resources/chameleon/default/containers.yaml).
+
 ### Contents of repository
 
- core/
-	The Spock Extension.
+ `core/`
+	The Spock Extension itself.
    
- standalone/
+ `standalone/`
  	Standalone Arquillian test executor.
  
- container/
+ `container/`
  	Container extension which bundles all Spock-related dependencies required
  	while running Spock specifications using Arquillian.
  	
- examples/
+ `examples/`
 	Sample tests written using Spock BDD framework.
 
 ### Licensing
