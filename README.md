@@ -106,6 +106,6 @@ You must annotate the JUnit Runner with the ArquillianSputnik runner.
 
 ### More info
 
-[Spock](http://spockframework.org/)
-[Arquillian](http://jboss.org/arquillian/)
+[Spock](http://spockframework.github.io/spock/docs/)
+[Arquillian](http://arquillian.org/)
                              
