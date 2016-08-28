@@ -26,7 +26,6 @@ import org.jboss.arquillian.core.api.annotation.Observes;
 import org.jboss.arquillian.core.spi.ServiceLoader;
 import org.jboss.arquillian.test.spi.TestEnricher;
 import org.jboss.arquillian.test.spi.TestResult;
-import org.jboss.arquillian.test.spi.TestResult.Status;
 import org.jboss.arquillian.test.spi.annotation.TestScoped;
 import org.jboss.arquillian.test.spi.event.suite.Test;
 
@@ -46,23 +45,21 @@ public class LocalTestMethodExecutor
    
    public void execute(@Observes Test event) throws Exception 
    {
-      TestResult result = new TestResult();
+      TestResult result = TestResult.passed();
       try 
       {
          event.getTestMethodExecutor().invoke(
                enrichArguments(
                      event.getTestMethod(), 
                      serviceLoader.get().all(TestEnricher.class)));
-         result.setStatus(Status.PASSED);
-      } 
+      }
       catch (Throwable e) 
       {
-         result.setStatus(Status.FAILED);
-         result.setThrowable(e);
+         result = TestResult.failed(e);
       }
       finally 
       {
-         result.setEnd(System.currentTimeMillis());         
+         result.setEnd(System.currentTimeMillis());
       }
       testResult.set(result);
    }
@@ -71,7 +68,7 @@ public class LocalTestMethodExecutor
     * Enrich the method arguments of a method call.<br/>
     * The Object[] index will match the method parameterType[] index.
     * 
-    * @param method
+    * @param method method to enrich arguments
     * @return the argument values
     */
    private Object[] enrichArguments(Method method, Collection<TestEnricher> enrichers)
