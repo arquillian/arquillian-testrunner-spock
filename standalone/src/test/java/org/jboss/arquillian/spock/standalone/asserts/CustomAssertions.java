@@ -20,10 +20,8 @@ import org.assertj.core.api.Assertions;
 
 import java.util.ServiceLoader;
 
-public class CustomAssertions extends Assertions
-{
-   public static <S> ServiceLoaderAssert<S> assertThat(ServiceLoader<S> serviceLoader)
-   {
-      return new ServiceLoaderAssert<S>(serviceLoader);
-   }
+public class CustomAssertions extends Assertions {
+    public static <S> ServiceLoaderAssert<S> assertThat(ServiceLoader<S> serviceLoader) {
+        return new ServiceLoaderAssert<S>(serviceLoader);
+    }
 }

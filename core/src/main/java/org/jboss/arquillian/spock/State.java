@@ -117,5 +117,4 @@ public class State {
         deployableTest.remove();
         caughtInitializationException.remove();
     }
-
 }

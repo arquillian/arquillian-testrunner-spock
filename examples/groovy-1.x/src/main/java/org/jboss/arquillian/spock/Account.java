@@ -16,37 +16,31 @@
  */
 package org.jboss.arquillian.spock;
 
-
 /**
  * Account
  *
  * @author <a href="mailto:aslak@redhat.com">Aslak Knutsen</a>
  * @version $Revision: $
  */
-public class Account
-{
-   private int balance;
-   
-   public Account(int balance)
-   {
-      this.balance = balance;
-   }
+public class Account {
+    private int balance;
 
-   public void withdraw(int amount)
-   {
-      balance = balance - amount;
-   }
-   
-   public void diposit(int amount)
-   {
-      balance = balance + amount;
-   }
-   
-   /**
-    * @return the balance
-    */
-   public int getBalance()
-   {
-      return balance;
-   }
+    public Account(int balance) {
+        this.balance = balance;
+    }
+
+    public void withdraw(int amount) {
+        balance = balance - amount;
+    }
+
+    public void diposit(int amount) {
+        balance = balance + amount;
+    }
+
+    /**
+     * @return the balance
+     */
+    public int getBalance() {
+        return balance;
+    }
 }

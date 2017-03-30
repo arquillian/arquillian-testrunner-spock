@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
   <modelVersion>4.0.0</modelVersion>
 
@@ -48,8 +49,10 @@
     <version.groovy>1.8.9</version.groovy>
 
     <!-- distribution management -->
-    <jboss.releases.repo.url>https://repository.jboss.org/nexus/service/local/staging/deploy/maven2/</jboss.releases.repo.url>
-    <jboss.snapshots.repo.url>https://repository.jboss.org/nexus/content/repositories/snapshots/</jboss.snapshots.repo.url>
+    <jboss.releases.repo.url>https://repository.jboss.org/nexus/service/local/staging/deploy/maven2/
+    </jboss.releases.repo.url>
+    <jboss.snapshots.repo.url>https://repository.jboss.org/nexus/content/repositories/snapshots/
+    </jboss.snapshots.repo.url>
 
     <version.source.plugin>2.2.1</version.source.plugin>
     <version.jar.plugin>2.4</version.jar.plugin>
@@ -216,23 +219,23 @@
         <version>3.1</version>
       </plugin>
       <plugin>
-         <groupId>org.codehaus.gmavenplus</groupId>
-         <artifactId>gmavenplus-plugin</artifactId>
-         <version>${version.gmaven}</version>
-         <executions>
-            <execution>
-                <goals>
-                    <goal>addSources</goal>
-                    <goal>addTestSources</goal>
-                    <goal>generateStubs</goal>
-                    <goal>compile</goal>
-                    <goal>testGenerateStubs</goal>
-                    <goal>testCompile</goal>
-                    <goal>removeStubs</goal>
-                    <goal>removeTestStubs</goal>
-                </goals>
-            </execution>
-         </executions>
+        <groupId>org.codehaus.gmavenplus</groupId>
+        <artifactId>gmavenplus-plugin</artifactId>
+        <version>${version.gmaven}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>addSources</goal>
+              <goal>addTestSources</goal>
+              <goal>generateStubs</goal>
+              <goal>compile</goal>
+              <goal>testGenerateStubs</goal>
+              <goal>testCompile</goal>
+              <goal>removeStubs</goal>
+              <goal>removeTestStubs</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>

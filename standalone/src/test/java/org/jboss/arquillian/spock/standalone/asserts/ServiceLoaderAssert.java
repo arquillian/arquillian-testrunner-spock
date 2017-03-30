@@ -21,32 +21,26 @@ import org.assertj.core.api.Assertions;
 
 import java.util.ServiceLoader;
 
-public class ServiceLoaderAssert<S> extends AbstractAssert<ServiceLoaderAssert<S>, ServiceLoader<S>>
-{
+public class ServiceLoaderAssert<S> extends AbstractAssert<ServiceLoaderAssert<S>, ServiceLoader<S>> {
 
-   private final ServiceLoader<S> serviceLoader;
+    private final ServiceLoader<S> serviceLoader;
 
-   public ServiceLoaderAssert(ServiceLoader<S> serviceLoader)
-   {
-      super(serviceLoader, ServiceLoaderAssert.class);
-      this.serviceLoader = serviceLoader;
-   }
+    public ServiceLoaderAssert(ServiceLoader<S> serviceLoader) {
+        super(serviceLoader, ServiceLoaderAssert.class);
+        this.serviceLoader = serviceLoader;
+    }
 
-   public ServiceLoaderAssert<S> containsImplementation(Class<? extends S> serviceImplementation)
-   {
-      Assertions.assertThat(hasServiceImplementation(serviceImplementation)).isTrue();
-      return this;
-   }
+    public ServiceLoaderAssert<S> containsImplementation(Class<? extends S> serviceImplementation) {
+        Assertions.assertThat(hasServiceImplementation(serviceImplementation)).isTrue();
+        return this;
+    }
 
-   private boolean hasServiceImplementation(Class<? extends S> extensionClass)
-   {
-      for (S serviceImplementation : serviceLoader)
-      {
-         if (serviceImplementation.getClass().equals(extensionClass))
-         {
-            return true;
-         }
-      }
-      return false;
-   }
+    private boolean hasServiceImplementation(Class<? extends S> extensionClass) {
+        for (S serviceImplementation : serviceLoader) {
+            if (serviceImplementation.getClass().equals(extensionClass)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

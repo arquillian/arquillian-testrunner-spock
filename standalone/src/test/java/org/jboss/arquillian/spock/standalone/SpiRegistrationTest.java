@@ -23,16 +23,13 @@ import org.junit.Test;
 
 import java.util.ServiceLoader;
 
-public class SpiRegistrationTest
-{
-   @Test
-   public void should_register_spock_standalone_extension() throws Exception
-   {
-      // when
-      ServiceLoader<LoadableExtension> serviceLoader = ServiceLoader.load(LoadableExtension.class);
+public class SpiRegistrationTest {
+    @Test
+    public void should_register_spock_standalone_extension() throws Exception {
+        // when
+        ServiceLoader<LoadableExtension> serviceLoader = ServiceLoader.load(LoadableExtension.class);
 
-      // then
-      assertThat(serviceLoader).containsImplementation(SpockStandaloneExtension.class);
-   }
-
+        // then
+        assertThat(serviceLoader).containsImplementation(SpockStandaloneExtension.class);
+    }
 }

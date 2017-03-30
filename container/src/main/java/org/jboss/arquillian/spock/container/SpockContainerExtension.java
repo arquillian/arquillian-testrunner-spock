@@ -25,12 +25,10 @@ import org.jboss.arquillian.core.spi.LoadableExtension;
  * @author <a href="mailto:aslak@redhat.com">Aslak Knutsen</a>
  * @version $Revision: $
  */
-public class SpockContainerExtension implements LoadableExtension
-{
-   
-   @Override
-   public void register(ExtensionBuilder builder)
-   {
-      builder.service(AuxiliaryArchiveAppender.class, SpockDeploymentAppender.class);
-   }
+public class SpockContainerExtension implements LoadableExtension {
+
+    @Override
+    public void register(ExtensionBuilder builder) {
+        builder.service(AuxiliaryArchiveAppender.class, SpockDeploymentAppender.class);
+    }
 }

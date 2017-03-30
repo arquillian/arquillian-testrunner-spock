@@ -31,27 +31,26 @@ class AccountServiceNonArquillianSpecification extends Specification {
         to.balance == toBalance
 
         where:
-        from <<         [new Account(100),  new Account(10)]
-        to <<           [new Account(50),   new Account(90)]
-        amount <<       [50,                10]
-        fromBalance <<  [50,                0]
-        toBalance <<    [100,               100]
+        from << [new Account(100), new Account(10)]
+        to << [new Account(50), new Account(90)]
+        amount << [50, 10]
+        fromBalance << [50, 0]
+        toBalance << [100, 100]
     }
 
     def "transferring between accounts should result in account withdrawal and deposit"() {
-       when:
-          service.transfer(from, to, amount)
+        when:
+        service.transfer(from, to, amount)
 
-       then:
-          from.balance == fromBalance
-          to.balance == toBalance
+        then:
+        from.balance == fromBalance
+        to.balance == toBalance
 
-       where:
-          from <<         [new Account(100),  new Account(10)]
-          to <<           [new Account(50),   new Account(90)]
-          amount <<       [50,                10]
-          fromBalance <<  [50,                0]
-          toBalance <<    [100,               100]
-   }
-
+        where:
+        from << [new Account(100), new Account(10)]
+        to << [new Account(50), new Account(90)]
+        amount << [50, 10]
+        fromBalance << [50, 0]
+        toBalance << [100, 100]
+    }
 }

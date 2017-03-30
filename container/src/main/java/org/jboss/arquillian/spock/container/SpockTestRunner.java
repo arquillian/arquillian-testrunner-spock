@@ -34,76 +34,64 @@ import java.util.List;
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  * @version $Revision: $
  */
-public class SpockTestRunner implements TestRunner
-{
+public class SpockTestRunner implements TestRunner {
 
-   /**
-    * Overwrite to provide additional run listeners.
-    */
-   protected List<RunListener> getRunListeners()
-   {
-      return Collections.emptyList();
-   }
+    /**
+     * Overwrite to provide additional run listeners.
+     */
+    protected List<RunListener> getRunListeners() {
+        return Collections.emptyList();
+    }
 
-   /* (non-Javadoc)
-    * @see org.jboss.arquillian.spi.TestRunner#execute(java.lang.Class, java.lang.String)
-    */
-   @Override
-   public TestResult execute(final Class<?> testClass, final String methodName)
-   {
+    /* (non-Javadoc)
+     * @see org.jboss.arquillian.spi.TestRunner#execute(java.lang.Class, java.lang.String)
+     */
+    @Override
+    public TestResult execute(final Class<?> testClass, final String methodName) {
 
-      final Result testResult = new Result();
+        final Result testResult = new Result();
 
-      try
-      {
-         final Sputnik spockRunner = new ArquillianSputnik(testClass);
-         spockRunner.filter(new SpockSpecificationFilter(spockRunner, methodName));
-         runTest(spockRunner, testResult);
-      }
-      catch (Exception e)
-      {
-         return TestResult.failed(e);
-      }
+        try {
+            final Sputnik spockRunner = new ArquillianSputnik(testClass);
+            spockRunner.filter(new SpockSpecificationFilter(spockRunner, methodName));
+            runTest(spockRunner, testResult);
+        } catch (Exception e) {
+            return TestResult.failed(e);
+        }
 
-      return convertToTestResult(testResult);
-   }
+        return convertToTestResult(testResult);
+    }
 
-   public void runTest(final Sputnik spockRunner, final Result testResult)
-   {
-      final RunNotifier notifier = new RunNotifier();
-      notifier.addFirstListener(testResult.createListener());
+    public void runTest(final Sputnik spockRunner, final Result testResult) {
+        final RunNotifier notifier = new RunNotifier();
+        notifier.addFirstListener(testResult.createListener());
 
-      for (RunListener listener : getRunListeners())
-      {
-         notifier.addListener(listener);
-      }
+        for (RunListener listener : getRunListeners()) {
+            notifier.addListener(listener);
+        }
 
-      spockRunner.run(notifier);
-   }
+        spockRunner.run(notifier);
+    }
 
-   /**
-    * Convert a JUnit Result object to Arquillian TestResult
-    *
-    * @param result JUnit Test Run Result
-    * @return The TestResult representation of the JUnit Result
-    */
-   private TestResult convertToTestResult(Result result)
-   {
-      TestResult newResult = TestResult.passed();
-      Throwable throwable = null;
+    /**
+     * Convert a JUnit Result object to Arquillian TestResult
+     *
+     * @param result JUnit Test Run Result
+     * @return The TestResult representation of the JUnit Result
+     */
+    private TestResult convertToTestResult(Result result) {
+        TestResult newResult = TestResult.passed();
+        Throwable throwable = null;
 
-      if (result.getFailureCount() > 0)
-      {
-         throwable = result.getFailures().get(0).getException();
-         newResult = TestResult.failed(throwable);
-      }
+        if (result.getFailureCount() > 0) {
+            throwable = result.getFailures().get(0).getException();
+            newResult = TestResult.failed(throwable);
+        }
 
-      if (result.getIgnoreCount() > 0)
-      {
-         newResult = TestResult.skipped(throwable);
-      }
+        if (result.getIgnoreCount() > 0) {
+            newResult = TestResult.skipped(throwable);
+        }
 
-      return newResult;
-   }
-
+        return newResult;
+    }
 }

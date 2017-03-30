@@ -53,17 +53,17 @@ class AccountServiceSpecification extends Specification {
         to.balance == toBalance
 
         where:
-        from           << [
-            new Account(100),
-            new Account(10)
+        from << [
+                new Account(100),
+                new Account(10)
         ]
-        to             << [
-            new Account(50),
-            new Account(90)
+        to << [
+                new Account(50),
+                new Account(90)
         ]
-        amount         << [50, 10]
-        fromBalance    << [50, 0]
-        toBalance      << [100, 100]
+        amount << [50, 10]
+        fromBalance << [50, 0]
+        toBalance << [100, 100]
     }
 
     def "transferring between accounts should result in account withdrawal and deposit"() {
@@ -75,16 +75,16 @@ class AccountServiceSpecification extends Specification {
         to.balance == toBalance
 
         where:
-        from           << [
-            new Account(100),
-            new Account(10)
+        from << [
+                new Account(100),
+                new Account(10)
         ]
-        to             << [
-            new Account(50),
-            new Account(90)
+        to << [
+                new Account(50),
+                new Account(90)
         ]
-        amount         << [50, 10]
-        fromBalance    << [50, 0]
-        toBalance      << [100, 100]
+        amount << [50, 10]
+        fromBalance << [50, 0]
+        toBalance << [100, 100]
     }
 }

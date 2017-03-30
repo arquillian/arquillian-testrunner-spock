@@ -18,14 +18,12 @@ package org.jboss.arquillian.spock;
 
 import org.jboss.arquillian.spock.Account;
 
-
 /**
  * AccountService
  *
  * @author <a href="mailto:aslak@redhat.com">Aslak Knutsen</a>
  * @version $Revision: $
  */
-public interface AccountService
-{
-   void transfer(Account from, Account to, int amount);
+public interface AccountService {
+    void transfer(Account from, Account to, int amount);
 }

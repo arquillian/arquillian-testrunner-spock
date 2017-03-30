@@ -28,70 +28,58 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 /**
- *
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
- *
  * @version $Revision: $
  */
-public class SpockDeploymentAppenderTestCase
-{
+public class SpockDeploymentAppenderTestCase {
 
-   @Test
-   public void shouldAddSpockTestRunnerAsServiceProvider() throws Exception
-   {
-      // given
-      SpockDeploymentAppender spockDeploymentAppender = new SpockDeploymentAppender();
-      ArchivePath testRunnerSPI = ArchivePaths.create("/META-INF/services/org.jboss.arquillian.container.test.spi.TestRunner");
+    @Test
+    public void shouldAddSpockTestRunnerAsServiceProvider() throws Exception {
+        // given
+        SpockDeploymentAppender spockDeploymentAppender = new SpockDeploymentAppender();
+        ArchivePath testRunnerSPI =
+            ArchivePaths.create("/META-INF/services/org.jboss.arquillian.container.test.spi.TestRunner");
 
-      // when
-      Archive<?> archive = spockDeploymentAppender.createAuxiliaryArchive();
+        // when
+        Archive<?> archive = spockDeploymentAppender.createAuxiliaryArchive();
 
-      // then
-      Assert.assertTrue("Should have added Test Runner",
+        // then
+        Assert.assertTrue("Should have added Test Runner",
             archive.contains(testRunnerSPI));
 
-      Assert.assertEquals("Should have registered Spock Test Runner as Arquillian Test Runner",
+        Assert.assertEquals("Should have registered Spock Test Runner as Arquillian Test Runner",
             "org.jboss.arquillian.spock.container.SpockTestRunner",
             getResourceContent(archive, testRunnerSPI));
-   }
+    }
 
-   @Test
-   public void shouldAddGroovyObjectClass() throws Exception
-   {
-      // given
-      SpockDeploymentAppender spockDeploymentAppender = new SpockDeploymentAppender();
-      ArchivePath groovyObject = ArchivePaths.create("/groovy/lang/GroovyObject.class");
+    @Test
+    public void shouldAddGroovyObjectClass() throws Exception {
+        // given
+        SpockDeploymentAppender spockDeploymentAppender = new SpockDeploymentAppender();
+        ArchivePath groovyObject = ArchivePaths.create("/groovy/lang/GroovyObject.class");
 
-      // when
-      Archive<?> archive = spockDeploymentAppender.createAuxiliaryArchive();
+        // when
+        Archive<?> archive = spockDeploymentAppender.createAuxiliaryArchive();
 
-      // then
-      Assert.assertTrue("Should have added GroovyObject",
+        // then
+        Assert.assertTrue("Should have added GroovyObject",
             archive.contains(groovyObject));
-   }
+    }
 
-   // Private utility classes
+    // Private utility classes
 
-   private String getResourceContent(Archive<?> archive, ArchivePath path)
-   {
-      final InputStream openStream = archive.get(path).getAsset().openStream();
-      String content = "";
-      try
-      {
-         content = new Scanner(openStream).useDelimiter("\\A").next();
-         return content.trim();
-      } 
-      finally
-      {
-         try
-         {
-            openStream.close();
-         } 
-         catch (IOException ignore)
-         {
-            // NOOP
-         }
-      }
-   }
-
+    private String getResourceContent(Archive<?> archive, ArchivePath path) {
+        final InputStream openStream = archive.get(path).getAsset().openStream();
+        String content = "";
+        try {
+            content = new Scanner(openStream).useDelimiter("\\A").next();
+            return content.trim();
+        } finally {
+            try {
+                openStream.close();
+            } catch (IOException ignore) {
+                // NOOP
+            }
+        }
+    }
 }

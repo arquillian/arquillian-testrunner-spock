@@ -31,66 +31,54 @@ import org.spockframework.runtime.model.SpecInfo;
  * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
  * @version $Revision: $
  */
-final class SpockSpecificationFilter extends Filter
-{
-   private static final MethodInfo NOT_FOUND = new MethodInfo();
+final class SpockSpecificationFilter extends Filter {
+    private static final MethodInfo NOT_FOUND = new MethodInfo();
 
-   private final Sputnik spockRunner;
+    private final Sputnik spockRunner;
 
-   private final String methodName;
+    private final String methodName;
 
-   private SpecInfo currentSpec;
+    private SpecInfo currentSpec;
 
-   SpockSpecificationFilter(Sputnik spockRunner, String methodName)
-   {
-      this.spockRunner = spockRunner;
-      this.methodName = methodName;
-      obtainCurrentSpecification();
-   }
+    SpockSpecificationFilter(Sputnik spockRunner, String methodName) {
+        this.spockRunner = spockRunner;
+        this.methodName = methodName;
+        obtainCurrentSpecification();
+    }
 
-   @Override
-   public boolean shouldRun(Description description)
-   {
-      final MethodInfo featureMethod = findCorrespondingFeatureMethod(description.getMethodName());
-      if (NOT_FOUND.equals(featureMethod))
-      {
-         return false;
-      }
-      return methodName.equals(featureMethod.getReflection().getName());
-   }
+    @Override
+    public boolean shouldRun(Description description) {
+        final MethodInfo featureMethod = findCorrespondingFeatureMethod(description.getMethodName());
+        if (NOT_FOUND.equals(featureMethod)) {
+            return false;
+        }
+        return methodName.equals(featureMethod.getReflection().getName());
+    }
 
-   @Override
-   public String describe()
-   {
-      return "Filter Feature methods for Spock Framework";
-   }
+    @Override
+    public String describe() {
+        return "Filter Feature methods for Spock Framework";
+    }
 
-   private void obtainCurrentSpecification()
-   {
-      try
-      {
-         Method method = Sputnik.class.getDeclaredMethod("getSpec");
-         method.setAccessible(true);
-         currentSpec = (SpecInfo) method.invoke(spockRunner);
-      }
-      catch (Exception e)
-      {
-         throw new RuntimeException("Could not obtain SpecInfo from Sputnik Runner", e);
-      }
-   }
+    private void obtainCurrentSpecification() {
+        try {
+            Method method = Sputnik.class.getDeclaredMethod("getSpec");
+            method.setAccessible(true);
+            currentSpec = (SpecInfo) method.invoke(spockRunner);
+        } catch (Exception e) {
+            throw new RuntimeException("Could not obtain SpecInfo from Sputnik Runner", e);
+        }
+    }
 
-   private MethodInfo findCorrespondingFeatureMethod(String featureMethodName)
-   {
-      MethodInfo methodInfo = NOT_FOUND;
-      for (FeatureInfo feature : currentSpec.getAllFeatures())
-      {
-         MethodInfo featureMethod = feature.getFeatureMethod();
-         if (featureMethodName.equals(featureMethod.getName()))
-         {
-            methodInfo = featureMethod;
-            break;
-         }
-      }
-      return methodInfo;
-   }
+    private MethodInfo findCorrespondingFeatureMethod(String featureMethodName) {
+        MethodInfo methodInfo = NOT_FOUND;
+        for (FeatureInfo feature : currentSpec.getAllFeatures()) {
+            MethodInfo featureMethod = feature.getFeatureMethod();
+            if (featureMethodName.equals(featureMethod.getName())) {
+                methodInfo = featureMethod;
+                break;
+            }
+        }
+        return methodInfo;
+    }
 }
