@@ -51,7 +51,7 @@
          and hence is omitted by Shrinkwrap. See http://jira.codehaus.org/browse/GROOVY-6158 for more details
     -->
     <version.groovy>2.1.8</version.groovy>
-    <version.gmaven>1.2</version.gmaven>
+    <version.gmaven>1.6.2</version.gmaven>
 
     <!-- distribution management -->
     <jboss.releases.repo.url>https://repository.jboss.org/nexus/service/local/staging/deploy/maven2/
