@@ -39,7 +39,7 @@
   </developers>
 
   <properties>
-    <version.arquillian_core>1.1.11.Final</version.arquillian_core>
+    <version.arquillian_core>1.4.1.Final</version.arquillian_core>
     <!-- JBoss AS7 version to be unpacked -->
     <version.jbossas_7>7.1.1.Final</version.jbossas_7>
 
