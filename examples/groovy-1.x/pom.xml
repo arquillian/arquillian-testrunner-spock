@@ -38,7 +38,7 @@
     </developer>
   </developers>
   <properties>
-    <version.arquillian_core>1.1.11.Final</version.arquillian_core>
+    <version.arquillian_core>1.4.1.Final</version.arquillian_core>
     <!-- JBoss AS7 version to be unpacked -->
     <version.jbossas_7>7.1.1.Final</version.jbossas_7>
 
@@ -55,9 +55,9 @@
     </jboss.snapshots.repo.url>
 
     <version.source.plugin>2.2.1</version.source.plugin>
-    <version.jar.plugin>2.4</version.jar.plugin>
+    <version.jar.plugin>3.1.0</version.jar.plugin>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <version.surefire.plugin>2.19.1</version.surefire.plugin>
+    <version.surefire.plugin>2.22.1</version.surefire.plugin>   
     <version.gmaven>1.6.2</version.gmaven>
   </properties>
 
