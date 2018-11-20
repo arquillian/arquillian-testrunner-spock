@@ -46,7 +46,7 @@
     <version.arq.container.glassfish>1.0.0.CR4</version.arq.container.glassfish>
     <version.glassfish>3.1.2</version.glassfish>
 
-    <version.spock>0.7-groovy-2.0</version.spock>
+    <version.spock>1.2-groovy-2.5</version.spock>
     <!-- It is important to have 2.1.4+ because older versions will not work. JAR is missing directory entries
          and hence is omitted by Shrinkwrap. See http://jira.codehaus.org/browse/GROOVY-6158 for more details
     -->
