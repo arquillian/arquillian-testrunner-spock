@@ -43,7 +43,7 @@
     <version.jbossas_7>7.1.1.Final</version.jbossas_7>
 
     <version.arq.container.glassfish>1.0.2</version.arq.container.glassfish>
-    <version.glassfish>3.1.2</version.glassfish>
+    <version.glassfish>5.0</version.glassfish>
 
     <version.spock>0.7-groovy-1.8</version.spock>
     <version.groovy>1.8.9</version.groovy>
