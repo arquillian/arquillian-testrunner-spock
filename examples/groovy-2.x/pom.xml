@@ -59,7 +59,7 @@
     <jboss.snapshots.repo.url>https://repository.jboss.org/nexus/content/repositories/snapshots/
     </jboss.snapshots.repo.url>
 
-    <version.source.plugin>2.2.1</version.source.plugin>
+    <version.source.plugin>3.0.1</version.source.plugin>
     <version.jar.plugin>3.1.0</version.jar.plugin>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <version.surefire>2.22.1</version.surefire>
