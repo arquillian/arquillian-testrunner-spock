@@ -53,7 +53,7 @@
     <version.arquillian_core>1.4.1.Final</version.arquillian_core>
     <version.spock>0.7-groovy-2.0</version.spock>
     <version.groovy>2.1.5</version.groovy>
-    <version.assertj>2.2.0</version.assertj>
+    <version.assertj>3.12.2</version.assertj>
 
     <!-- override from parent -->
     <version.maven_compiler>3.1</version.maven_compiler>
