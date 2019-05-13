@@ -50,7 +50,7 @@
     <!-- It is important to have 2.1.4+ because older versions will not work. JAR is missing directory entries
          and hence is omitted by Shrinkwrap. See http://jira.codehaus.org/browse/GROOVY-6158 for more details
     -->
-    <version.groovy>2.1.8</version.groovy>
+    <version.groovy>2.4.17</version.groovy>
     <version.gmaven>1.2</version.gmaven>
 
     <!-- distribution management -->
