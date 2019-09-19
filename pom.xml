@@ -6,7 +6,7 @@
     <groupId>org.jboss</groupId>
     <artifactId>jboss-parent</artifactId>
     <relativePath/>
-    <version>19</version>
+    <version>36</version>
   </parent>
 
   <!-- Model Information -->
