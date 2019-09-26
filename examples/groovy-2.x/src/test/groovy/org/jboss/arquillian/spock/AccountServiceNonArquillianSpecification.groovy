@@ -20,7 +20,7 @@ import spock.lang.Specification
 
 class AccountServiceNonArquillianSpecification extends Specification {
 
-    def AccountService service = new SecureAccountService()
+    AccountService service = new SecureAccountService()
 
     def "transfer should be possible between two accounts"() {
         when:

@@ -16,25 +16,23 @@
  */
 package org.jboss.arquillian.spock
 
-import javax.inject.Inject
-
 import org.jboss.arquillian.container.test.api.Deployment
-import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.shrinkwrap.api.ShrinkWrap
 import org.jboss.shrinkwrap.api.asset.EmptyAsset
 import org.jboss.shrinkwrap.api.spec.JavaArchive
 import org.junit.runner.RunWith
-
 import spock.lang.Specification
+
+import javax.inject.Inject
 
 @RunWith(ArquillianSputnik)
 class AccountServiceSpecification extends Specification {
 
     @Deployment
-    def static JavaArchive "create deployment"() {
+    static JavaArchive "create deployment"() {
         return ShrinkWrap.create(JavaArchive.class)
                 .addClasses(AccountService.class, Account.class, SecureAccountService.class)
-                .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
+                .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
     }
 
     @Inject

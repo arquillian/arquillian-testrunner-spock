@@ -23,15 +23,14 @@ import org.jboss.arquillian.spock.SecureAccountService
 import org.jboss.shrinkwrap.api.ShrinkWrap
 import org.jboss.shrinkwrap.api.asset.EmptyAsset
 import org.jboss.shrinkwrap.api.spec.JavaArchive
-
 import spock.lang.Specification
 
 abstract class AbstractCommonSpecification extends Specification {
 
     @Deployment
-    def static JavaArchive "create deployment"() {
+    static JavaArchive "create test deployment"() {
         return ShrinkWrap.create(JavaArchive.class)
                 .addClasses(AccountService.class, Account.class, SecureAccountService.class)
-                .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
+                .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
     }
 }

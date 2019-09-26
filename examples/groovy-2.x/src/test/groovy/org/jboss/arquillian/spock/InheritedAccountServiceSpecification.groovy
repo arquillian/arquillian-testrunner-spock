@@ -16,10 +16,10 @@
  */
 package org.jboss.arquillian.spock
 
-import javax.inject.Inject
-
 import org.jboss.arquillian.spock.common.AbstractCommonSpecification
 import org.junit.runner.RunWith
+
+import javax.inject.Inject
 
 @RunWith(ArquillianSputnik)
 class InheritedAccountServiceSpecification extends AbstractCommonSpecification {

@@ -33,21 +33,21 @@ import org.spockframework.runtime.extension.IMethodInvocation;
  * @version $Revision: $
  */
 public class ArquillianInterceptor extends AbstractMethodInterceptor {
-    private final Logger log = Logger.getLogger(ArquillianInterceptor.class.getName());
 
+    private final Logger log = Logger.getLogger(ArquillianInterceptor.class.getName());
     private TestRunnerAdaptor testRunner;
 
-    public ArquillianInterceptor() {
-    }
+    ArquillianInterceptor() {}
 
     /* (non-Javadoc)
      * @see org.spockframework.runtime.extension.AbstractMethodInterceptor#interceptSetupSpecMethod(org.spockframework.runtime.extension.IMethodInvocation)
      */
     @Override
     public void interceptSetupSpecMethod(IMethodInvocation invocation) throws Throwable {
-        Class<?> specClass = invocation.getSpec().getReflection();
-        log.fine("beforeClass " + specClass.getName());
-        getTestRunner().beforeClass(specClass, new InvocationExecutor(invocation));
+        if (invocation.getSpec().isBottomSpec()) {
+            final Class<?> specClass = invocation.getSpec().getReflection();
+            getTestRunner().beforeClass(specClass, new InvocationExecutor(invocation));
+        }
     }
 
     /* (non-Javadoc)
@@ -55,9 +55,10 @@ public class ArquillianInterceptor extends AbstractMethodInterceptor {
      */
     @Override
     public void interceptCleanupSpecMethod(IMethodInvocation invocation) throws Throwable {
-        Class<?> specClass = invocation.getSpec().getReflection();
-        log.fine("afterClass " + specClass.getName());
-        getTestRunner().afterClass(specClass, new InvocationExecutor(invocation));
+        if (invocation.getSpec().isBottomSpec()) {
+            final Class<?> specClass = invocation.getSpec().getReflection();
+            getTestRunner().afterClass(specClass, new InvocationExecutor(invocation));
+        }
     }
 
     /* (non-Javadoc)
