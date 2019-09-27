@@ -54,6 +54,9 @@
     <version.shrinkwrap>1.2.6</version.shrinkwrap>
     <version.groovy>2.4.17</version.groovy>
     <version.assertj>2.2.0</version.assertj>
+
+    <!-- overwrite parent -->
+    <version.compiler.plugin>3.8.0</version.compiler.plugin>
   </properties>
 
   <dependencyManagement>
@@ -120,13 +123,6 @@
     <module>container</module>
     <module>examples/groovy-2.x</module>
   </modules>
-
-  <pluginRepositories>
-    <pluginRepository>
-      <id>jboss-3rd-party</id>
-      <url>https://repository.jboss.org/nexus/content/repositories/thirdparty-releases/</url>
-    </pluginRepository>
-  </pluginRepositories>
 
   <build>
     <plugins>
