@@ -43,17 +43,11 @@
     <version.groovy>1.8.9</version.groovy>
     <version.arquillian_chameleon>1.0.0.CR6</version.arquillian_chameleon>
 
-    <!-- distribution management -->
-    <jboss.releases.repo.url>https://repository.jboss.org/nexus/service/local/staging/deploy/maven2/
-    </jboss.releases.repo.url>
-    <jboss.snapshots.repo.url>https://repository.jboss.org/nexus/content/repositories/snapshots/
-    </jboss.snapshots.repo.url>
-
     <version.source.plugin>2.2.1</version.source.plugin>
     <version.jar.plugin>3.1.0</version.jar.plugin>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <version.surefire.plugin>2.22.1</version.surefire.plugin>
-    <version.gmaven>1.2</version.gmaven>
+    <version.gmavenplus>1.5</version.gmavenplus>
   </properties>
 
   <dependencyManagement>
@@ -125,7 +119,7 @@
       <plugin>
         <groupId>org.codehaus.gmavenplus</groupId>
         <artifactId>gmavenplus-plugin</artifactId>
-        <version>${version.gmaven}</version>
+        <version>${version.gmavenplus}</version>
         <executions>
           <execution>
             <goals>

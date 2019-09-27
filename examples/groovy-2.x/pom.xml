@@ -45,8 +45,8 @@
     <!-- It is important to have 2.1.4+ because older versions will not work. JAR is missing directory entries
          and hence is omitted by Shrinkwrap. See http://jira.codehaus.org/browse/GROOVY-6158 for more details
     -->
-    <version.groovy>2.1.8</version.groovy>
-    <version.gmaven>1.2</version.gmaven>
+    <version.groovy>2.4.12</version.groovy>
+    <version.gmavenplus>1.8.0</version.gmavenplus>
 
     <!-- distribution management -->
     <jboss.releases.repo.url>https://repository.jboss.org/nexus/service/local/staging/deploy/maven2/
@@ -170,7 +170,7 @@
       <plugin>
         <groupId>org.codehaus.gmavenplus</groupId>
         <artifactId>gmavenplus-plugin</artifactId>
-        <version>${version.gmaven}</version>
+        <version>${version.gmavenplus}</version>
         <executions>
           <execution>
             <goals>
@@ -178,8 +178,8 @@
               <goal>addTestSources</goal>
               <goal>generateStubs</goal>
               <goal>compile</goal>
-              <goal>testGenerateStubs</goal>
-              <goal>testCompile</goal>
+              <goal>generateTestStubs</goal>
+              <goal>compileTests</goal>
               <goal>removeStubs</goal>
               <goal>removeTestStubs</goal>
             </goals>
