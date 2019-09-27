@@ -50,9 +50,9 @@
 
   <properties>
     <version.arquillian_core>1.4.1.Final</version.arquillian_core>
-    <version.spock>1.0-groovy-2.4</version.spock>
+    <version.spock>1.3-groovy-2.4</version.spock>
     <version.shrinkwrap>1.2.6</version.shrinkwrap>
-    <version.groovy>2.4.12</version.groovy>
+    <version.groovy>2.4.17</version.groovy>
     <version.assertj>2.2.0</version.assertj>
   </properties>
 
