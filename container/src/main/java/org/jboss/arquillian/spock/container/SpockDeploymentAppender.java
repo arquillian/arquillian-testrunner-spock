@@ -49,6 +49,7 @@ public class SpockDeploymentAppender implements AuxiliaryArchiveAppender {
                 "groovyjarjarasm.asm",
                 "groovyjarjarcommonscli",
                 "org.codehaus.groovy",
+                "org.apache.groovy",
                 "spock",
                 "org.spockframework",
                 "org.objectweb.asm")

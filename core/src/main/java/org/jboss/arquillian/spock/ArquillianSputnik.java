@@ -21,6 +21,7 @@
 
 package org.jboss.arquillian.spock;
 
+import java.lang.annotation.Annotation;
 import java.util.Collection;
 
 import org.jboss.arquillian.test.spi.TestRunnerAdaptor;
@@ -53,6 +54,8 @@ import org.spockframework.runtime.model.SpecInfo;
  * The original runner is copied as we need access to getSpec() method, which is private in original Sputnik class
  */
 public class ArquillianSputnik extends Sputnik {
+
+    private static final String RUN_AS_CLIENT = "org.jboss.arquillian.container.test.api.RunAsClient";
 
     private final Class<?> clazz;
 
@@ -217,15 +220,32 @@ public class ArquillianSputnik extends Sputnik {
 
     private void interceptAllFeatures(final Collection<FeatureInfo> features, final ArquillianInterceptor interceptor) {
         for (final FeatureInfo feature : features) {
-            skipParametrizedRunOnClientSide(feature);
+            skipParametrizedRunOnClientSideWhenTestRunsInContainer(feature);
             feature.getFeatureMethod().addInterceptor(interceptor);
         }
     }
 
-    private void skipParametrizedRunOnClientSide(FeatureInfo feature) {
-        if (feature.isParameterized() && !controlledByArquillian()) {
+    private void skipParametrizedRunOnClientSideWhenTestRunsInContainer(FeatureInfo feature) {
+        if (feature.isParameterized() && (!runAsClient(feature) && !controlledByArquillian())) {
             feature.setDataProcessorMethod(null);
         }
+    }
+
+    private boolean runAsClient(FeatureInfo feature) {
+        // The whole test is supposed to be executed on the client side
+        for (Annotation annotation : feature.getSpec().getAnnotations()) {
+            if (annotation.annotationType().getName().equals(RUN_AS_CLIENT)) {
+                return true;
+            }
+        }
+
+        // Only particular method runs on client side
+        for (Annotation annotation : feature.getFeatureMethod().getAnnotations()) {
+            if (annotation.annotationType().getName().equals(RUN_AS_CLIENT)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private boolean controlledByArquillian() {
