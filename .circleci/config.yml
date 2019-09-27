@@ -1,0 +1,30 @@
+version: 2.1
+
+jobs:
+  JDK8:
+    docker:
+      - image: circleci/openjdk:8u171-jdk
+    working_directory: ~/arquillian-spock-testrunner
+    environment:
+      # Customize the JVM maximum heap limit
+      MAVEN_OPTS: -Xmx3200m
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - mvn-jdk8-dependencies-{{ checksum "pom.xml" }}
+            # fallback to using the latest cache if no exact match is found
+            - mvn-jdk8-dependencies-
+      - run: mvn -DskipTests clean install dependency:resolve-plugins dependency:go-offline
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: mvn-jdk8-dependencies-{{ checksum "pom.xml" }}
+
+      - run: mvn clean integration-test
+
+workflows:
+  version: 2.1
+  build_and_test:
+    jobs:
+      - JDK8

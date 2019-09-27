@@ -54,6 +54,9 @@
     <version.shrinkwrap>1.2.6</version.shrinkwrap>
     <version.groovy>2.4.17</version.groovy>
     <version.assertj>2.2.0</version.assertj>
+
+    <!-- overwrite parent -->
+    <version.compiler.plugin>3.8.0</version.compiler.plugin>
   </properties>
 
   <dependencyManagement>
