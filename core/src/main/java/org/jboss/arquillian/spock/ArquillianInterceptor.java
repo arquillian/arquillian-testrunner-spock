@@ -91,12 +91,6 @@ public class ArquillianInterceptor extends AbstractMethodInterceptor {
         }
 
         final TestResult result = getTestRunner().test(new TestMethodExecutor() {
-            @Override
-            public String getMethodName() {
-                final String name = featureMethod.getName();
-                System.out.println(name);
-                return name;
-            }
 
             @Override
             public Method getMethod() {
