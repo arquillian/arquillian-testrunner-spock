@@ -13,7 +13,7 @@ jobs:
             - mvn-jdk8-dependencies-{{ checksum "pom.xml" }}
             # fallback to using the latest cache if no exact match is found
             - mvn-jdk8-dependencies-
-      - run: mvn -DskipTests clean install dependency:resolve-plugins dependency:go-offline
+      - run: mvn -DskipTests clean install dependency:resolve-plugins
       - save_cache:
           paths:
             - ~/.m2
