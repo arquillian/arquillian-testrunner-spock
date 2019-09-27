@@ -121,6 +121,13 @@
     <module>examples/groovy-2.x</module>
   </modules>
 
+  <pluginRepositories>
+    <pluginRepository>
+      <id>jboss-3rd-party</id>
+      <url>https://repository.jboss.org/nexus/content/repositories/thirdparty-releases/</url>
+    </pluginRepository>
+  </pluginRepositories>
+
   <build>
     <plugins>
       <plugin>
