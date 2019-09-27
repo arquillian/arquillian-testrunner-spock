@@ -14,23 +14,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.spock;
-
-import org.jboss.arquillian.spock.Account;
-import org.jboss.arquillian.spock.AccountService;
+package org.jboss.arquillian.ftest.spock;
 
 /**
- * SecureAccountService
+ * AccountService
  *
  * @author <a href="mailto:aslak@redhat.com">Aslak Knutsen</a>
  * @version $Revision: $
  */
-public class SecureAccountService implements AccountService {
-    /* (non-Javadoc)
-     * @see org.jboss.arquillian.framework.spock.AccountService#transfer(org.jboss.arquillian.framework.spock.Account, org.jboss.arquillian.framework.spock.Account, java.math.BigDecimal)
-     */
-    public void transfer(Account from, Account to, int amount) {
-        from.withdraw(amount);
-        to.diposit(amount);
-    }
+public interface AccountService {
+    void transfer(Account from, Account to, int amount);
 }

@@ -49,26 +49,26 @@
   </developers>
 
   <properties>
-    <!-- Versioning -->
     <version.arquillian_core>1.4.1.Final</version.arquillian_core>
-    <version.spock>0.7-groovy-2.0</version.spock>
-    <version.groovy>2.1.5</version.groovy>
+    <version.spock>1.0-groovy-2.4</version.spock>
+    <version.shrinkwrap>1.2.6</version.shrinkwrap>
+    <version.groovy>2.4.12</version.groovy>
     <version.assertj>2.2.0</version.assertj>
   </properties>
 
   <dependencyManagement>
     <dependencies>
       <dependency>
-        <groupId>org.jboss.shrinkwrap</groupId>
-        <artifactId>shrinkwrap-bom</artifactId>
-        <version>1.2.6</version>
+        <groupId>org.jboss.arquillian</groupId>
+        <artifactId>arquillian-bom</artifactId>
+        <version>${version.arquillian_core}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
       <dependency>
-        <groupId>org.jboss.arquillian</groupId>
-        <artifactId>arquillian-bom</artifactId>
-        <version>${version.arquillian_core}</version>
+        <groupId>org.jboss.shrinkwrap</groupId>
+        <artifactId>shrinkwrap-bom</artifactId>
+        <version>${version.shrinkwrap}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -118,7 +118,6 @@
     <module>core</module>
     <module>standalone</module>
     <module>container</module>
-    <module>examples/groovy-1.x</module>
     <module>examples/groovy-2.x</module>
   </modules>
 

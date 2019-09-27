@@ -14,21 +14,38 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.spock
+package org.jboss.arquillian.ftest.spock
 
-import org.jboss.arquillian.spock.common.AbstractCommonSpecification
+import org.jboss.arquillian.container.test.api.Deployment
+import org.jboss.arquillian.spock.ArquillianSputnik
+import org.jboss.shrinkwrap.api.ShrinkWrap
+import org.jboss.shrinkwrap.api.asset.EmptyAsset
+import org.jboss.shrinkwrap.api.spec.JavaArchive
 import org.junit.runner.RunWith
+import spock.lang.Specification
 
 import javax.inject.Inject
 
 @RunWith(ArquillianSputnik)
-class InheritedAccountServiceSpecification extends AbstractCommonSpecification {
+class ParametrizedAccountServiceSpecification extends Specification {
+
+    @Deployment(name = "abstract")
+    static JavaArchive "create deployment"() {
+        return ShrinkWrap.create(JavaArchive.class)
+            .addClasses(AccountService.class, Account.class, SecureAccountService.class, TransactionCounter.class, TransferEvent.class)
+            .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
+    }
 
     @Inject
     AccountService service
 
+    @Inject
+    TransactionCounter globalTransactionCounter
+
     def setup() {
-        assert service != null
+        // This has been introduce to ensure we execute the tests once and only once, as previously it was n^2
+        // @see https://github.com/arquillian/arquillian-testrunner-spock/issues/17
+        globalTransactionCounter.defineLimit(4)
     }
 
     def "transfer should be possible between two accounts"() {
@@ -38,15 +55,16 @@ class InheritedAccountServiceSpecification extends AbstractCommonSpecification {
         then:
         from.balance == fromBalance
         to.balance == toBalance
+        globalTransactionCounter.belowLimit()
 
         where:
         from << [
-                new Account(100),
-                new Account(10)
+            new Account(100),
+            new Account(10)
         ]
         to << [
-                new Account(50),
-                new Account(90)
+            new Account(50),
+            new Account(90)
         ]
         amount << [50, 10]
         fromBalance << [50, 0]
@@ -60,18 +78,21 @@ class InheritedAccountServiceSpecification extends AbstractCommonSpecification {
         then:
         from.balance == fromBalance
         to.balance == toBalance
+        globalTransactionCounter.belowLimit()
 
         where:
         from << [
-                new Account(100),
-                new Account(10)
+            new Account(100),
+            new Account(10)
         ]
         to << [
-                new Account(50),
-                new Account(90)
+            new Account(50),
+            new Account(90)
         ]
-        amount << [50, 10]
-        fromBalance << [50, 0]
-        toBalance << [100, 100]
+        amount << [100, 5]
+        fromBalance << [0, 5]
+        toBalance << [150, 95]
     }
+
+
 }

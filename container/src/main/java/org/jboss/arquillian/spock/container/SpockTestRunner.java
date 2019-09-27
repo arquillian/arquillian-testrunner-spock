@@ -1,7 +1,8 @@
 /*
  * JBoss, Home of Professional Open Source
- * Copyright 2009, Red Hat Middleware LLC, and individual contributors
- * by the @authors tag. See the copyright.txt in the distribution for a
+ * Copyright 2016 Red Hat Inc. and/or its affiliates and other contributors
+ * as indicated by the @authors tag. All rights reserved.
+ * See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,6 +17,9 @@
  */
 package org.jboss.arquillian.spock.container;
 
+import java.util.Collections;
+import java.util.List;
+
 import org.jboss.arquillian.container.test.spi.TestRunner;
 import org.jboss.arquillian.spock.ArquillianSputnik;
 import org.jboss.arquillian.test.spi.TestResult;
@@ -24,8 +28,7 @@ import org.junit.runner.notification.RunListener;
 import org.junit.runner.notification.RunNotifier;
 import org.spockframework.runtime.Sputnik;
 
-import java.util.Collections;
-import java.util.List;
+import static org.jboss.arquillian.test.spi.TestResult.failed;
 
 /**
  * Spock TestRunner
@@ -52,11 +55,11 @@ public class SpockTestRunner implements TestRunner {
         final Result testResult = new Result();
 
         try {
-            final Sputnik spockRunner = new ArquillianSputnik(testClass);
+            final Sputnik spockRunner = new ArquillianSputnik(testClass, true);
             spockRunner.filter(new SpockSpecificationFilter(spockRunner, methodName));
             runTest(spockRunner, testResult);
         } catch (Exception e) {
-            return TestResult.failed(e);
+            return failed(e);
         }
 
         return convertToTestResult(testResult);

@@ -41,15 +41,16 @@ import org.spockframework.runtime.RunContext;
 import org.spockframework.runtime.SpecInfoBuilder;
 import org.spockframework.runtime.Sputnik;
 import org.spockframework.runtime.model.FeatureInfo;
+import org.spockframework.runtime.model.MethodInfo;
 import org.spockframework.runtime.model.SpecInfo;
 
 /**
- * @author <a href="mailto:kpiwko@redhat.com">Karel Piwko</a>
  * @author Peter Niederwieser
- *         <p>
- *         Extension to Sputnik class that allows to mimic Before and After Suite events.
- *         The original runner is copied as we need access to getSpec() method, which is private in original Sputnik
- *         class
+ * @author <a href="mailto:kpiwko@redhat.com">Karel Piwko</a>
+ * @author <a href="mailto:bartosz.majsak@gmail.com">Bartosz Majsak</a>
+ * <p>
+ * Extension to Sputnik class that allows to mimic Before and After Suite events.
+ * The original runner is copied as we need access to getSpec() method, which is private in original Sputnik class
  */
 public class ArquillianSputnik extends Sputnik {
 
@@ -59,13 +60,20 @@ public class ArquillianSputnik extends Sputnik {
 
     private boolean extensionsRun = false;
 
-    private boolean descriptionAggregated = false;
+    private boolean descriptionGenerated = false;
+
+    private final boolean controlledByArquillian;
 
     public ArquillianSputnik(Class<?> clazz) throws InitializationError {
+        this(clazz, false);
+    }
+
+    public ArquillianSputnik(Class<?> clazz, boolean controlledByArquillian) throws InitializationError {
         super(clazz);
         // clazz is private field, we're actually shading it
         this.clazz = clazz;
         State.runnerStarted();
+        this.controlledByArquillian = controlledByArquillian;
     }
 
     @Override
@@ -122,20 +130,22 @@ public class ArquillianSputnik extends Sputnik {
         // initialization ok, run children
         if (State.hasTestAdaptor()) {
             runExtensionsIfNecessary();
-            aggregateDescriptionIfNecessary();
-            RunContext.get().createSpecRunner(getSpec(), notifier).run();
+            generateSpecDescriptionIfNecessary();
+            SpecInfo spec = getSpec();
+            RunContext.get().createSpecRunner(spec, notifier).run();
         }
     }
 
     @Override
     public Description getDescription() {
         runExtensionsIfNecessary();
-        aggregateDescriptionIfNecessary();
+        generateSpecDescriptionIfNecessary();
         return getSpec().getDescription();
     }
 
     @Override
     public void filter(Filter filter) throws NoTestsRemainException {
+        invalidateSpecDescription();
         getSpec().filterFeatures(new JUnitFilterAdapter(filter));
         if (allFeaturesExcluded()) {
             throw new NoTestsRemainException();
@@ -144,55 +154,81 @@ public class ArquillianSputnik extends Sputnik {
 
     @Override
     public void sort(Sorter sorter) {
+        invalidateSpecDescription();
         getSpec().sortFeatures(new JUnitSorterAdapter(sorter));
     }
 
     private SpecInfo getSpec() {
         if (spec == null) {
             spec = new SpecInfoBuilder(clazz).build();
-            new JUnitDescriptionGenerator(spec).attach();
             enrichSpecWithArquillian(spec);
+            new JUnitDescriptionGenerator(spec).describeSpecMethods();
         }
         return spec;
     }
 
     private void runExtensionsIfNecessary() {
-        if (extensionsRun) return;
+        if (extensionsRun) {
+            return;
+        }
         RunContext.get().createExtensionRunner(getSpec()).run();
         extensionsRun = true;
     }
 
-    private void aggregateDescriptionIfNecessary() {
-        if (descriptionAggregated) return;
-        new JUnitDescriptionGenerator(getSpec()).aggregate();
-        descriptionAggregated = true;
+    private void generateSpecDescriptionIfNecessary() {
+        if (descriptionGenerated) {
+            return;
+        }
+        new JUnitDescriptionGenerator(getSpec()).describeSpec();
+        descriptionGenerated = true;
+    }
+
+    private void invalidateSpecDescription() {
+        descriptionGenerated = false;
     }
 
     private boolean allFeaturesExcluded() {
-        for (FeatureInfo feature : getSpec().getAllFeatures())
-            if (!feature.isExcluded()) return false;
-
+        for (FeatureInfo feature : getSpec().getAllFeatures()) {
+            if (!feature.isExcluded()) {
+                return false;
+            }
+        }
         return true;
     }
 
-    private void enrichSpecWithArquillian(SpecInfo spec) {
+    private void enrichSpecWithArquillian(final SpecInfo spec) {
         final ArquillianInterceptor interceptor = new ArquillianInterceptor();
-        for (SpecInfo s : spec.getSpecsBottomToTop()) {
-            interceptLifecycleMethods(s, interceptor);
-            interceptAllFeatures(s.getAllFeatures(), interceptor);
-        }
+        interceptLifecycleMethods(spec, interceptor);
+        interceptAllFeatures(spec.getAllFeaturesInExecutionOrder(), interceptor);
     }
 
     private void interceptLifecycleMethods(final SpecInfo specInfo, final ArquillianInterceptor interceptor) {
-        specInfo.getSetupSpecMethod().addInterceptor(interceptor);
-        specInfo.getSetupMethod().addInterceptor(interceptor);
-        specInfo.getCleanupMethod().addInterceptor(interceptor);
-        specInfo.getCleanupSpecMethod().addInterceptor(interceptor);
+        specInfo.addSetupSpecInterceptor(interceptor);
+        specInfo.addCleanupSpecInterceptor(interceptor);
+
+        for (final MethodInfo methodInfo : specInfo.getSetupMethods()) {
+            methodInfo.addInterceptor(interceptor);
+        }
+
+        for (final MethodInfo methodInfo : specInfo.getCleanupMethods()) {
+            methodInfo.addInterceptor(interceptor);
+        }
     }
 
     private void interceptAllFeatures(final Collection<FeatureInfo> features, final ArquillianInterceptor interceptor) {
-        for (FeatureInfo feature : features) {
+        for (final FeatureInfo feature : features) {
+            skipParametrizedRunOnClientSide(feature);
             feature.getFeatureMethod().addInterceptor(interceptor);
         }
+    }
+
+    private void skipParametrizedRunOnClientSide(FeatureInfo feature) {
+        if (feature.isParameterized() && !controlledByArquillian()) {
+            feature.setDataProcessorMethod(null);
+        }
+    }
+
+    private boolean controlledByArquillian() {
+        return controlledByArquillian;
     }
 }

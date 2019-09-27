@@ -14,24 +14,49 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.spock.common
+package org.jboss.arquillian.ftest.spock
 
 import org.jboss.arquillian.container.test.api.Deployment
-import org.jboss.arquillian.spock.Account
-import org.jboss.arquillian.spock.AccountService
-import org.jboss.arquillian.spock.SecureAccountService
+import org.jboss.arquillian.spock.ArquillianSputnik
 import org.jboss.shrinkwrap.api.ShrinkWrap
 import org.jboss.shrinkwrap.api.asset.EmptyAsset
 import org.jboss.shrinkwrap.api.spec.JavaArchive
-
+import org.junit.runner.RunWith
 import spock.lang.Specification
 
-abstract class AbstractCommonSpecification extends Specification {
+import javax.inject.Inject
 
-    @Deployment
-    def static JavaArchive "create deployment"() {
+@RunWith(ArquillianSputnik)
+class AccountServiceSpecification extends Specification {
+
+    @Deployment(name = "concrete")
+    static JavaArchive "create deployment"() {
         return ShrinkWrap.create(JavaArchive.class)
-                .addClasses(AccountService.class, Account.class, SecureAccountService.class)
-                .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
+                .addClasses(AccountService.class, Account.class, SecureAccountService.class, TransactionCounter.class, TransferEvent.class)
+                .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
     }
+
+    @Inject
+    AccountService service
+
+    @Inject
+    TransactionCounter transactionCounter
+
+    def setup() {
+        transactionCounter.defineLimit(1)
+    }
+
+    def "transfer should be possible between two accounts"() {
+        given:
+            def from = new Account(100)
+            def to = new Account(50)
+            def amount = 50
+        when:
+            service.transfer(from, to, amount)
+
+        then:
+            from.balance == 50
+            to.balance == 100
+    }
+
 }

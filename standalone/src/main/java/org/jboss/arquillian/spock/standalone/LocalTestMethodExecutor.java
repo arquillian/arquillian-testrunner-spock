@@ -36,24 +36,26 @@ import org.jboss.arquillian.test.spi.event.suite.Test;
  * @version $Revision: $
  */
 public class LocalTestMethodExecutor {
+
     @Inject
     private Instance<ServiceLoader> serviceLoader;
 
-    @Inject @TestScoped
+    @Inject
+    @TestScoped
     private InstanceProducer<TestResult> testResult;
 
     public void execute(@Observes Test event) throws Exception {
-        TestResult result = TestResult.passed();
+        TestResult result;
         try {
             event.getTestMethodExecutor().invoke(
                 enrichArguments(
                     event.getTestMethod(),
                     serviceLoader.get().all(TestEnricher.class)));
+            result = TestResult.passed();
         } catch (Throwable e) {
             result = TestResult.failed(e);
-        } finally {
-            result.setEnd(System.currentTimeMillis());
         }
+        result.setEnd(System.currentTimeMillis());
         testResult.set(result);
     }
 
@@ -65,7 +67,7 @@ public class LocalTestMethodExecutor {
      * @return the argument values
      */
     private Object[] enrichArguments(Method method, Collection<TestEnricher> enrichers) {
-        Object[] values = new Object[method.getParameterTypes().length];
+        final Object[] values = new Object[method.getParameterTypes().length];
         if (method.getParameterTypes().length == 0) {
             return values;
         }
@@ -82,13 +84,13 @@ public class LocalTestMethodExecutor {
 
         if (values.length != resolvedValues.length) {
             throw new IllegalStateException("TestEnricher resolved wrong argument count, expected " +
-                values.length + " returned " + resolvedValues.length);
+                                                values.length + " returned " + resolvedValues.length);
         }
 
         for (int i = 0; i < resolvedValues.length; i++) {
-            Object resvoledValue = resolvedValues[i];
-            if (resvoledValue != null && values[i] == null) {
-                values[i] = resvoledValue;
+            Object resolvedValue = resolvedValues[i];
+            if (resolvedValue != null && values[i] == null) {
+                values[i] = resolvedValue;
             }
         }
     }

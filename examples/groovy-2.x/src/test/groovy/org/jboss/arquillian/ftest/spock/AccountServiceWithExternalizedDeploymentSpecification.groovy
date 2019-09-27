@@ -15,19 +15,37 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.spock.standalone;
+package org.jboss.arquillian.ftest.spock
 
-import org.jboss.arquillian.core.spi.LoadableExtension;
+import org.jboss.arquillian.spock.ArquillianSputnik
+import org.junit.runner.RunWith
 
-/**
- * Arquillian extension to the Spock test framework.
- *
- * @author <a href="mailto:aslak@redhat.com">Aslak Knutsen</a>
- * @version $Revision: $
- */
-public class SpockStandaloneExtension implements LoadableExtension {
-    @Override
-    public void register(ExtensionBuilder builder) {
-        builder.observer(LocalTestMethodExecutor.class);
+import javax.inject.Inject
+
+@RunWith(ArquillianSputnik)
+class AccountServiceWithExternalizedDeploymentSpecification extends ExternalizedDeployment {
+
+    @Inject
+    AccountService service
+
+    @Inject
+    TransactionCounter transactionCounter
+
+    def setup() {
+        transactionCounter.defineLimit(1)
     }
+
+    def "transfer should be possible between two accounts"() {
+        given:
+            def from = new Account(100)
+            def to = new Account(50)
+            def amount = 50
+        when:
+            service.transfer(from, to, amount)
+
+        then:
+            from.balance == 50
+            to.balance == 100
+    }
+
 }

@@ -1,7 +1,8 @@
 /*
  * JBoss, Home of Professional Open Source
- * Copyright 2009, Red Hat Middleware LLC, and individual contributors
- * by the @authors tag. See the copyright.txt in the distribution for a
+ * Copyright 2016 Red Hat Inc. and/or its affiliates and other contributors
+ * as indicated by the @authors tag. All rights reserved.
+ * See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,6 +17,8 @@
  */
 package org.jboss.arquillian.spock.container;
 
+import javax.script.ScriptEngineFactory;
+
 import org.codehaus.groovy.jsr223.GroovyScriptEngineFactory;
 import org.jboss.arquillian.container.test.spi.TestRunner;
 import org.jboss.arquillian.container.test.spi.client.deployment.AuxiliaryArchiveAppender;
@@ -24,8 +27,6 @@ import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.Filters;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
-
-import javax.script.ScriptEngineFactory;
 
 /**
  * Creates testing archive with dependencies required
@@ -52,14 +53,18 @@ public class SpockDeploymentAppender implements AuxiliaryArchiveAppender {
                 "org.spockframework",
                 "org.objectweb.asm")
             .addPackages( // junit
-                true,
-                Filters.includeAll(),
-                "org.junit",
-                "org.hamcrest")
+                          true,
+                          Filters.includeAll(),
+                          "org.junit",
+                          "org.hamcrest")
             .addPackages(true, ArquillianSputnik.class.getPackage())
             .addAsServiceProvider(TestRunner.class, SpockTestRunner.class)
             .addAsServiceProvider(ScriptEngineFactory.class, GroovyScriptEngineFactory.class)
             .addClass(SpockSpecificationFilter.class)
+            .addAsResource("dsld/spk.dsld")
+            .addAsResource("org/spockframework/util/SpockReleaseInfo.properties")
+            .addAsResource("META-INF/services/org.codehaus.groovy.transform.ASTTransformation")
+            .addAsResource("META-INF/services/org.spockframework.runtime.extension.IGlobalExtension")
             .addAsManifestResource("META-INF/dgminfo", "dgminfo")
             .addAsManifestResource("META-INF/groovy-release-info.properties", "groovy-release-info.properties");
     }

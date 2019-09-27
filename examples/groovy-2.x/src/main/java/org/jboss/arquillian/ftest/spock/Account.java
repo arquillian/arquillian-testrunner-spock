@@ -14,16 +14,40 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.spock;
-
-import org.jboss.arquillian.spock.Account;
+package org.jboss.arquillian.ftest.spock;
 
 /**
- * AccountService
+ * Account
  *
  * @author <a href="mailto:aslak@redhat.com">Aslak Knutsen</a>
  * @version $Revision: $
  */
-public interface AccountService {
-    void transfer(Account from, Account to, int amount);
+public class Account {
+    private int balance;
+
+    public Account(int balance) {
+        this.balance = balance;
+    }
+
+    public void withdraw(int amount) {
+        balance = balance - amount;
+    }
+
+    public void deposit(int amount) {
+        balance = balance + amount;
+    }
+
+    /**
+     * @return the balance
+     */
+    public int getBalance() {
+        return balance;
+    }
+
+   @Override
+   public String toString() {
+      return "Account@" + hashCode() + "{" +
+              "balance=" + balance +
+              '}';
+   }
 }

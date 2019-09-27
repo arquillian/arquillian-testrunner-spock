@@ -1,7 +1,8 @@
 /*
  * JBoss, Home of Professional Open Source
- * Copyright 2009, Red Hat Middleware LLC, and individual contributors
- * by the @authors tag. See the copyright.txt in the distribution for a
+ * Copyright 2016 Red Hat Inc. and/or its affiliates and other contributors
+ * as indicated by the @authors tag. All rights reserved.
+ * See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,23 +15,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.spock.common
+package org.jboss.arquillian.ftest.spock
 
 import org.jboss.arquillian.container.test.api.Deployment
-import org.jboss.arquillian.spock.Account
-import org.jboss.arquillian.spock.AccountService
-import org.jboss.arquillian.spock.SecureAccountService
 import org.jboss.shrinkwrap.api.ShrinkWrap
 import org.jboss.shrinkwrap.api.asset.EmptyAsset
 import org.jboss.shrinkwrap.api.spec.JavaArchive
 import spock.lang.Specification
 
-abstract class AbstractCommonSpecification extends Specification {
+abstract class ExternalizedDeployment extends Specification {
 
-    @Deployment
-    static JavaArchive "create test deployment"() {
+    @Deployment(name = "abstract")
+    def static JavaArchive "create deployment"() {
         return ShrinkWrap.create(JavaArchive.class)
-                .addClasses(AccountService.class, Account.class, SecureAccountService.class)
-                .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
+            .addClass(ExternalizedDeployment.class)
+            .addClasses(AccountService.class, Account.class, SecureAccountService.class, TransactionCounter.class, TransferEvent.class)
+            .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
     }
 }

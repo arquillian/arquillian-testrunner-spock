@@ -17,7 +17,6 @@
 package org.jboss.arquillian.spock;
 
 import java.lang.reflect.Method;
-import java.util.logging.Logger;
 
 import org.jboss.arquillian.test.spi.LifecycleMethodExecutor;
 import org.jboss.arquillian.test.spi.TestMethodExecutor;
@@ -30,21 +29,19 @@ import org.spockframework.runtime.extension.IMethodInvocation;
  * Interceptor to call the Arquillian Core
  *
  * @author <a href="mailto:aslak@redhat.com">Aslak Knutsen</a>
+ * @author <a href="mailto:bartosz.majsak@ggmail.com">Bartosz Majsak</a>
  * @version $Revision: $
  */
 public class ArquillianInterceptor extends AbstractMethodInterceptor {
 
-    private final Logger log = Logger.getLogger(ArquillianInterceptor.class.getName());
     private TestRunnerAdaptor testRunner;
-
-    ArquillianInterceptor() {}
 
     /* (non-Javadoc)
      * @see org.spockframework.runtime.extension.AbstractMethodInterceptor#interceptSetupSpecMethod(org.spockframework.runtime.extension.IMethodInvocation)
      */
     @Override
     public void interceptSetupSpecMethod(IMethodInvocation invocation) throws Throwable {
-        if (invocation.getSpec().isBottomSpec()) {
+        if (invocation.getSpec().getIsBottomSpec()) {
             final Class<?> specClass = invocation.getSpec().getReflection();
             getTestRunner().beforeClass(specClass, new InvocationExecutor(invocation));
         }
@@ -55,7 +52,7 @@ public class ArquillianInterceptor extends AbstractMethodInterceptor {
      */
     @Override
     public void interceptCleanupSpecMethod(IMethodInvocation invocation) throws Throwable {
-        if (invocation.getSpec().isBottomSpec()) {
+        if (invocation.getSpec().getIsBottomSpec()) {
             final Class<?> specClass = invocation.getSpec().getReflection();
             getTestRunner().afterClass(specClass, new InvocationExecutor(invocation));
         }
@@ -66,9 +63,9 @@ public class ArquillianInterceptor extends AbstractMethodInterceptor {
      */
     @Override
     public void interceptSetupMethod(IMethodInvocation invocation) throws Throwable {
-        log.fine("before " + invocation.getFeature().getFeatureMethod().getReflection().getName());
-        getTestRunner().before(invocation.getTarget(), invocation.getFeature().getFeatureMethod().getReflection(),
-            new InvocationExecutor(invocation));
+        if (invocation.getSpec().getIsBottomSpec()) {
+            getTestRunner().before(invocation.getTarget(), invocation.getMethod().getReflection(), new InvocationExecutor(invocation));
+        }
     }
 
     /* (non-Javadoc)
@@ -76,9 +73,9 @@ public class ArquillianInterceptor extends AbstractMethodInterceptor {
      */
     @Override
     public void interceptCleanupMethod(IMethodInvocation invocation) throws Throwable {
-        log.fine("after " + invocation.getFeature().getFeatureMethod().getReflection().getName());
-        getTestRunner().after(invocation.getTarget(), invocation.getFeature().getFeatureMethod().getReflection(),
-            new InvocationExecutor(invocation));
+        if (invocation.getSpec().getIsBottomSpec()) {
+            getTestRunner().after(invocation.getTarget(), invocation.getMethod().getReflection(), new InvocationExecutor(invocation));
+        }
     }
 
     /* (non-Javadoc)
@@ -86,15 +83,22 @@ public class ArquillianInterceptor extends AbstractMethodInterceptor {
      */
     @Override
     public void interceptFeatureMethod(final IMethodInvocation invocation) throws Throwable {
-        TestResult result = getTestRunner().test(new TestMethodExecutor() {
+        final Method featureMethod = invocation.getFeature().getFeatureMethod().getReflection();
+        final Object invocationTarget = invocation.getTarget();
+
+        if (invocation.getSpec().getSetupMethods().isEmpty()) {
+            getTestRunner().before(invocationTarget, featureMethod, new NoopInvocationExecutor());
+        }
+
+        final TestResult result = getTestRunner().test(new TestMethodExecutor() {
             @Override
             public Method getMethod() {
-                return invocation.getFeature().getFeatureMethod().getReflection();
+                return featureMethod;
             }
 
             @Override
             public Object getInstance() {
-                return invocation.getTarget();
+                return invocationTarget;
             }
 
             @Override
@@ -103,8 +107,17 @@ public class ArquillianInterceptor extends AbstractMethodInterceptor {
             }
         });
 
+        if (invocation.getSpec().getCleanupMethods().isEmpty()) {
+            getTestRunner().after(invocationTarget, featureMethod, new NoopInvocationExecutor());
+        }
         if (result.getThrowable() != null) {
             throw result.getThrowable();
+        }
+    }
+
+    private static class NoopInvocationExecutor implements LifecycleMethodExecutor {
+        @Override
+        public void invoke() throws Throwable {
         }
     }
 

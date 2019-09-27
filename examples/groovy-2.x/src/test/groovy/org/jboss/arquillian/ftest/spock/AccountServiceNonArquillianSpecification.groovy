@@ -14,22 +14,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.spock
+package org.jboss.arquillian.ftest.spock
+import spock.lang.Specification
 
-import javax.inject.Inject
+import javax.enterprise.event.Event
 
-import org.jboss.arquillian.spock.common.AbstractCommonSpecification
-import org.junit.runner.RunWith
+class AccountServiceNonArquillianSpecification extends Specification {
 
-@RunWith(ArquillianSputnik)
-class InheritedAccountServiceSpecification extends AbstractCommonSpecification {
-
-    @Inject
-    AccountService service
-
-    def setup() {
-        assert service != null
-    }
+    def logTransfer = Mock(Event)
+    def AccountService service = new SecureAccountService(logTransfer)
 
     def "transfer should be possible between two accounts"() {
         when:
@@ -40,14 +33,8 @@ class InheritedAccountServiceSpecification extends AbstractCommonSpecification {
         to.balance == toBalance
 
         where:
-        from << [
-                new Account(100),
-                new Account(10)
-        ]
-        to << [
-                new Account(50),
-                new Account(90)
-        ]
+        from << [new Account(100), new Account(10)]
+        to << [new Account(50), new Account(90)]
         amount << [50, 10]
         fromBalance << [50, 0]
         toBalance << [100, 100]
@@ -62,14 +49,8 @@ class InheritedAccountServiceSpecification extends AbstractCommonSpecification {
         to.balance == toBalance
 
         where:
-        from << [
-                new Account(100),
-                new Account(10)
-        ]
-        to << [
-                new Account(50),
-                new Account(90)
-        ]
+        from << [new Account(100), new Account(10)]
+        to << [new Account(50), new Account(90)]
         amount << [50, 10]
         fromBalance << [50, 0]
         toBalance << [100, 100]
