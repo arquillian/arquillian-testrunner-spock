@@ -20,7 +20,7 @@
     -->
     <version.groovy>2.4.17</version.groovy>
     <version.gmavenplus>1.8.1</version.gmavenplus>
-    <version.jboss.logmanager>2.1.14.Final</version.jboss.logmanager>
+    <version.jboss.logmanager>2.1.16.Final</version.jboss.logmanager>
 
     <!-- distribution management -->
     <jboss.releases.repo.url>https://repository.jboss.org/nexus/service/local/staging/deploy/maven2/
