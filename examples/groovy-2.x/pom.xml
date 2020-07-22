@@ -18,7 +18,7 @@
     <!-- It is important to have 2.1.4+ because older versions will not work. JAR is missing directory entries
          and hence is omitted by Shrinkwrap. See http://jira.codehaus.org/browse/GROOVY-6158 for more details
     -->
-    <version.groovy>2.4.17</version.groovy>
+    <version.groovy>2.4.20</version.groovy>
     <version.gmavenplus>1.8.1</version.gmavenplus>
     <version.jboss.logmanager>2.1.14.Final</version.jboss.logmanager>
 
