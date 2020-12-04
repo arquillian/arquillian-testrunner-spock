@@ -52,7 +52,7 @@
     <version.arquillian_core>1.5.0.Final</version.arquillian_core>
     <version.spock>1.3-groovy-2.4</version.spock>
     <version.shrinkwrap>1.2.6</version.shrinkwrap>
-    <version.groovy>2.4.17</version.groovy>
+    <version.groovy>2.4.21</version.groovy>
     <version.assertj>3.14.0</version.assertj>
 
     <!-- overwrite parent -->
